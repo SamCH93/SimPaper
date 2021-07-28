@@ -8,6 +8,7 @@ library(glmnet)
 
 data("iris")
 
+
 iris$bin <- factor(iris$Species == "setosa")
 
 m <- randomForest(bin ~ . - Species, data = iris)
@@ -31,10 +32,18 @@ plot(glmnet(x = X, y = Y, alpha = 0.5))
 	return(X)
 }
 
-.importance_penalty <- function(rf, gamma = 1) {
-	imp <- rf$importance[, "MeanDecreaseGini"]
-	imp <- pmax(imp, 0)
-	1 - (imp / sum(imp))^gamma
+.importance_penalty <- function(rf, gamma = 1, which = c("MeanDecreaseGini", 
+																												 "MeanDecreaseAccuracy",
+																												 "adaptive lasso")) {
+	which <- match.arg(which)
+	if (which %in% c("MeanDecreaseGini", "MeanDecreaseAccuracy")) {
+		imp <- rf$importance[, which]
+		imp <- pmax(imp, 0)
+		ret <- 1 / (imp / sum(imp))^gamma
+	} else if (which == "adaptive lasso") {
+		ret <- 1 / abs(coef(rf))^gamma	
+	}
+	return(ret)
 }
 
 .preproc <- function(formula, data) {
@@ -51,9 +60,16 @@ fglmnet <- function(formula, data, ...) {
 	glmnet(x = dat$X, y = dat$Y, ... = ...)
 }
 
-.vimp <- function(formula, data, ...) {
-	rf <- randomForest(formula, data, importance = TRUE)
-	.importance_penalty(rf)
+.vimp <- function(formula, data, which = c("MeanDecreaseGini",
+																					 "MeanDecreaseAccuracy",
+																					 "adaptive lasso"), ...) {
+	which <- match.arg(which)
+	if (which %in% c("MeanDecreaseGini", "MeanDecreaseAccuracy")) {
+		rf <- randomForest(formula, data, importance = TRUE)
+	} else if (which == "adaptive lasso") {
+		rf <- glm(formula, data, family = binomial)
+	}
+	.importance_penalty(rf, which = which, ... = ...)
 }
 
 cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, ...) {
@@ -76,10 +92,35 @@ ai_net <- function(formula, data, imp_data = NULL, pen.f = NULL, plot = FALSE,
 
 # Sim example -------------------------------------------------------------
 
-gen_dat <- function(n = 1e2, p = 1e1, b = rep(1:0, c(2, p - 2))) {
+gen_dat <- function(n = 1e2, p = 20, nz = 5, b = rep(1:0, c(nz, p - nz))) {
 	X <- matrix(rnorm(n * p), nrow = n, ncol = p)
 	Y <- factor(rbinom(n = n, size = 1, plogis(X %*% b)))
 	return(data.frame(Y = Y, X = X))
+}
+
+acc <- function(y_true, y_pred) {
+	mean(y_true == y_pred)
+}
+
+nll <- function(y_pred, y_true) {
+	if (is.factor(y_true) & length(levels(y_true)) == 2)
+		y_true <- as.numeric(y_true) - 1
+	- mean(y_true * log(y_pred) + (1 - y_true) * log(1 - y_pred))
+}
+
+eval_mod <- function(m, newx, y_true, loss, ...) {
+	preds <- predict(m, newx = newx, ... = ...)
+	loss(preds, y_true)
+}
+
+talp <- 0.5 # elastic net penalty
+measure <- "nll"
+if (measure == "nll") {
+	pred_type <- "response"
+	loss <- nll
+} else {
+	pred_type <- "class"
+	loss <- acc
 }
 
 res <- replicate(100, {
@@ -88,26 +129,30 @@ res <- replicate(100, {
 	test <- gen_dat()
 	
 	fml <- Y ~ .
-	pen.f <- .vimp(fml, tune)
-	cvm <- cv.fglmnet(fml, train, pen.f = pen.f)
+	pen.f <- .vimp(fml, tune, which = "MeanDecreaseGini", gamma = 1)
+	print(pen.f)
+	cvm <- cv.fglmnet(fml, train, pen.f = pen.f, alpha = talp, family = "binomial")
 	
 	m <- ai_net(fml, data = train, pen.f = pen.f, plot = FALSE,
-							lambda = cvm$lambda.1se, alpha = 0.5)
-	
-	preds <- as.numeric(predict(m, newx = .rm_int(model.matrix(fml, test))) > 0.5)
+							lambda = cvm$lambda.1se, alpha = talp, family = "binomial")
+	AINET <- eval_mod(m, newx = .rm_int(model.matrix(fml, test)), 
+										y_true = test$Y, loss = loss, type = pred_type)
 	
 	# bl <- glm(Y ~ ., data = train, family = binomial)
 	# pbl <- as.numeric(predict(bl, newdata = test, type = "response") > 0.5)
 	
 	dd <- .preproc(fml, train)
-	cbl <- cv.glmnet(x = dd$X, y = dd$Y, alpha = 0.5)
-	bl <- glmnet(x = dd$X, y = dd$Y, alpha = 0.5, lambda = cbl$lambda.1se)
-	pbl <- as.numeric(predict(bl, newx = .rm_int(model.matrix(fml, test))) > 0.5)
+	cbl <- cv.glmnet(x = dd$X, y = dd$Y, alpha = talp, family = "binomial")
+	bl <- glmnet(x = dd$X, y = dd$Y, alpha = talp, lambda = cbl$lambda.1se, 
+							 family = "binomial")
+	BL <- eval_mod(bl, newx = .rm_int(model.matrix(fml, test)), 
+								 y_true = test$Y, loss = loss, type = pred_type)
 	
 	c(
-		BL = mean(pbl == test$Y),
-		AINET = mean(preds == test$Y)
+		BL = BL,
+		AINET = AINET
 	)
 })
 
-boxplot(t(res))
+boxplot(t(res), las = 1, ylab = "NLL")
+points(rowMeans(res), pch = 4)
