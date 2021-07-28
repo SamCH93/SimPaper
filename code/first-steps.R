@@ -11,7 +11,7 @@ data("iris")
 
 iris$bin <- factor(iris$Species == "setosa")
 
-m <- randomForest(bin ~ . - Species, data = iris)
+m <- randomForest(bin ~ . - Species, data = iris, importance = TRUE)
 
 gamma <- 0.5
 pen.f <- 1 - (m$importance / sum(m$importance))^gamma
@@ -130,7 +130,6 @@ res <- replicate(100, {
 	
 	fml <- Y ~ .
 	pen.f <- .vimp(fml, tune, which = "MeanDecreaseGini", gamma = 1)
-	print(pen.f)
 	cvm <- cv.fglmnet(fml, train, pen.f = pen.f, alpha = talp, family = "binomial")
 	
 	m <- ai_net(fml, data = train, pen.f = pen.f, plot = FALSE,
