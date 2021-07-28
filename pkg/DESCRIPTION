@@ -1,0 +1,11 @@
+Package: ainet
+Title: Adaptive importance elastic net
+Version: 0.0.0.9000
+Authors: Samuel Pawel, Lucas Kook
+Description: Adaptive importance elastic net
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+Depends: randomForest, glmnet
