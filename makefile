@@ -32,3 +32,14 @@ docx: tex
 clean:  
 	rm $(FILE).aux  $(FILE).blg  $(FILE).log  $(FILE).tex  $(FILE).bbl  $(FILE).out $(FILE).brf $(FILE).tex $(FILE)Pandoc.tex $(FILE).log $(FILE).bbl $(FILE).synctex.gz; \
 	rm -r ./figure/
+
+build:
+	R CMD build pkg
+
+install:
+	R CMD INSTALL ainet*.tar.gz
+
+pkgclean:
+	rm ainet*.tar.gz
+
+pkgall: build install pkgclean
