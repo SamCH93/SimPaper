@@ -51,24 +51,32 @@ fglmnet <- function(formula, data, ...) {
 	glmnet(x = dat$X, y = dat$Y, ... = ...)
 }
 
-cv.fglmnet <- function(formula, data, ...) {
-	dat <- .preproc(formula, data)
+.vimp <- function(formula, data, ...) {
 	rf <- randomForest(formula, data, importance = TRUE)
-	pen.f <- .importance_penalty(rf)
+	.importance_penalty(rf)
+}
+
+cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, ...) {
+	dat <- .preproc(formula, data)
+	if (is.null(pen.f))
+		pen.f <- .vimp(formula, ifelse(is.null(imp_data), list(data), 
+																	 list(imp_data))[[1]])
 	cv.glmnet(x = dat$X, y = dat$Y, penalty.factor = pen.f, ... = ...)
 }
 
-ai_net <- function(formula, data, plot = FALSE, ...) {
-	rf <- randomForest(formula, data, importance = TRUE)
+ai_net <- function(formula, data, imp_data = NULL, pen.f = NULL, plot = FALSE, 
+									 ...) {
 	if (plot)
 		varImpPlot(rf)
-	pen.f <- .importance_penalty(rf)
+	if (is.null(pen.f))
+		pen.f <- .vimp(formula, ifelse(is.null(imp_data), list(data),
+																	 list(imp_data))[[1]])
 	fglmnet(formula, data, penalty.factor = pen.f, ... = ...)
 }
 
 # Sim example -------------------------------------------------------------
 
-gen_dat <- function(n = 1e2, p = 10, b = rep(1:0, c(2, p -2))) {
+gen_dat <- function(n = 1e2, p = 1e1, b = rep(1:0, c(2, p - 2))) {
 	X <- matrix(rnorm(n * p), nrow = n, ncol = p)
 	Y <- factor(rbinom(n = n, size = 1, plogis(X %*% b)))
 	return(data.frame(Y = Y, X = X))
@@ -76,12 +84,15 @@ gen_dat <- function(n = 1e2, p = 10, b = rep(1:0, c(2, p -2))) {
 
 res <- replicate(100, {
 	train <- gen_dat()
+	tune <- gen_dat()
 	test <- gen_dat()
 	
 	fml <- Y ~ .
-	cvm <- cv.fglmnet(fml, train)
+	pen.f <- .vimp(fml, tune)
+	cvm <- cv.fglmnet(fml, train, pen.f = pen.f)
 	
-	m <- ai_net(fml, data = train, lambda = cvm$lambda.1se, plot = FALSE, alpha = 0.5)
+	m <- ai_net(fml, data = train, pen.f = pen.f, plot = FALSE,
+							lambda = cvm$lambda.1se, alpha = 0.5)
 	
 	preds <- as.numeric(predict(m, newx = .rm_int(model.matrix(fml, test))) > 0.5)
 	
@@ -93,8 +104,10 @@ res <- replicate(100, {
 	bl <- glmnet(x = dd$X, y = dd$Y, alpha = 0.5, lambda = cbl$lambda.1se)
 	pbl <- as.numeric(predict(bl, newx = .rm_int(model.matrix(fml, test))) > 0.5)
 	
-	c(AINET = mean(preds == test$Y),
-		BL = mean(pbl == test$Y))
+	c(
+		BL = mean(pbl == test$Y),
+		AINET = mean(preds == test$Y)
+	)
 })
 
 boxplot(t(res))
