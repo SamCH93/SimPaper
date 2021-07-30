@@ -1,0 +1,136 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphics}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath, amssymb}
+\usepackage{textcomp}
+\usepackage[sc]{mathpazo}
+\usepackage{times}
+\usepackage{doi} % automatic doi-links
+\usepackage[round]{natbib} % bibliography
+\usepackage{multirow} % multi rows and columns for tables
+\usepackage{longtable} % tables that span several pages
+\usepackage{booktabs} % nicer tables
+\usepackage[toc, page]{appendix} % better appendices
+\usepackage{nameref} % reference appendices with names
+
+%% margins
+%% ----------------------------------------------------------------------------
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=25mm,
+ right=25mm,
+ top=20mm,
+ bottom=20mm,
+ }
+
+%% title, authors, affiliations, mail
+%% ----------------------------------------------------------------------------
+\newcommand\longtitle{Questionable Research Practices in Simulation Studies}
+\newcommand\shorttitle{\longtitle}
+\newcommand\subtitle{Simulation Protocol}
+\newcommand\longauthors{Samuel Pawel, Lucas Kook}
+\newcommand\shortauthors{\longauthors} % if longauthors too long, change here
+\newcommand\affiliation{
+  Epidemiology, Biostatistics and Prevention Institute (EBPI) \\
+  Center for Reproducible Science (CRS) \\
+  University of Zurich
+}
+\newcommand\mail{}
+\title{
+  \vspace{-2em}
+  \textbf{\longtitle} \\
+  \subtitle
+}
+\author{
+  \textbf{\longauthors}
+}
+\date{\today} % don't forget to hard-code date when submitting to arXiv!
+
+%% hyperref options
+%% ----------------------------------------------------------------------------
+\usepackage{hyperref}  
+\hypersetup{
+  bookmarksopen=true, 
+  breaklinks=true,
+  pdftitle={\shorttitle}, 
+  pdfauthor={\shortauthors},
+  pdfsubject={},
+  pdfkeywords={},
+  colorlinks=true,
+  linkcolor=RoyalPurple,
+  anchorcolor=black,
+  citecolor=MidnightBlue,
+  urlcolor=BrickRed,
+}
+
+%% Headers and footers
+%% ----------------------------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\shorttitle}
+\rhead{\shortauthors}
+
+\begin{document}
+\maketitle
+
+% knitr options
+% =============================================================================
+<< "main-setup", include = FALSE >>=
+library(knitr)
+opts_chunk$set(fig.height = 4,
+               echo = FALSE,
+               warning = FALSE,
+               message = FALSE,
+               cache = FALSE, 
+               eval = TRUE)
+@
+
+
+\section{Introduction}
+
+The purpose of this protocol is to describe our \emph{a priori} plans for a
+comprehensive simulation study to evaluate the statistical properties of the
+adaptive importance elastic net (AINET) method. We will follow the ADEMP
+appraoch (aims, data-generating mechanisms, estimands, methods, performance
+measures) from \citet{Morris2019}.
+
+Upon writing of this document only some preliminary evaluations have been made:
+After the authors came up with the method on Wednesday 28. July 2021, the method
+was implemented in R and evaluated on the iris data set and also a few simulated
+data sets. These analyses showed that for particular choices of hyperparameters,
+the method could sometimes lead to improved predictive performance compared to
+standard and L1-penalized logistic regression. However,
+in many cases performance was actually equal or worse.
+
+\section{Aims}
+
+\section{Data-generating mechanisms}
+
+\section{Estimands}
+
+\section{Methods}
+
+\section{Performance measures}
+
+
+% Bibliography
+% ======================================================================
+\bibliographystyle{../apalikedoiurl}
+\bibliography{../bibliography.bib}
+
+
+% Appendix
+% ======================================================================
+% \begin{appendices}
+% 
+% \section{Appendix title}
+% \label{appendix:xxxx}
+% 
+% \end{appendices}
+
+\end{document}
