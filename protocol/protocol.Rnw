@@ -16,6 +16,8 @@
 \usepackage[toc, page]{appendix} % better appendices
 \usepackage{nameref} % reference appendices with names
 
+\input{defs}
+
 %% margins
 %% ----------------------------------------------------------------------------
 \usepackage{geometry}
@@ -109,14 +111,106 @@ in many cases performance was actually equal or worse.
 
 \section{Aims}
 
+
+\begin{itemize}
+  \item Evaluate predictive performance of AINET for a binary response 
+    conditional on 
+    \begin{itemize}
+      \item low- and high-dimensional
+      \item (un-)correlated
+    \end{itemize}
+    covariates.
+  \item Comparison to other (penalized) binary regression models from the
+    literature
+    \begin{itemize}
+     \item Binary logistic regression (if applicable)
+     \item Elastic net
+     \item Adaptive LASSO (using binary glm weights)
+     \item Random forest
+     \item ...
+    \end{itemize}
+\end{itemize}
+
 \section{Data-generating mechanisms}
+
+$\rY \in \{0, 1\}$, $\rX \in \RR^p$, $\{(\ry_i, \rx_i)\}_{i=1}^n$.
+
+\begin{align}
+  Y \given \rx &\sim \BD\left(\expit\left\{\rx^\top\shiftparm\right\}\right) \\
+  \rX &\sim \ND_p\left(0, \Sigma\right)
+\end{align}
+
+$\shiftparm$ is sparse, \ie, $\eshiftparm_{1:q} \neq 0, \; q < p$, and is fix 
+per simulation $b = 1, \dots, B$. $(\beta_1, \dots, \beta_q)^\top \sim
+\ND_q(0, v^2\Id)$.
+
+\textbf{Sample size}
+\begin{itemize}
+  \item Small, $n = 10^2$
+  \item Medium, $n = 10^3$
+  \item Large, $n = 10^4$
+\end{itemize}
+
+\textbf{Dimensionality}
+\begin{itemize}
+  \item Low-dimensional, $p < n$, $p := \floor{0.1n}$
+  \item High-dimensional, $p > n$, $p := \floor{1.5n}$
+\end{itemize}
+
+\textbf{Sparsity in $\rX$}
+\begin{itemize}
+  \item Sparse, $q := \floor{0.1p}$
+  \item Dense, $q := p$
+\end{itemize}
+
+\textbf{Correlation in $\rX$}
+\begin{itemize}
+  \item No correlation, $\Sigma := \sigma^2\Id$
+  \item Correlation, $\Sigma_{ij} := \sigma^2\Id + \rho^{\lvert i - j \rvert}$, $i,j = 1, \dots, p$,
+    $\rho \in \{0.1, 0.3, 0.7\}$.
+\end{itemize}
+
+Parameters will be varied fully factorially.
+
+% TODO: Test data
 
 \section{Estimands}
 
+\begin{itemize}
+  \item Primary estimand: Mean Brier score on independently generated test data,
+    $$\BS := B^{-1} \sum_{b=1}^B n^{-1} \sum_{i=1}^n (y_{ib} - \hat{y}_{ib})^2,$$
+    where $\hat{y} := \widehat\Prob(Y = 1 \given \rx)$.
+  \item Secondary estimands:
+  \begin{itemize}
+    \item Mean log-score
+    \item Mean AUC
+    \item Calibration slope
+  \end{itemize} 
+\end{itemize}
+
+All estimands will also be corrected by the oracale version of the estimand,
+\ie the Brier score will be computed from the ground truth, $\shiftparm$,
+and the simulated data $\rx$ and will be deducted from the estimated Brier score.
+
 \section{Methods}
+
+% TODO: Fill in 
+
+\begin{itemize}
+   \item Binary logistic regression (if applicable)
+   \item Elastic net
+   \item Adaptive LASSO (using binary glm weights)
+   \item Random forest
+   \item ...
+\end{itemize}
 
 \section{Performance measures}
 
+\begin{itemize}
+  \item Mean, median, variance of Brier score, log-score, AUC, calibration slope
+\end{itemize}
+
+% TODO: compute B for desired MC error
 
 % Bibliography
 % ======================================================================
