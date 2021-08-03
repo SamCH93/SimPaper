@@ -28,10 +28,12 @@ res <- replicate(100, {
 
 	fml <- Y ~ .
 	pen.f <- ainet:::.vimp(fml, tune, which = "MeanDecreaseGini", gamma = 1)
-	cvm <- cv.fglmnet(fml, train, pen.f = pen.f, alpha = talp, family = "binomial")
+	cvm <- cv.fglmnet(fml, train, pen.f = pen.f, alpha = talp, family = "binomial",
+	                  renorm = "shift")
 
 	m <- ai_net(fml, data = train, pen.f = pen.f, plot = FALSE,
-							lambda = cvm$lambda.1se, alpha = talp, family = "binomial")
+							lambda = cvm$lambda.1se, alpha = talp, family = "binomial",
+							renorm = "shift")
 	AINET <- eval_mod(m, newx = ainet:::.rm_int(model.matrix(fml, test)),
 										y_true = test$Y, loss = loss, type = pred_type)
 
@@ -50,5 +52,5 @@ res <- replicate(100, {
 
 # Vis ---------------------------------------------------------------------
 
-boxplot(t(res), las = 1, ylab = "NLL")
+boxplot(t(res), las = 1, ylab = "log score")
 points(rowMeans(res), pch = 4)

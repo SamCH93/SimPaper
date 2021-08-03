@@ -64,12 +64,15 @@ cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, ...) {
 # compute importance penalty
 .importance_penalty <- function(rf, gamma = 1, which = c("MeanDecreaseGini",
 																												 "MeanDecreaseAccuracy",
-																												 "adaptive lasso")) {
+																												 "adaptive lasso"),
+																renorm = c("trunc", "shift")) {
 	which <- match.arg(which)
+	renorm <- match.arg(renorm)
 	if (which %in% c("MeanDecreaseGini", "MeanDecreaseAccuracy")) {
 		imp <- rf$importance[, which]
-		imp <- pmax(imp, 0)
-		ret <- 1 / (imp / sum(imp))^gamma
+		imp <- switch(renorm, "trunc" = pmax(imp, 0),
+									"shift" = imp - min(imp))
+		ret <- 1 - (imp / sum(imp))^gamma
 	} else if (which == "adaptive lasso") {
 		ret <- 1 / abs(coef(rf))^gamma
 	}
