@@ -15,6 +15,7 @@
 \usepackage{booktabs} % nicer tables
 \usepackage[toc, page]{appendix} % better appendices
 \usepackage{nameref} % reference appendices with names
+\usepackage{todonotes} 
 
 \input{defs}
 
@@ -98,7 +99,7 @@ opts_chunk$set(fig.height = 4,
 The purpose of this protocol is to describe our \emph{a priori} plans for a
 comprehensive simulation study to evaluate the statistical properties of the
 adaptive importance elastic net (AINET) method. We will follow the ADEMP
-appraoch (aims, data-generating mechanisms, estimands, methods, performance
+approach (aims, data-generating mechanisms, estimands, methods, performance
 measures) from \citet{Morris2019}.
 
 Upon writing of this document only some preliminary evaluations have been made:
@@ -133,16 +134,18 @@ in many cases performance was actually equal or worse.
 
 \section{Data-generating mechanisms}
 
-$\rY \in \{0, 1\}$, $\rX \in \RR^p$, $\{(\ry_i, \rx_i)\}_{i=1}^n$.
+$\rY \in \{0, 1\}$, $\rX \in \RR^p$, $\{(\ry_i, \rx_i)\}_{i=1}^n$ i.i.d. realizations
+of $(\rY, \rX)$.
 
 \begin{align}
-  Y \given \rx &\sim \BD\left(\expit\left\{\rx^\top\shiftparm\right\}\right) \\
+  Y \given \rx &\sim \BD\left(\expit\left\{\beta_0 + \rx^\top\shiftparm\right\}\right) \\
   \rX &\sim \ND_p\left(0, \Sigma\right)
 \end{align}
 
-$\shiftparm$ is sparse, \ie, $\eshiftparm_{1:q} \neq 0, \; q < p$, and is fix 
+$\shiftparm$ is sparse, \ie $\eshiftparm_{1:q} \neq 0, \; q < p$, and is fix 
 per simulation $b = 1, \dots, B$. $(\beta_1, \dots, \beta_q)^\top \sim
-\ND_q(0, v^2\Id)$.
+\ND_q(0, v^2\Id)$. The baseline prevalence, $\expit(\beta_0) = 0.5$, is fix for all
+simulations to facilitate comparison between simulations.
 
 \textbf{Sample size}
 \begin{itemize}
@@ -166,8 +169,8 @@ per simulation $b = 1, \dots, B$. $(\beta_1, \dots, \beta_q)^\top \sim
 \textbf{Correlation in $\rX$}
 \begin{itemize}
   \item No correlation, $\Sigma := \sigma^2\Id$
-  \item Correlation, $\Sigma_{ij} := \sigma^2\Id + \rho^{\lvert i - j \rvert}$, $i,j = 1, \dots, p$,
-    $\rho \in \{0.1, 0.3, 0.7\}$.
+  \item Correlation, $\Sigma_{ij} := \sigma^2 \rho^{\lvert i - j \rvert},$
+    $i,j = 1, \dots, p$, $\rho \in \{0.1, 0.3, 0.7\}$
 \end{itemize}
 
 Parameters will be varied fully factorially.
@@ -180,11 +183,19 @@ Parameters will be varied fully factorially.
   \item Primary estimand: Mean Brier score on independently generated test data,
     $$\BS := B^{-1} \sum_{b=1}^B n^{-1} \sum_{i=1}^n (y_{ib} - \hat{y}_{ib})^2,$$
     where $\hat{y} := \widehat\Prob(Y = 1 \given \rx)$.
+    Since the prevalence is not altered from 0.5 in the DGP, there is no need to
+    normalize the Brier score between simulations \citep{steyerberg2019clinical}.
   \item Secondary estimands:
   \begin{itemize}
     \item Mean log-score
+      $$\LS := - B^{-1} \sum_{b=1}^B n^{-1} \sum_{i=1}^n y_{ib} \log(\hat{y}_{ib})
+        + (1 - y_{ib}) \log (1 - \hat{y}_{ib}),$$
     \item Mean AUC
-    \item Calibration slope
+      $$\AUC = B^{-1} \sum_{b=1}^B n^{-1} \hat\Prob(Y_i > Y_j \given \rx_i, \rx_j),$$
+      where $Y_i$ and $Y_j$ denote case and non-case, respectively.
+      We use \pkg{pROC} to estimate the AUC \citep{pkg:proc}.
+    \item Calibration slope $\hat b$, from the model
+      $$\logit\Ex[Y \given \rx^\top\hat\shiftparm] = a + (b - 1) (\hat\beta_0 + \rx^\top\hat\shiftparm)$$
   \end{itemize} 
 \end{itemize}
 
@@ -196,13 +207,44 @@ and the simulated data $\rx$ and will be deducted from the estimated Brier score
 
 % TODO: Fill in 
 
+\subsection{\ainet}
+
+$$ \tilde{\ell}() = \ell(.) + \aipen$$
+
+where $\wvec$ are derived from a random forest variable importance measure $\IMP$ as
+
+$$w_j := 1 - \left(\frac{\IMP_j}{\sum_{k=1}^p \IMP_k}\right)^\gamma,$$
+
+where we assume $\IMP$ to be normalized as
+
+$$\IMP = \widetilde\IMP - \min_j\{\IMP_j\},$$
+
+or
+
+$$\IMP_j = \max\{0, \widetilde\IMP_j\}.$$
+
+Per default, we choose mean decrease in the Gini coefficient for $\widetilde\IMP$.
+Hyperparameters of the random forest are not tuned, but kept at their default
+values (\eg \code{mtry}, \code{ntree}).
+
+\subsection{Benchmark methods}
+
 \begin{itemize}
    \item Binary logistic regression (if applicable)
+    $$\ell(.)$$
    \item Elastic net
+    $$\ell(.) + \llpen$$
    \item Adaptive LASSO (using binary glm weights)
-   \item Random forest
-   \item ...
+    $$\tilde{\ell}() = \ell(.) + \aipen.$$
+    In case $p > n$, we estimate the glm weights using a ridge penalty, tuned
+    via cross-validation.
+   \item Random forest from \pkg{randomForest}.
 \end{itemize}
+
+The above methods cover a wide range of established models with varying flexibility
+and serve as a reasonable benchmark for \ainet. There are many more extensions of
+the adaptive LASSO in the literature \todo{cite}, however, most of them focus on
+variable selection and estimation instead of prediction.
 
 \section{Performance measures}
 

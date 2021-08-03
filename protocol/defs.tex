@@ -1,6 +1,8 @@
 
 \usepackage{accents}
 
+\newcommand{\ainet}{{\sc ainet}}
+
 %%% tramnet
 \newcommand{\cmd}[1]{\texttt{#1()}}
 \newcommand{\cls}[1]{\texttt{"#1"}}
@@ -8,12 +10,14 @@
 \newcommand{\ull}{\ell(\h,\shiftparm;\ry, \rx)}
 \newcommand{\llpen}{\lambda\left(\alpha \norm{\shiftparm}_1 + \frac{1}{2}
   (1-\alpha) \norm{\shiftparm}_2^2 \right)}
+\newcommand{\aipen}{\lambda\left(\alpha \sum_{j = 1}^p{w_j\lvert\beta_j\rvert} + \frac{1}{2}
+  (1-\alpha) \sum_{j=1}^p{w_j\beta_j^2} \right)}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
 \newcommand{\given}{\mid}
 \newcommand{\Prb}{\mathbb{P}}
 \newcommand{\code}[1]{\texttt{#1}}
-\newcommand{\pkg}[1]{\{\code{#1}\}}
+\newcommand{\pkg}[1]{\textbf{#1}}
 \newcommand{\prog}[1]{\textsf{#1}}
 %%% mlt
 %% rv
@@ -95,8 +99,8 @@
 \newcommand{\baseparm}{\alphavec}
 \newcommand{\eshiftparm}{\beta}
 
-\newcommand{\ie}{\textit{i.e.}~}
-\newcommand{\eg}{\textit{e.g.}~}
+\newcommand{\ie}{\textit{i.e.},~}
+\newcommand{\eg}{\textit{e.g.},~}
 
 \newcommand{\Prob}{\mathbb{P}}
 \newcommand{\Ex}{\mathbb{E}}
@@ -109,6 +113,7 @@
 \usepackage{dsfont}
 \newcommand{\I}{\mathds{1}}
 \DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\IMP}{IMP}
 
 
 
@@ -121,6 +126,8 @@
 % Math Operators
 
  \DeclareMathOperator{\BS}{\overline{BS}}
+ \DeclareMathOperator{\LS}{\overline{LS}}
+ \DeclareMathOperator{\AUC}{\overline{AUC}package}
  \DeclareMathOperator{\logit}{logit}
  \DeclareMathOperator{\expit}{expit}
  \DeclareMathOperator{\LRT}{LRT}
