@@ -178,12 +178,13 @@ EPV <- c(20, 10, 1, 0.1, 0.05)
 sparsity <- c("dense", "sparse")
 prev <- 0.1
 sigma2 <- c(0.5, 1, 2)
-rho <- c(0, 0.5, 0.95)
+rho <- c(0, 0.3, 0.6, 0.9)
 simGrid <- expand.grid(n = n, EPV = EPV, sparsity = sparsity, prev = prev,
                        sigma2 = sigma2, rho = rho, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
 simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
 simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, q))
+nScenarios <- nrow(simGrid)
 @
 
 \subsection*{Sample size}
@@ -211,10 +212,9 @@ $n$ and the number of covariates $p$ ( determined via the EPV).
 In the simulations where $\shiftparm$ is dense, we set $q = p$.
 
 \subsection*{Collinearity in $\rX$}
- No / medium / large collinearity,
-  $\Sigma_{ij} := \sigma^2 \rho^{\lvert i - j \rvert},$
-  $i,j = 1, \dots, p$, $\rho \in \{\Sexpr{rho}\}$
-\todo{justify and expand}
+We distinguish between no, low, medium and high collinearity. The diagonal
+elements of $\Sigma$ are given by $\Sigma_{ii} := \sigma^2$ and the off-
+diagonal elements are set to $\Sigma_{ij} = \sigma^2\rho$, $\rho \in \{\Sexpr{rho}\}$.
 
 \subsection*{Covariate variation level $\sigma^{2}$}
 Several values for the variation in the covariates will be considered. Note that
@@ -248,7 +248,7 @@ calibration, and discrimination, respectively.
     values indicate better predictive performance in terms of calibration and
     sharpness.
     \item Mean AUC on independently generated test data,
-    $$\text{AUC} = B^{-1} \sum_{b=1}^B n^{-1} \widehat\Prob(Y_i > Y_j \given \rx_i, \rx_j),$$
+    $$\text{AUC} = B^{-1} \sum_{b=1}^B \widehat\Prob(Y_i > Y_j \given \rx_i, \rx_j),$$
     where $Y_i$ and $Y_j$ denote case and non-case, respectively. The AUC
     will be used as a measure of discrimination and values closer to one
     indicate better discriminative ability. 
@@ -290,7 +290,7 @@ $$\ell(\beta_0, \shiftparm; \ry, \rx) =
   \ry \log\left(\expit\left\{\beta_0 + \linpred\right\}\right)
   + (1 - \ry) \log\left(1 - \expit\left\{\beta_0 + \linpred\right\}\right)$$
 denotes the log-likelihood of a binomial glm and
-$\wvec$ are derived from a random forest variable importance measure $\IMP$ as
+$\wvec$ is derived from a random forest variable importance measure $\IMP$ as
 $$w_j = 1 - \left(\frac{\IMP_j}{\sum_{k=1}^p \IMP_k}\right)^\gamma,$$
 where we transform $\IMP$ to be non-zero via
 $$\IMP = \widetilde\IMP - \min_j\{\IMP_j\},$$
