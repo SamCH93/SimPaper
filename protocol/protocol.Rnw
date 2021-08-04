@@ -316,10 +316,25 @@ simulation conditions. Moreover, we will also compute
 for each of them.
 % TODO: compute B for desired MC error
 
-\subsection*{Determining number of simulation}
+\subsection*{Determining the number of simulations}
 We want to determine the number of simulation $B$ such that the Monte-Carlo
 standard error of the primary estimand, the mean Brier score $\BS$,
 is sufficiently small. The variance of $\BS$ is given by
+\begin{align*}
+  \Var\left(\BS\right)
+  &= B^{-1}n^{-1}\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}
+  % &= B^{-1}n^{-1} \left\{\Ex[(y_{ib} - \hat{y}_{ib})^{4}] -
+  %   \Ex[(y_{ib} - \hat{y}_{ib})^{2}]^{2}\right\}
+\end{align*}
+and $\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}$ could be decomposed even
+further \citep{Bradley2008}. However, the resulting expression is difficult to
+evaluate for our data-generating process as it dependens on several of the
+simulation parameters. We therefore follow a similar approach as in
+\citet{Morris2019} and estimate
+$\widehat{\Var}\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\} < V$ from an initial
+small simulation run to get an upper bound $V$ for worst-case variance across
+all simulation conditions. The number of simulations is then given by
+$$ B = \frac{V}{n \Var\left(\BS\right)}.$$
 
 \section{Software}
 \label{sec:software}
