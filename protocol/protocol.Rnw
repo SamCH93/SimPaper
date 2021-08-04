@@ -116,10 +116,10 @@ performance was actually equal or worse.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The aim of this simulation study is to systematically study the predictive
-performance of \ainet~ for a binary prediction task. The simulation conditions
+performance of \ainet{} for a binary prediction task. The simulation conditions
 should resemble typical conditions found in the development of prediction models
 in biomedical research. In particular we want to evaluate the performance of
-\ainet~ conditional on
+\ainet{} conditional on
 \begin{itemize}
   \item low- and high-dimensional covariates
   \item (un-)correlated covariates
@@ -127,7 +127,7 @@ in biomedical research. In particular we want to evaluate the performance of
   \item sparse and dense regression coefficient vectors
   \item varying noise levels
 \end{itemize}
-\ainet~ will be compared to other (penalized) binary regression models
+\ainet{} will be compared to other (penalized) binary regression models
 from the literature, namely
 \begin{itemize}
   \item Binary logistic regression: the simplest and most popular method for
@@ -135,7 +135,7 @@ from the literature, namely
   \item Elastic net: a generalization of LASSO and ridge regression, the most
         widely used penalized regression methods
   \item Adaptive LASSO: the most popular weighted penalized regression method
-  \item Random forest: a popular, more flexible method, also related to \ainet~
+  \item Random forest: a popular, more flexible method, also related to \ainet{}
         by the penalization weights
 \end{itemize}
 These cover a wide range of established methods with varying flexibility and
@@ -213,8 +213,8 @@ In the simulations where $\shiftparm$ is dense, we set $q = p$.
 
 \subsection*{Collinearity in $\rX$}
 We distinguish between no, low, medium and high collinearity. The diagonal
-elements of $\Sigma$ are given by $\Sigma_{ii} := \sigma^2$ and the off-
-diagonal elements are set to $\Sigma_{ij} = \sigma^2\rho$, $\rho \in \{\Sexpr{rho}\}$.
+elements of $\Sigma$ are given by $\Sigma_{ii} := \sigma^2$ and the off-diagonal 
+elements are set to $\Sigma_{ij} = \sigma^2\rho$, $\rho \in \{\Sexpr{rho}\}$.
 
 \subsection*{Covariate variation level $\sigma^{2}$}
 Several values for the variation in the covariates will be considered. Note that
@@ -278,11 +278,11 @@ Brier score.
 \subsection{\ainet}
 
 Choosing the vector of penalization weights in the adaptive LASSO becomes difficult
-in high-dimensional settings. \ainet~ circumvents this problem by employing a
+in high-dimensional settings. \ainet{} circumvents this problem by employing a
 random forest to estimate the penalization weights via an \emph{a priori} chosen
 variable importance measure.
 
-The penalized log-likelihood for \ainet~ is defined as
+The penalized log-likelihood for \ainet{} is defined as
 $$\ell_{\text{AINET}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda, \wvec) = 
   \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen$$
 where
@@ -372,7 +372,7 @@ $$B =V/(n \cdot 0.0001).$$
 
 The simulation study is conducted in the \textsf{R} language for statistical
 computing \citep{pkg:base} \todo{version}. 
-\ainet~ is implemented in the \pkg{ainet} package and available on GitHub 
+\ainet{} is implemented in the \pkg{ainet} package and available on GitHub 
 \todo{link repository}.
 We use \pkg{pROC} to compute the AUC \citep{pkg:proc}. 
 Random forests are fitted using \pkg{randomForest}.
