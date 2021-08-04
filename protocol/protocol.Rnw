@@ -166,13 +166,14 @@ $q \leq p$ non-zero entries at random indices and those are generated from
 \begin{align*}
   (\beta_1, \dots, \beta_q)^\top \sim \ND_q(0, \Id)
 \end{align*}
-once per simulation. The chosen parameter values should resemble values
-occurring in practice \todo{cite}, as well as in previous simulation studies
-\todo{cite}. Finally, the simulation parameters are varied fully factorially in
-the following way:
+once per simulation. The chosen parameter values were inspired by previous
+simulation studies and should resemble realistic mechanisms occurring in
+practice. Finally, the simulation parameters are varied fully factorially in the
+following way:
 
 << "simulation-parameters" >>=
-n <- c(100, 500, 1000)
+## values for simulation
+n <- c(100, 500, 1000, 5000)
 EPV <- c(20, 10, 1, 0.1, 0.05)
 sparsity <- c("dense", "sparse")
 prev <- 0.1
@@ -183,15 +184,16 @@ simGrid <- expand.grid(n = n, EPV = EPV, sparsity = sparsity, prev = prev,
 simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
 simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
 simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, q))
-p <- ceiling(n*prev/EPV)
-
-
-simGrid <- expand.grid("n" = n, "p" = p, "sigma2" = sigma2)
 @
 
 \subsection*{Sample size}
-$n \in \{\Sexpr{n}\}$
-\todo{justify and expand}
+The sample size used in the development of predictions models varies widely
+\citep{Damen2016}. We will use $n \in \{\Sexpr{n}\}$, which span typical values
+occurring in practice. Note that it is usually recommended to choose the sample
+size based on the implied number of events together with the number of covariates
+in the model \citep{vanSmeden2018, Riley2018}. We will use this approach in
+reverse to determine the dimensionality of the parameters in the model below.
+
 
 \subsection*{Dimensionality}
 Several low- and high-dimensionality scenarios in $p$ are considered. We will
@@ -231,7 +233,7 @@ We will estimate different quantities to evaluate overall predictive performance
 calibration, and discrimination, respectively.
 \begin{itemize}
   \item Primary estimand: Mean Brier score on independently generated test data,
-  $$\BS := B^{-1} \sum_{b=1}^B n^{-1} \sum_{i=1}^n (y_{ib} - \hat{y}_{ib})^2,$$
+  $$\BS = B^{-1} \sum_{b=1}^B n^{-1} \sum_{i=1}^n (y_{ib} - \hat{y}_{ib})^2,$$
   where $\hat{y} := \widehat\Prob(Y = 1 \given \rx)$. Lower values
   indicate better predictive performance in terms of calibration and
   sharpness. Since the prevalence is not altered in the DGP,
@@ -240,7 +242,7 @@ calibration, and discrimination, respectively.
   \item Secondary estimands:
   \begin{itemize}
     \item Mean log-score on independently generated test data,
-    $$\LS := - B^{-1} \sum_{b=1}^B n^{-1} \sum_{i=1}^n y_{ib} \log(\hat{y}_{ib})
+    $$\LS = - B^{-1} \sum_{b=1}^B n^{-1} \sum_{i=1}^n y_{ib} \log(\hat{y}_{ib})
     + (1 - y_{ib}) \log (1 - \hat{y}_{ib}),$$
     will be used as a secondary measure of overall predictive performance. Lower
     values indicate better predictive performance in terms of calibration and
@@ -289,7 +291,7 @@ $$\ell(\beta_0, \shiftparm; \ry, \rx) =
   + (1 - \ry) \log\left(1 - \expit\left\{\beta_0 + \linpred\right\}\right)$$
 denotes the log-likelihood of a binomial glm and
 $\wvec$ are derived from a random forest variable importance measure $\IMP$ as
-$$w_j := 1 - \left(\frac{\IMP_j}{\sum_{k=1}^p \IMP_k}\right)^\gamma,$$
+$$w_j = 1 - \left(\frac{\IMP_j}{\sum_{k=1}^p \IMP_k}\right)^\gamma,$$
 where we transform $\IMP$ to be non-zero via
 $$\IMP = \widetilde\IMP - \min_j\{\IMP_j\},$$
 or
@@ -315,7 +317,7 @@ constant for all simulations.
     = \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen.$$
     Here, the penalty weights $\wvec$ are inverse coefficient estimates from a
     binary logistic regression
-    $$\hat{w}_j := \lvert\hat\eparm_j\rvert^{-\gamma},$$
+    $$\hat{w}_j = \lvert\hat\eparm_j\rvert^{-\gamma},$$
     where $\lambda$ is tuned via cross-validation.
     The exponent $\gamma = 1$ will stay constant for all simulations.
     In case $p > n$, we estimate the penalty weights using a ridge penalty, tuned
