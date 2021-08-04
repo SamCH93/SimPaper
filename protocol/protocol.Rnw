@@ -186,10 +186,10 @@ nScenarios <- nrow(simGrid)
 
 
 ## fitting issues?
-## library(randomForest)
-## X <- matrix(rnorm(4000*2000), nrow = 2000, ncol = 4000)
-## Y <- rbinom(n = 2000, size = 1, prob = plogis(X%*%rep(c(0, 1), c(4000-15, 15))))
-## rf <- randomForest(x = X, y = factor(Y))
+# library(randomForest)
+# X <- matrix(rnorm(4000*2000), nrow = 2000, ncol = 4000)
+# Y <- rbinom(n = 2000, size = 1, prob = plogis(X%*%rep(c(0, 1), c(4000-15, 15))))
+# rf <- randomForest(x = X, y = factor(Y), mtry = 15)
 @
 
 \subsection*{Sample size}
@@ -199,7 +199,6 @@ occurring in practice. Note that it is usually recommended to choose the sample
 size based on the implied number of events together with the number of covariates
 in the model \citep{vanSmeden2018, Riley2018}. We will use this approach in
 reverse to determine the dimensionality of the parameters in the model below.
-
 
 \subsection*{Dimensionality}
 Several low- and high-dimensionality scenarios in $p$ are considered. We will
