@@ -246,7 +246,7 @@ calibration, and discrimination, respectively.
     values indicate better predictive performance in terms of calibration and
     sharpness.
     \item Mean AUC on independently generated test data,
-    $$\text{AUC} = B^{-1} \sum_{b=1}^B n^{-1} \widehat\Prob(Y_i > Y_j \given \rx_i, \rx_j),$$
+    $$\text{AUC} = B^{-1} \sum_{b=1}^B \widehat\Prob(Y_i > Y_j \given \rx_i, \rx_j),$$
     where $Y_i$ and $Y_j$ denote case and non-case, respectively. The AUC
     will be used as a measure of discrimination and values closer to one
     indicate better discriminative ability. 
@@ -288,7 +288,7 @@ $$\ell(\beta_0, \shiftparm; \ry, \rx) =
   \ry \log\left(\expit\left\{\beta_0 + \linpred\right\}\right)
   + (1 - \ry) \log\left(1 - \expit\left\{\beta_0 + \linpred\right\}\right)$$
 denotes the log-likelihood of a binomial glm and
-$\wvec$ are derived from a random forest variable importance measure $\IMP$ as
+$\wvec$ is derived from a random forest variable importance measure $\IMP$ as
 $$w_j := 1 - \left(\frac{\IMP_j}{\sum_{k=1}^p \IMP_k}\right)^\gamma,$$
 where we transform $\IMP$ to be non-zero via
 $$\IMP = \widetilde\IMP - \min_j\{\IMP_j\},$$
