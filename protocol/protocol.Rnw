@@ -177,16 +177,14 @@ EPV <- c(20, 10, 1, 0.1, 0.05)
 sparsity <- c("dense", "sparse")
 prev <- 0.1
 sigma2 <- c(0.5, 1, 2)
-rho <- c(0, 0.5, 0.95)
+rho <- c(0, 0.3, 0.6, 0.9)
 simGrid <- expand.grid(n = n, EPV = EPV, sparsity = sparsity, prev = prev,
                        sigma2 = sigma2, rho = rho, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
 simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
 simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, q))
-p <- ceiling(n*prev/EPV)
 
-
-simGrid <- expand.grid("n" = n, "p" = p, "sigma2" = sigma2)
+nScenarios <- nrow(simGrid)
 @
 
 \subsection*{Sample size}
@@ -209,10 +207,9 @@ $n$ and the number of covariates $p$ ( determined via the EPV).
 In the simulations where $\shiftparm$ is dense, we set $q = p$.
 
 \subsection*{Collinearity in $\rX$}
- No / medium / large collinearity,
-  $\Sigma_{ij} := \sigma^2 \rho^{\lvert i - j \rvert},$
-  $i,j = 1, \dots, p$, $\rho \in \{\Sexpr{rho}\}$
-\todo{justify and expand}
+We distinguish between no, low, medium and high collinearity. The diagonal
+elements of $\Sigma$ are given by $\Sigma_{ii} := \sigma^2$ and the off-
+diagonal elements are set to $\Sigma_{ij} = \sigma^2\rho$, $\rho \in \{\Sexpr{rho}\}$.
 
 \subsection*{Covariate variation level $\sigma^{2}$}
 Several values for the variation in the covariates will be considered. Note that
