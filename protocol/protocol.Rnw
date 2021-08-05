@@ -216,7 +216,8 @@ These values cover the typical (positive) range of correlations.
 
 \subsection*{Baseline prevalence}
 Different baseline prevalences $\expit(\beta_0) \in \{\Sexpr{prev}\}$ are 
-considered, reflecting rare to common events.
+considered, reflecting a reasonable range of prevalences for rare to
+common diseases/adverse events.
 
 \subsection*{Test data}
 In order to test the predictive performance, we generate a test data set of
@@ -255,13 +256,13 @@ calibration, and discrimination, respectively.
     indicate better discriminative ability. 
     \item Calibration slope $\hat b$ on independently generated test data, from
           the model
-    $$\logit\Ex[Y \given \rx^\top\hat\shiftparm] = a + (b - 1) (\hat\beta_0 + \rx^\top\hat\shiftparm)$$
-    This measure will be used to assess calibration and deviations from
+    $$\logit\Ex[Y \given \rx^\top\hat\shiftparm] = a + (b - 1)\logit(\hat{y})$$
+    This measure will be used to assess calibration and deviations of $\hat b$ from
     zero indicate miscalibration.
     \item Calibration in the large $\hat a$ on independently generated test
           data, from the model
-    $$\logit\Ex[Y \given \rx^\top\hat\shiftparm] = a + \hat\beta_0 + \rx^\top\hat\shiftparm$$
-    This measure will also be used to assess calibration and deviations from
+    $$\logit\Ex[Y \given \rx^\top\hat\shiftparm] = a + \logit(\hat{y})$$
+    This measure will also be used to assess calibration and deviations of $\hat a$ from
     zero indicate miscalibration.
   \end{itemize}
 \end{itemize}
@@ -353,7 +354,7 @@ is sufficiently small. The variance of $\BS$ is given by
   % &= B^{-1}n_{\text{test}}^{-1} \left\{\Ex[(y_{ib} - \hat{y}_{ib})^{4}] -
   %   \Ex[(y_{ib} - \hat{y}_{ib})^{2}]^{2}\right\}
 \end{align*}
-and $\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}$ could be decomposed even
+and $\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}$ could be decomposed
 further \citep{Bradley2008}. However, the resulting expression is difficult to
 evaluate for our data-generating process as it dependens on several of the
 simulation parameters. We therefore follow a similar approach as in
@@ -363,24 +364,35 @@ small simulation run to get an upper bound $V$ for worst-case variance across
 all simulation conditions. The number of simulations is then given by
 $$B = \frac{V}{n_{\text{test}} \Var\left(\BS\right)}.$$
 Since $\BS \in [0, 0.5]$ we decide that we require the Monte-Carlo standard
-error of $\BS$ to be lower than $0.0001$, hence we obtain
+error of $\BS$ to be lower than $0.001$, hence we obtain
 $$B =V/(n_{\text{test}} \cdot 0.0001).$$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Handling exceptions} \label{sec:exceptions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 It is inevitable that convergence issues and other problems will arise
-in the simulation study, especially in high-dimensional settings. Moreover,
-standard logistic regression cannot even work in these cases. We will only
-take simulations into account that successfully converged? \todo{what here?}
+in the simulation study, we will handle them as follow:
+\begin{itemize}
+  \item Standard logistic regression will not work when $p \geq n$ and we will
+  therefore exclude it from these simulation conditions
+  \item If convergence is impossible for a  method in a certain
+  simulation, the simulation will be excluded
+  \item Convergence may be possible for certain tuning parameters of a method
+  (\eg cross-validation of LASSO may fail for some values $\lambda$ while it could
+  work for others). In this case we will choose a parameter value where the method
+  still converges, as one would usually do with a real data set.
+  \item We will report the proportion of simulations with convergence issues
+  for each method
+\end{itemize}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%y%%%%%%
 \section{Software} \label{sec:software}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The simulation study is conducted in the \textsf{R} language for statistical
-computing \citep{pkg:base} \todo{version}. 
+computing \citep{pkg:base} using the most recent version (at the time of writing
+this protocol \Sexpr{R.version$version.string}).
 \ainet{} is implemented in the \pkg{ainet} package and available on GitHub 
 (\url{https://github.com/SamCH93/SimPaper}).
 We use \pkg{pROC} to compute the AUC \citep{pkg:proc}. 
