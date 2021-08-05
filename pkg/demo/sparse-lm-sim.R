@@ -27,7 +27,7 @@ res <- replicate(100, {
 	test <- gen_dat()
 
 	fml <- Y ~ .
-	pen.f <- ainet:::.vimp(fml, tune, which = "MeanDecreaseGini", gamma = 1)
+	pen.f <- ainet:::.vimp(fml, tune, which = "impurity", gamma = 1)
 	cvm <- cv.fglmnet(fml, train, pen.f = pen.f, alpha = talp, family = "binomial",
 	                  renorm = "shift")
 

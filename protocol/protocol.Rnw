@@ -193,7 +193,6 @@ size based on the implied number of events together with the number of covariate
 in the model \citep{vanSmeden2018, Riley2018}. We will use this approach in
 reverse to determine the dimensionality of the parameters below.
 
-
 \subsection*{Dimensionality}
 Several low- and high-dimensionality scenarios in $p$ are considered. We will
 define the dimensionality $p$ via the easier to interpret events per variable
@@ -216,8 +215,8 @@ elements are set to $\Sigma_{ij} = \rho$, $\rho \in \{\Sexpr{rho}\}$.
 These values cover the typical (positive) range of correlations.
 
 \subsection*{Baseline prevalence}
-
-
+Different baseline prevalences $\expit(\beta_0) \in \{\Sexpr{prev}\}$ are 
+considered, reflecting rare to common events.
 
 \subsection*{Test data}
 In order to test the predictive performance, we generate a test data set of
