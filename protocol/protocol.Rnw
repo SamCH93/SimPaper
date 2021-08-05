@@ -256,12 +256,12 @@ calibration, and discrimination, respectively.
     indicate better discriminative ability. 
     \item Calibration slope $\hat b$ on independently generated test data, from
           the model
-    $$\logit\Ex[Y \given \rx^\top\hat\shiftparm] = a + (b - 1)\logit(\hat{y})$$
+    $$\logit\Ex[Y \given \hat\ry] = a + (b - 1)\logit(\hat\ry)$$
     This measure will be used to assess calibration and deviations of $\hat b$ from
     zero indicate miscalibration.
     \item Calibration in the large $\hat a$ on independently generated test
           data, from the model
-    $$\logit\Ex[Y \given \rx^\top\hat\shiftparm] = a + \logit(\hat{y})$$
+    $$\logit\Ex[Y \given \hat\ry] = a + \logit(\hat{y})$$
     This measure will also be used to assess calibration and deviations of $\hat a$ from
     zero indicate miscalibration.
   \end{itemize}
@@ -284,7 +284,8 @@ in high-dimensional settings. \ainet{} circumvents this problem by employing a
 random forest to estimate the penalization weights via an \emph{a priori} chosen
 variable importance measure.
 
-The penalized log-likelihood for \ainet{} is defined as
+The penalized log-likelihood for \ainet{} for a single observation $(\ry, \rx)$
+is defined as
 $$\ell_{\text{AINET}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda, \wvec) = 
   \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen$$
 where
@@ -298,6 +299,10 @@ where we transform $\IMP$ to be non-zero via
 $$\IMP = \widetilde\IMP - \min_j\{\IMP_j\},$$
 or
 $$\IMP_j = \max\{0, \widetilde\IMP_j\}.$$
+\ainet{} is fitted by maximizing its penalized log-likelihood assuming i.i.d.
+observations $\{(\ry_i, \rx_i)\}_{i=1}^n$, \ie
+$$\arg\max_{\beta_0, \shiftparm} \sum_{i = 1}^n \ell_{\text{AINET}}(\beta_0,
+\shiftparm; \ry_i, \rx_i, \alpha, \lambda, \wvec).$$
 
 Per default, we choose mean decrease in the Gini coefficient for $\widetilde\IMP$.
 Hyperparameters of the random forest are not tuned, but kept at their default
