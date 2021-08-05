@@ -328,8 +328,8 @@ constant for all simulations.
     where $\lambda$ is tuned via cross-validation.
     The exponent $\gamma = 1$ will stay constant for all simulations.
     In case $p > n$, we estimate the penalty weights using a ridge penalty, tuned
-    via an additional nested \todo{discuss} cross-validation.
-   \item Random forest for binary outcomes without hyperparameter tuning.
+    via an additional nested cross-validation.
+  \item Random forest for binary outcomes without hyperparameter tuning.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -378,16 +378,18 @@ $$B =V/(n_{\text{test}} \cdot 0.001^{2}).$$
 It is inevitable that convergence issues and other problems will arise
 in the simulation study, we will handle them as follow:
 \begin{itemize}
-  \item Standard logistic regression will not work when $p \geq n$ and we will
-  therefore exclude it from these simulation conditions
-  \item If convergence is impossible for a  method in a certain
-  simulation, the simulation will be excluded
+  \item If a method fails to converge, the simulation will be excluded from the
+  analysis
   \item Convergence may be possible for certain tuning parameters of a method
   (\eg cross-validation of LASSO may fail for some values $\lambda$ while it could
   work for others). In this case we will choose a parameter value where the method
   still converges, as one would usually do with a real data set.
   \item We will report the proportion of simulations with convergence issues
   for each method
+  \item In case of severe convergence issues or other problems (more than 10\% of the
+  simulations failing within a setting), we may adjust
+  the simulation parameters post hoc. This will be indicated in the discussion of
+  the results.
 \end{itemize}
 
 
