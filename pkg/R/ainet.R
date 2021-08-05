@@ -49,12 +49,10 @@ cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, ...) {
 }
 
 # Compute variable importance
-.vimp <- function(formula, data, which = c("MeanDecreaseGini",
-																					 "MeanDecreaseAccuracy",
-																					 "adaptive lasso"), ...) {
+.vimp <- function(formula, data, which = c("impurity", "adaptive lasso"), ...) {
 	which <- match.arg(which)
-	if (which %in% c("MeanDecreaseGini", "MeanDecreaseAccuracy")) {
-		rf <- randomForest(formula, data, importance = TRUE)
+	if (which == "impurity") {
+		rf <- ranger(formula, data, importance = which)
 	} else if (which == "adaptive lasso") {
 		rf <- glm(formula, data, family = binomial)
 	}
@@ -62,14 +60,12 @@ cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, ...) {
 }
 
 # compute importance penalty
-.importance_penalty <- function(rf, gamma = 1, which = c("MeanDecreaseGini",
-																												 "MeanDecreaseAccuracy",
-																												 "adaptive lasso"),
+.importance_penalty <- function(rf, gamma = 1, which = c("impurity", "adaptive lasso"),
 																renorm = c("trunc", "shift")) {
 	which <- match.arg(which)
 	renorm <- match.arg(renorm)
-	if (which %in% c("MeanDecreaseGini", "MeanDecreaseAccuracy")) {
-		imp <- rf$importance[, which]
+	if (which == "impurity") {
+		imp <- importance(rf)
 		imp <- switch(renorm, "trunc" = pmax(imp, 0),
 									"shift" = imp - min(imp))
 		ret <- 1 - (imp / sum(imp))^gamma
@@ -78,4 +74,3 @@ cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, ...) {
 	}
 	return(ret)
 }
-
