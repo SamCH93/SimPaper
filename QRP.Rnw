@@ -32,12 +32,12 @@
 
 %% title, authors, affiliations, mail
 %% ----------------------------------------------------------------------------
-\newcommand\longtitle{Questionable Research Practices in Simulation Studies}
+\newcommand\longtitle{Pitfalls and Potentials in Simulation Studies}
 \newcommand\shorttitle{\longtitle} % if longtitle too long, change here
 % \newcommand\subtitle{How undisclosed flexibility in simulation experiments
 % allows to show superiority of any method}
-\newcommand\subtitle{Undisclosed flexibility in design, execution, and reporting
-of comparative simulation studies allows to show superiority of any method}
+\newcommand\subtitle{Questionable research practices in %Undisclosed flexibility in design, execution, and reporting of
+comparative simulation studies allows to show superiority of any method}
 \newcommand\longauthors{Samuel Pawel, Lucas Kook}
 \newcommand\shortauthors{\longauthors} % if longauthors too long, change here
 \newcommand\affiliation{
@@ -164,8 +164,7 @@ opts_chunk$set(fig.height = 4,
 % standards of empirical research in their own field are themeselves poor: 
 Comparative simulation studies have become a workhorse tool for benchmarking
 % operating characteristics 
-of statistical methods, but their design, execution, and 
-reporting are usually done in a nontransparent and uncritical manner that 
+of statistical methods. But if done in nontransparent and uncritical manner, they
 may lead to over-optimism. Furthermore, the current publication requirements of 
 statistics journals cannot prevent questionable research practices
 such as selective reporting of results which favour a particular method.
