@@ -234,7 +234,7 @@ $n_{\text{test}} = 10000$ data points in each simulation $b$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Estimands} \label{sec:estimands}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo{format}
+\todo{format and fix equatoins}
 We will estimate different quantities to evaluate overall predictive performance,
 calibration, and discrimination, respectively.
 \begin{itemize}
@@ -358,7 +358,9 @@ constant for all simulations.
 
 The distribution of all estimands from Section~\ref{sec:estimands} will be
 assessed visually with box- and violin-plots that are stratified by method and
-simulation conditions. Moreover, we will also compute
+simulation conditions. Moreover, to formally assess differences in predictive
+performance between the methods we will regress the estimands on the method
+and simulation conditions \citep[\cf][]{Skrondal2000}. We will also compute
 \begin{itemize}
   \item Mean
   \item Median
@@ -367,7 +369,6 @@ simulation conditions. Moreover, we will also compute
   \item 95\% confidence intervals
 \end{itemize}
 for each of them.
-% TODO: compute B for desired MC error
 
 \subsection{Determining the number of simulations}
 We determine the number of simulation $B$ such that the Monte-Carlo
