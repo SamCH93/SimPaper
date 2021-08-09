@@ -17,6 +17,7 @@
 \usepackage{booktabs} % nicer tables
 \usepackage[toc, page]{appendix} % better appendices
 \usepackage{nameref} % reference appendices with names
+\usepackage{todonotes}
 
 %% margins
 %% ----------------------------------------------------------------------------
@@ -370,22 +371,23 @@ comparative simulation studies (Section \ref{sec:discussion}).
 	\end{longtable}
 \end{table}
 
-\section{Empirical study} \label{sec:study}
+\section{Empirical study: The Adaptive Importance Elastic Net (AINET)} \label{sec:study}
 
-The method should be:
-\begin{itemize}
-  \item suitable method for comparative simulation study, \eg method to estimate 
-  one-dimensional parameter with CI?
-  \item several other methods available to which we can compare method 
-  (and possibly remove superior methods from comparison)
-  \item no closed form solution? Or maybe closed form solutions so that we know
-  the true (bad) characteristics of the method?
-  \item ``promising'' and intuitive idea 
-  \item tunable parameters such that we can fish for superiority of the method
-  \item several possible evaluation criteria so that we can pick the best one
-  \item easy to present graphically 
-  (e.g. two subfigures: one the QRP approach, one the sound approach)
-\end{itemize}
+\todo{write intro and theory of ainet}
+% The method should be:
+% \begin{itemize}
+%   \item suitable method for comparative simulation study, \eg method to estimate
+%   one-dimensional parameter with CI?
+%   \item several other methods available to which we can compare method
+%   (and possibly remove superior methods from comparison)
+%   \item no closed form solution? Or maybe closed form solutions so that we know
+%   the true (bad) characteristics of the method?
+%   \item ``promising'' and intuitive idea
+%   \item tunable parameters such that we can fish for superiority of the method
+%   \item several possible evaluation criteria so that we can pick the best one
+%   \item easy to present graphically
+%   (e.g. two subfigures: one the QRP approach, one the sound approach)
+% \end{itemize}
 
 \section{Discussion} \label{sec:discussion}
 
