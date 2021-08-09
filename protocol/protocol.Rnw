@@ -210,7 +210,7 @@ sparsity of $\shiftparm$ based on the consistency requirement for the LASSO
 \citep[Ch. 2.4.2]{buhlmann2011statistics}, \ie
 $$q = \begin{cases}
   \floor{\sqrt{n/\log p}} & p > 1 \\
-  0 & p = 1,
+  0 & p \leq 1,
 \end{cases}$$
 so $q$ will depend on the sample size
 $n$ and the number of covariates $p$ ( determined via the EPV).
@@ -306,9 +306,12 @@ Brier score.
 \subsection{\ainet}
 
 Choosing the vector of penalization weights in the adaptive LASSO becomes difficult
-in high-dimensional settings. \ainet{} circumvents this problem by employing a
-random forest to estimate the penalization weights via an \emph{a priori} chosen
-variable importance measure.
+in high-dimensional settings. For instance, using absolut LASSO estimates as penalization
+weights omits the importance of several predictors by not selecting them, 
+especially in the case of highly correlated predictors \citep{Algamal2015}.
+\ainet{} circumvents this problem by employing a random forest to estimate the 
+penalization weights via an \emph{a priori} chosen variable importance measure.
+This way, the importance of all variables enter the penalization weights simultaneously.
 
 The penalized log-likelihood for \ainet{} for a single observation $(\ry, \rx)$
 is defined as
@@ -353,7 +356,7 @@ constant for all simulations.
     $$\hat{w}_j = \lvert\hat\eparm_j\rvert^{-\gamma},$$
     where $\lambda$ is tuned via cross-validation.
     The exponent $\gamma = 1$ will stay constant for all simulations.
-    In case $p > n$, we estimate the penalty weights using a ridge penalty, tuned
+    In case $p > n$, we estimate the penalty weights using a LASSO penalty, tuned
     via an additional nested cross-validation.
   \item Random forest for binary outcomes without hyperparameter tuning.
 \end{itemize}
