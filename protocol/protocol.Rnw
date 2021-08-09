@@ -161,7 +161,21 @@ four methods from above.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data-generating process} \label{sec:dgp}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+<< "simulation-parameters" >>=
+## values for simulation
+n <- c(100, 500, 1000, 5000)
+EPV <- c(20, 10, 1, 0.1, 0.05)
+sparsity <- c("dense", "sparse")
+prev <- c(0.01, 0.05, 0.1)
+sigma2 <- c(1)
+rho <- c(0, 0.3, 0.6, 0.95)
+simGrid <- expand.grid(n = n, EPV = EPV, sparsity = sparsity, prev = prev,
+                       sigma2 = sigma2, rho = rho, stringsAsFactors = FALSE)
+simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
+simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
+simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, 0))
+nScenarios <- nrow(simGrid)
+@
 In each simulation $b = 1, \dots, B$ we generate a data set consisting of $n$
 realizations, \ie $\{(\ry_i, \rx_i)\}_{i=1}^n$. A datum $(\rY, \rX)$ consists of
 a binary outcome $\rY \in \{0, 1\}$ and $p$-dimensional covariate vector
@@ -178,26 +192,13 @@ are generated from (with a slight abuse of notation)
   (\beta_1, \dots, \beta_q)^\top \sim \ND_q(0, \Id)
 \end{align*}
 once per simulation. This is a typical data-generating process for data with
-binary outcomes and applicable to, for example, (high-dimensional) genetic
+binary outcomes and typically assumed in models for (high-dimensional) genetic
 studies \citep{zhu2004} or clinical prediction problems
 \citep{steyerberg2019clinical}. Finally, the simulation parameters are varied
-fully factorially in the following way:
+fully factorially as described below, leading to a total of \Sexpr{nScenarios}
+scenarios.
 
-<< "simulation-parameters" >>=
-## values for simulation
-n <- c(100, 500, 1000, 5000)
-EPV <- c(20, 10, 1, 0.1, 0.05)
-sparsity <- c("dense", "sparse")
-prev <- c(0.01, 0.05, 0.1)
-sigma2 <- c(1)
-rho <- c(0, 0.3, 0.6, 0.95)
-simGrid <- expand.grid(n = n, EPV = EPV, sparsity = sparsity, prev = prev,
-                       sigma2 = sigma2, rho = rho, stringsAsFactors = FALSE)
-simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
-simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
-simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, 0))
-nScenarios <- nrow(simGrid)
-@
+
 
 \subsection*{Sample size}
 The sample size used in the development of predictions models varies widely
@@ -298,7 +299,7 @@ independently generated test data.
   This measure will be used to assess calibration and deviations of $\hat b$ from
   one  indicate miscalibration.
 
-  \item \textbf{Calibration in the large $\hat a$}: We inspect calibration in the
+  \item \textbf{Calibration in the large $\hat a$.} We inspect calibration in the
   large $\hat a$ on independently generated test data, from the model
   $$\logit\Ex[Y \given \hat\ry] = a + \logit(\hat{y})$$
   This measure will also be used to assess calibration and deviations of $\hat a$ from
@@ -318,7 +319,7 @@ Brier score.
 \subsection{\ainet}
 
 Choosing the vector of penalization weights in the adaptive LASSO becomes difficult
-in high-dimensional settings. For instance, using absolut LASSO estimates as penalization
+in high-dimensional settings. For instance, using absolute LASSO estimates as penalization
 weights omits the importance of several predictors by not selecting them, 
 especially in the case of highly correlated predictors \citep{Algamal2015}.
 \ainet{} circumvents this problem by employing a random forest to estimate the 
@@ -353,28 +354,29 @@ constant for all simulations.
 \subsection{Benchmark methods}
 
 \begin{itemize}
-   \item Binary logistic regression with and without ridge penalty for high- and
+   \item \textbf{Binary logistic regression} with and without ridge penalty for high- and
    low-dimensional settings, respectively. In case a ridge penalty is needed,
-   it is tuned via cross-validation.
-   \item Elastic net, for which the penalized log-likelihood is given by
+   it is tuned via 5-fold cross-validation.
+   \item \textbf{Elastic net}, for which the penalized log-likelihood is given by
     $$\ell_{\text{EN}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda) = 
       \ell(\beta_0, \shiftparm; \ry, \rx) + \llpen.$$
-    Here, $\alpha$ and $\lambda$ are tuned via cross-validation.
-   \item Adaptive LASSO, with penalized loss function
+    Here, $\alpha$ and $\lambda$ are tuned via 5-fold cross-validation.
+   \item \textbf{Adaptive LASSO}, with penalized loss function
     $$\ell_{\text{adaptive}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda, \wvec)
     = \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen.$$
     Here, the penalty weights $\wvec$ are inverse coefficient estimates from a
     binary logistic regression
     $$\hat{w}_j = \lvert\hat\eparm_j\rvert^{-\gamma},$$
-    where $\lambda$ is tuned via cross-validation.
+    where $\lambda$ is tuned via 5-fold cross-validation.
     The exponent $\gamma = 1$ will stay constant for all simulations.
     In case $p > n$, we estimate the penalty weights using a LASSO penalty, tuned
-    via an additional nested cross-validation.
-  \item Random forest for binary outcomes without hyperparameter tuning.
+    via an additional nested 5-fold cross-validation.
+    \item \textbf{Random forest} for binary outcomes without hyperparameter tuning. The
+    default parameters of \pkg{ranger} will be used \citep{ranger2017}. % , \ie
+    % \code{ntree = 500}, \code{mtry = floor(sqrt(p))}, \code{min.node.size = },
+    % \code{max.depth = }, \code{sample.fraction = }
 \end{itemize}
 
-\subsection{Hyperparameter tuning}
-\todo{cv conditions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Performance measures} \label{sec:performance}
