@@ -94,9 +94,24 @@ opts_chunk$set(fig.height = 4,
                eval = TRUE)
 @
 
+\section{Disclaimer}
+\label{sec:disclaimer}
+With this simulation study we will illustrate how easy it is to show
+statistical superiority of any method, if we have enough flexibility in
+changing the simulation conditions and evaluations. We propose a mock-method
+termed \ainet{} which superficially seems reasonable and whose evaluation could actually be
+published in a statistics journal. However, as we will explain in Section~\ref{sec:methods},
+there are theoretical disadvantages which imply that the method should not be
+superior compared with methods of equal complexity. Throughout this protocol
+we will make a serious attempt at evaluating \ainet{} using state-of-the-art
+simulation study methodology \citep{Morris2019}. After the serious simulations
+have been conducted, we will then start to apply questionable research practices
+in order to illustrate how easy one can become overoptimistic.
 
 \section{Introduction}
 \label{sec:introduction}
+\todo{Disclaimer that this is a mock method and this paper is more about
+the process of sim-hacking}
 The purpose of this protocol is to describe our \emph{a priori} plans for a
 comprehensive simulation study to evaluate the statistical properties of the
 adaptive importance elastic net (\ainet) method. We will follow the ADEMP
@@ -122,7 +137,8 @@ available on the GitHub repository (\url{https://github.com/SamCH93/SimPaper}),
 the final version will be time\-stamped and tagged. As discussed in
 Section~\ref{sec:performance}, some preliminary simulation runs will be conducted
 to estimate the number of simulations needed to ensure a sufficiently small Monte
-Carlo error. Also this milestone will be time\-stamped.
+Carlo error. The test run will also be used to assess whether there are severe
+convergence problems and if so, the simulation parameters may be modified (Section~\ref{sec:exceptions}). Also this milestone will be time\-stamped.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Aims} \label{sec:aims}
@@ -257,13 +273,17 @@ independently generated test data.
 \begin{itemize}
   \item \textbf{Brier score.} We compute the Brier score as
   $$\BS = n_{\text{test}}^{-1} \sum_{i=1}^n (y_{ib} - \hat{y}_{ib})^2,$$
-  where $\hat{y} = \widehat\Prob(Y = 1 \given \rx)$ and $B$ the number of simulations. Lower values
-  indicate better predictive performance in terms of calibration and
+  where $\hat{y} = \widehat\Prob(Y = 1 \given \rx)$ and $B$ the number of simulations.
+  Lower values indicate better predictive performance in terms of calibration and
   sharpness. A prediction is well-calibrated if the observed proportion
-  of events is close to the underlying probabilities.
-  The Brier score is a proper scoring rule, meaning that it is minimized if a 
+  of events is close to the predicted probabilities. Sharpness referes to how
+  concentrated a predictive distribution is (\eg how long/short a prediction interval is),
+  and the predictive goal is to maximize sharpness subject to calibration
+  \citep{Gneiting2008}.
+  The Brier score is a proper scoring rule, meaning that it is minimized if a
   predicted distribution is equal to the data-generating distribution
-  \citep{Gneiting2007}. It is thus a principled choice for our primary estimand.
+  \citep{Gneiting2007}. Proper scoring rules thus encourage careful and honest
+  predictions. The Brier score is therefore a principled choice for our primary estimand.
 \end{itemize}
 
 \subsection{Secondary estimands}
@@ -290,6 +310,9 @@ independently generated test data.
   It will be used as a measure of discrimination and values closer to one
   indicate better discriminative ability. Disrimination describes the ability
   of a prediction model to discriminate between cases and non-cases.
+  Other discrimination measures, such as accuracy, sensitivity, specifictiy, etc.,
+  are not considered because we want to evluated predictive performance
+  in terms of probabilistic predictions instead of point predictions/classification.
 
   \item \textbf{Calibration slope $\hat b$.}  
   The calibration slope $\hat b$ is obtained by regressing
@@ -341,6 +364,9 @@ where we transform $\IMP$ to be non-negative via
 $$\IMP = \widetilde\IMP - \min_j\{\widetilde{\IMP}_j\},$$
 or
 $$\IMP_j = \max\{0, \widetilde\IMP_j\}.$$
+There are arguments for both approaches, but we will use the second one
+since any variable which leads to an increase in the Gini index should be
+penalized equally.
 \ainet{} is fitted by maximizing its penalized log-likelihood assuming i.i.d.
 observations $\{(\ry_i, \rx_i)\}_{i=1}^n$, \ie
 $$\arg\max_{\beta_0, \shiftparm} \sum_{i = 1}^n \ell_{\text{AINET}}(\beta_0,
