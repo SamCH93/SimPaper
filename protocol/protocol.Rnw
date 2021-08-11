@@ -97,29 +97,28 @@ opts_chunk$set(fig.height = 4,
 \section{Disclaimer}
 \label{sec:disclaimer}
 With this simulation study we will illustrate how easy it is to show
-statistical superiority of any method, if we have enough flexibility in
-changing the simulation conditions and evaluations. We propose a mock-method
-termed \ainet{} which superficially seems reasonable and whose evaluation could actually be
+statistical superiority of any method, if one has enough flexibility in
+changing the simulation conditions and evaluations. We propose a mock-method,
+termed \ainet{}, which seems reasonable at first glance and whose evaluation could actually be
 published in a statistics journal. However, as we will explain in Section~\ref{sec:methods},
 there are theoretical disadvantages which imply that the method should not be
-superior compared with methods of equal complexity. Throughout this protocol
+superior compared with methods of comparable complexity. Throughout this protocol
 we will make a serious attempt at evaluating \ainet{} using state-of-the-art
-simulation study methodology \citep{Morris2019}. After the serious simulations
-have been conducted, we will then start to apply questionable research practices
-in order to illustrate how easy one can become overoptimistic.
+simulation study methodology \citep{Morris2019}. After conducting simulations
+as described in this protocol, we will start to apply questionable research practices
+in order to illustrate how easy one can become overoptimistic and report a flawed
+method as superior.
 
 \section{Introduction}
 \label{sec:introduction}
-\todo{Disclaimer that this is a mock method and this paper is more about
-the process of sim-hacking}
 The purpose of this protocol is to describe our \emph{a priori} plans for a
 comprehensive simulation study to evaluate the statistical properties of the
 adaptive importance elastic net (\ainet) method. We will follow the ADEMP
 approach (aims, data-generating process, estimands, methods, performance
-measures) from \citet{Morris2019}. We try to plan the simulation study as
-thoroughly as possible. However, in practice there may be always difficulities
-and unexpected discoveries which may warrant modifications. We will clearly label
-these as exploratory findings in the analysis.
+measures) in \citet{Morris2019}. We will plan the simulation study as
+thoroughly as possible. However, in practice there may be difficulties
+and unexpected discoveries which may warrant modifications. 
+We will clearly label these as exploratory findings in the analysis.
 
 \section{Timeline}
 \label{sec:timeline}
@@ -138,7 +137,8 @@ the final version will be time\-stamped and tagged. As discussed in
 Section~\ref{sec:performance}, some preliminary simulation runs will be conducted
 to estimate the number of simulations needed to ensure a sufficiently small Monte
 Carlo error. The test run will also be used to assess whether there are severe
-convergence problems and if so, the simulation parameters may be modified (Section~\ref{sec:exceptions}). Also this milestone will be time\-stamped.
+convergence problems and if so, the simulation parameters may be modified 
+(Section~\ref{sec:exceptions}). Also this milestone will be time\-stamped.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Aims} \label{sec:aims}
@@ -213,8 +213,6 @@ studies \citep{zhu2004} or clinical prediction problems
 \citep{steyerberg2019clinical}. Finally, the simulation parameters are varied
 fully factorially as described below, leading to a total of \Sexpr{nScenarios}
 scenarios.
-
-
 
 \subsection*{Sample size}
 The sample size used in the development of predictions models varies widely
@@ -479,8 +477,7 @@ R version 4.1.0).
 (\url{https://github.com/SamCH93/SimPaper}).
 We use \pkg{pROC} to compute the AUC \citep{pkg:proc}. 
 Random forests are fitted using \pkg{ranger} \citep{ranger2017}.
-For penalized likelihood methods, we use \pkg{glmnet} \citep{Friedman2010,Simon2011} 
-\todo{versions}.
+For penalized likelihood methods, we use \pkg{glmnet} \citep{Friedman2010,Simon2011}.
 The \pkg{SimDesign} package is used to set up simulation scenarios
 \citep{Chalmers2020}.
 
@@ -488,6 +485,20 @@ The \pkg{SimDesign} package is used to set up simulation scenarios
 % ======================================================================
 \bibliographystyle{../apalikedoiurl}
 \bibliography{../bibliography.bib}
+
+\section{Session info}
+
+<<echo=FALSE>>=
+library(ranger)
+library(ainet)
+library(pROC)
+library(glmnet)
+library(SimDesign)
+
+options(width = 70)
+sessionInfo()
+@
+
 
 
 % Appendix
