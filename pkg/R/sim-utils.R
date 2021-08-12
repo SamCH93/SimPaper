@@ -28,6 +28,7 @@ nll <- function(y_pred, y_true) {
 #' Evaluate model at new observations with `loss`
 #' @export
 evaluateModel <- function(m, newx, y_true, loss, ...) {
+  # TODO: vectorize over loss functions
 	preds <- predict(m, newx = newx, ... = ...)
 	loss(preds, y_true)
 }
@@ -67,16 +68,33 @@ analyse <- function(condition, dat, fixed_objects = NULL) {
   test <- dat$test
 
   ## AINET
+  # TODO: cross validate importance?
+	pen.f <- ainet:::.vimp(Y ~ ., train, which = "impurity", gamma = 1, renorm = "trunc")
+	cvAINET <- cv.fglmnet(fml, train, pen.f = pen.f, family = "binomial", relax = TRUE)
+  AINET <- ainet(Y ~ ., data = train, pen.f = pen.f, lambda = cvAINET$relaxed$lambda.1se,
+                 alpha = cvAINET$relaxed$gamma.1se)
 
   ## Logistic regression
+  cvGLM <- cv.fglmnet(Y ~ ., data = train, alpha = 0, family = "binomial")
+  GLM <- fglmnet(Y ~ ., data = train, alpha = 0, lambda = cvGLM$lambda.1se,
+                 family = "binomial")
 
   ## Elastic net
+  cvEN <- cv.fglmnet(Y ~ ., data = train, alpha = 0, relax = TRUE, family = "binomial")
+  GLM <- fglmnet(Y ~ ., data = train, alpha = cvEN$relaxed$gamma.1se,
+                 lambda = cvGLM$relaxed$lambda.1se, family = "binomial")
 
-  ## Adaptive lasso
+  ## Adaptive elastic net
+  # TODO: or adaptive lasso only? -> clarify in protocol
+  # TODO: Penalty factor
+  cvAEN <- cv.fglmnet(Y ~ ., data = train, alpha = 0, penalty.factor = NULL)
+  AEN <- fglmnet(Y ~ ., data = train, alpha = 0, penalty.factor = NULL)
 
   ## Random forest
+  RF <- ranger(Y ~ ., data = train)
 
   ## Return
+  # TODO: Evaluate
   ret <- c(stat1 = NaN, stat2 = NaN)
   ret
 }
