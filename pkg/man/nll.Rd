@@ -4,8 +4,15 @@
 \alias{nll}
 \title{Compute negative log-likelihood / n}
 \usage{
-nll(y_pred, y_true)
+nll(y_true, y_pred)
 }
 \description{
 Compute negative log-likelihood / n
+}
+\examples{
+dat <- generateData()
+ndat <- generateData()
+m <- glm(Y ~ ., data = dat, family = binomial)
+preds <- predict(m, type = "response", newdata = ndat)
+nll(ndat$Y, preds)
 }

@@ -8,4 +8,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Depends: ranger, glmnet, SimDesign
+Depends: ranger, glmnet, SimDesign, mvtnorm, pROC
