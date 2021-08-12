@@ -62,7 +62,7 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
 
 #' SimDesign function for analyzing simulated data
 #' @export
-analyse <- function(condition, dat, fixed_objects = NULL) {
+analyze <- function(condition, dat, fixed_objects = NULL) {
   ## Data
   train <- dat$train
   test <- dat$test

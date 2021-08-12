@@ -2,7 +2,7 @@
 
 export(acc)
 export(ainet)
-export(analyse)
+export(analyze)
 export(cv.fglmnet)
 export(evaluateModel)
 export(fglmnet)
