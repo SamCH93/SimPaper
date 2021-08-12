@@ -5,7 +5,6 @@
 #' @export
 generateData <- function(n = 1e2, p = 20, nz = 5, b = rep(1:0, c(nz, p - nz)),
                          prev = 0.5, rho = 0) {
-  # TODO: DGP from simulation protocol
   b0 <- qlogis(prev)
   Sigma <- matrix(rho, nrow = p, ncol = p)
   diag(Sigma) <- 1
@@ -30,7 +29,7 @@ acc <- function(y_true, y_pred) {
 	mean(y_true == y_pred)
 }
 
-#' Compute negative log-likelihood / n
+#' Compute negative log-likelihood / n (log-score)
 #' @examples
 #' dat <- generateData()
 #' ndat <- generateData()
@@ -183,6 +182,8 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
   test <- dat$test
 
   fml <- Y ~ .
+
+  # TODO: Convergence checks, try-error exceptions
 
   ## AINET
   # TODO: cross validate importance?

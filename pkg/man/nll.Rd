@@ -2,12 +2,12 @@
 % Please edit documentation in R/sim-utils.R
 \name{nll}
 \alias{nll}
-\title{Compute negative log-likelihood / n}
+\title{Compute negative log-likelihood / n (log-score)}
 \usage{
 nll(y_true, y_pred)
 }
 \description{
-Compute negative log-likelihood / n
+Compute negative log-likelihood / n (log-score)
 }
 \examples{
 dat <- generateData()
