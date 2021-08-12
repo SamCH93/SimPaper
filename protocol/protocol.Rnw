@@ -299,7 +299,7 @@ independently generated test data.
   will be used as a secondary measure of overall predictive performance. Lower
   values indicate better predictive performance in terms of calibration and
   sharpness. The log-score is a strictly proper scoring rule, however, it is more
-  sensitive to extreme predicted probabilities compared to the Brier score.
+  sensitive to extreme predicted probabilities compared to the Brier score \citep{Gneiting2007}.
   
   \item \textbf{AUC.} The AUC is given by
   $$\text{AUC} = \widehat\Prob(Y_i > Y_j \given \rx_i, \rx_j), \; i,j = 1, \dots, n_{\text{test}},$$
@@ -318,13 +318,13 @@ independently generated test data.
   \ie
   $$\logit\Ex[Y \given \hat\ry] = a + b\logit(\hat\ry).$$
   This measure will be used to assess calibration and deviations of $\hat b$ from
-  one  indicate miscalibration.
+  one indicate miscalibration \citep{steyerberg2019clinical}.
 
   \item \textbf{Calibration in the large $\hat a$.} We inspect calibration in the
   large $\hat a$ on independently generated test data, from the model
   $$\logit\Ex[Y \given \hat\ry] = a + \logit(\hat{y})$$
   This measure will also be used to assess calibration and deviations of $\hat a$ from
-  zero indicate miscalibration.
+  zero indicate miscalibration \citep{steyerberg2019clinical}.
 \end{itemize}
 
 To facilitate comparison between simulation conditions, all estimands will also
