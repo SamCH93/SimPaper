@@ -363,7 +363,7 @@ $$\IMP = \widetilde\IMP - \min_j\{\widetilde{\IMP}_j\},$$
 or
 $$\IMP_j = \max\{0, \widetilde\IMP_j\}.$$
 There are arguments for both approaches, but we will use the second one
-since any variable which leads to an increase in the Gini index should be
+since any variable which leads to a decrease in model performance index should be
 penalized equally.
 \ainet{} is fitted by maximizing its penalized log-likelihood assuming i.i.d.
 observations $\{(\ry_i, \rx_i)\}_{i=1}^n$, \ie
@@ -375,17 +375,26 @@ Hyperparameters of the random forest are not tuned, but kept at their default
 values (\eg \code{mtry}, \code{ntree}). The exponent $\gamma = 1$ will stay
 constant for all simulations.
 
+As outlined in Section~\ref{sec:disclaimer}, \ainet{} is supposed to seem like
+a reasonable method at first glance. However, \ainet{} cannot be expected to 
+share desirable theoretical properties with the usual adaptive LASSO, 
+such as oracle estimation \citep{Zou2006}. This is because the penalization
+weights $\wvec$ do not meet the required assumptions. Also in terms of prediction
+performance, \ainet{} is not expected to outperform methods of comparable complexity.
+
 \subsection{Benchmark methods}
 
 \begin{itemize}
-   \item \textbf{Binary logistic regression} with and without ridge penalty for high- and
+   \item \textbf{Binary logistic regression} \citep{mccullagh2019generalized} 
+   with and without ridge penalty for high- and
    low-dimensional settings, respectively. In case a ridge penalty is needed,
    it is tuned via 5-fold cross-validation.
-   \item \textbf{Elastic net}, for which the penalized log-likelihood is given by
+   \item \textbf{Elastic net} \citep{Zou2005}, for which the penalized 
+   log-likelihood is given by
     $$\ell_{\text{EN}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda) = 
       \ell(\beta_0, \shiftparm; \ry, \rx) + \llpen.$$
     Here, $\alpha$ and $\lambda$ are tuned via 5-fold cross-validation.
-   \item \textbf{Adaptive LASSO}, with penalized loss function
+   \item \textbf{Adaptive LASSO} \citep{Zou2006}, with penalized loss function
     $$\ell_{\text{adaptive}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda, \wvec)
     = \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen.$$
     Here, the penalty weights $\wvec$ are inverse coefficient estimates from a
@@ -395,8 +404,9 @@ constant for all simulations.
     The exponent $\gamma = 1$ will stay constant for all simulations.
     In case $p > n$, we estimate the penalty weights using a LASSO penalty, tuned
     via an additional nested 5-fold cross-validation.
-    \item \textbf{Random forest} for binary outcomes without hyperparameter tuning. The
-    default parameters of \pkg{ranger} will be used \citep{ranger2017}. % , \ie
+    \item \textbf{Random forests} \citep{Breiman2001} for binary outcomes without 
+    hyperparameter tuning. The default parameters of \pkg{ranger} will be used 
+    \citep{ranger2017}. % , \ie
     % \code{ntree = 500}, \code{mtry = floor(sqrt(p))}, \code{min.node.size = },
     % \code{max.depth = }, \code{sample.fraction = }
 \end{itemize}
