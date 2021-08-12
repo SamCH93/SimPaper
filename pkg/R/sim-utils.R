@@ -1,10 +1,15 @@
+
+### Data generating process
+
 #' Generate data from sparse linear model
 #' @export
-gen_dat <- function(n = 1e2, p = 20, nz = 5, b = rep(1:0, c(nz, p - nz))) {
+generateData <- function(n = 1e2, p = 20, nz = 5, b = rep(1:0, c(nz, p - nz))) {
 	X <- matrix(rnorm(n * p), nrow = n, ncol = p)
 	Y <- factor(rbinom(n = n, size = 1, plogis(X %*% b)))
 	return(data.frame(Y = Y, X = X))
 }
+
+### Evaluation
 
 #' Compute accuracy
 #' @export
@@ -22,7 +27,63 @@ nll <- function(y_pred, y_true) {
 
 #' Evaluate model at new observations with `loss`
 #' @export
-eval_mod <- function(m, newx, y_true, loss, ...) {
+evaluateModel <- function(m, newx, y_true, loss, ...) {
 	preds <- predict(m, newx = newx, ... = ...)
 	loss(preds, y_true)
+}
+
+### Sim Design Functions
+
+#' SimDesign function for generating the data
+#' @export
+generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
+  ## Condition
+  n <- condition$n
+  epv <- condition$epv
+  p <- condition$p
+  q <- condition$q
+  rho <- condition$rho
+  prev <- condition$prev
+
+  ## Simulate beta
+  if (q > 0) {
+    nzbetas <- rnorm(q)
+  } else {
+    nzbetas <- NULL
+  }
+  betas <- c(nzbetas, rep(0, p - q))
+
+  ## Generate training data
+  train <- generateData(n = n, p = p, nz = q, b = betas)
+  test <- generateData(n = fixed_objects$ntest, p = p, nz = q, b = betas)
+  list(train, test)
+}
+
+#' SimDesign function for analyzing simulated data
+#' @export
+analyse <- function(condition, dat, fixed_objects = NULL) {
+  ## Data
+  train <- dat$train
+  test <- dat$test
+
+  ## AINET
+
+  ## Logistic regression
+
+  ## Elastic net
+
+  ## Adaptive lasso
+
+  ## Random forest
+
+  ## Return
+  ret <- c(stat1 = NaN, stat2 = NaN)
+  ret
+}
+
+#' SimDesign function for summarizing simulation results
+#' @export
+summarize <- function(condition, results, fixed_objects = NULL) {
+  ret <- c(bias = NaN, RMSE = NaN)
+  ret
 }

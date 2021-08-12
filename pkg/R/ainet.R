@@ -2,7 +2,7 @@
 
 #' ainet main function
 #' @export
-ai_net <- function(formula, data, imp_data = NULL, pen.f = NULL, plot = FALSE,
+ainet <- function(formula, data, imp_data = NULL, pen.f = NULL, plot = FALSE,
 									 ...) {
 	if (plot)
 		varImpPlot(rf)
