@@ -163,13 +163,14 @@ from the literature, namely
         binary prediction
   \item Elastic net: a generalization of LASSO and ridge regression, the most
         widely used penalized regression methods
-  \item Adaptive LASSO: the most popular weighted penalized regression method
+  \item Adaptive elastic net: a generalization of the most popular weighted 
+  penalized regression method (adaptive LASSO)
   \item Random forest: a popular, more flexible method. This method is related to
         \ainet{}, see Section~\ref{sec:methods}.
 \end{itemize}
 These cover a wide range of established methods with varying flexibility and
 serve as a reasonable benchmark for \ainet. There are many more extensions of
-the adaptive LASSO in the literature \citep[see \eg the review by][]{Vidaurre2013},
+the adaptive elastic net in the literature \citep[see \eg the review by][]{Vidaurre2013},
 however, most of them focus on variable selection and
 estimation instead of prediction, which is why we restrict our focus only on the
 four methods from above.
@@ -339,6 +340,7 @@ Brier score.
 
 \subsection{\ainet}
 
+\todo{Rethink motivation.}
 Choosing the vector of penalization weights in the adaptive LASSO becomes difficult
 in high-dimensional settings. For instance, using absolute LASSO estimates as penalization
 weights omits the importance of several predictors by not selecting them, 
@@ -394,7 +396,7 @@ performance, \ainet{} is not expected to outperform methods of comparable comple
     $$\ell_{\text{EN}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda) = 
       \ell(\beta_0, \shiftparm; \ry, \rx) + \llpen.$$
     Here, $\alpha$ and $\lambda$ are tuned via 5-fold cross-validation.
-   \item \textbf{Adaptive LASSO} \citep{Zou2006}, with penalized loss function
+   \item \textbf{Adaptive elastic net} \citep{Zou2006}, with penalized loss function
     $$\ell_{\text{adaptive}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda, \wvec)
     = \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen.$$
     Here, the penalty weights $\wvec$ are inverse coefficient estimates from a
