@@ -1,4 +1,54 @@
-\documentclass[a4paper, 11pt]{article}
+\documentclass[a4paper, 11pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -78,21 +128,13 @@
 \pagestyle{fancy}
 \lhead{\shorttitle}
 \rhead{\shortauthors}
-
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \maketitle
 
 % knitr options
 % =============================================================================
-<< "main-setup", include = FALSE >>=
-library(knitr)
-opts_chunk$set(fig.height = 4,
-               echo = FALSE,
-               warning = FALSE,
-               message = FALSE,
-               cache = FALSE, 
-               eval = TRUE)
-@
+
 
 \section{Disclaimer}
 \label{sec:disclaimer}
@@ -178,21 +220,7 @@ four methods from above.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data-generating process} \label{sec:dgp}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-<< "simulation-parameters" >>=
-## values for simulation
-n <- c(100, 500, 1000, 5000)
-EPV <- c(20, 10, 1, 0.1, 0.05)
-sparsity <- c("dense", "sparse")
-prev <- c(0.01, 0.05, 0.1)
-sigma2 <- c(1)
-rho <- c(0, 0.3, 0.6, 0.95)
-simGrid <- expand.grid(n = n, EPV = EPV, sparsity = sparsity, prev = prev,
-                       sigma2 = sigma2, rho = rho, stringsAsFactors = FALSE)
-simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
-simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
-simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, 0))
-nScenarios <- nrow(simGrid)
-@
+
 In each simulation $b = 1, \dots, B$ we generate a data set consisting of $n$
 realizations, \ie $\{(\ry_i, \rx_i)\}_{i=1}^n$. A datum $(\rY, \rX)$ consists of
 a binary outcome $\rY \in \{0, 1\}$ and $p$-dimensional covariate vector
@@ -212,12 +240,12 @@ once per simulation. This is a typical data-generating process for data with
 binary outcomes and typically assumed in models for (high-dimensional) genetic
 studies \citep{zhu2004} or clinical prediction problems
 \citep{steyerberg2019clinical}. Finally, the simulation parameters are varied
-fully factorially as described below, leading to a total of \Sexpr{nScenarios}
+fully factorially as described below, leading to a total of 480
 scenarios.
 
 \subsection*{Sample size}
 The sample size used in the development of predictions models varies widely
-\citep{Damen2016}. We will use $n \in \{\Sexpr{n}\}$, which span typical values
+\citep{Damen2016}. We will use $n \in \{100, 500, 1000, 5000\}$, which span typical values
 occurring in practice. Note that previous simulation studies usually chose sample
 size based on the implied number of events together with the number of covariates
 in the model for easier interpretation \citep{vanSmeden2018, Riley2018}. We will use this approach in
@@ -229,7 +257,7 @@ define the dimensionality $p$ via events per variable
 (EPV) by $$p = \ceil{\frac{n \cdot \prev}{\EPV}}$$
 because previous simulation studies showed that $\EPV$ rather than the absolute
 sample size $n$ influences
-the predictive performance of a method. $\EPV \in \{\Sexpr{EPV}\}$
+the predictive performance of a method. $\EPV \in \{20, 10, 1, 0.1, 0.05\}$
 are chosen to cover scenarios with low- to high-dimensional covariates
 \citep[\cf][]{vanSmeden2018}.
 
@@ -248,11 +276,11 @@ In the simulations where $\shiftparm$ is dense, we set $q = p$.
 \subsection*{Collinearity in $\rX$}
 We distinguish between no, low, medium and high collinearity. The diagonal
 elements of $\Sigma$ are given by $\Sigma_{ii} = 1$ and the off-diagonal
-elements are set to $\Sigma_{ij} = \rho$, $\rho \in \{\Sexpr{rho}\}$.
+elements are set to $\Sigma_{ij} = \rho$, $\rho \in \{0, 0.3, 0.6, 0.95\}$.
 These values cover the typical (positive) range of correlations.
 
 \subsection*{Baseline prevalence}
-Different baseline prevalences $\expit(\beta_0) \in \{\Sexpr{prev}\}$ are 
+Different baseline prevalences $\expit(\beta_0) \in \{0.01, 0.05, 0.1\}$ are 
 considered, reflecting a reasonable range of prevalences for rare to
 common diseases/adverse events.
 
@@ -480,7 +508,7 @@ in the simulation study, we will handle them as follow:
 
 The simulation study is conducted in the \textsf{R} language for statistical
 computing \citep{pkg:base} using the most recent version (at the time of writing
-this protocol % \Sexpr{R.version$version.string}
+this protocol % R version 4.1.1 (2021-08-10)
 R version 4.1.1).
 \ainet{} is implemented in the \pkg{ainet} package and available on GitHub 
 (\url{https://github.com/SamCH93/SimPaper}).
@@ -498,16 +526,53 @@ The \pkg{SimDesign} package version 2.7 is used to set up simulation scenarios
 
 \section{Session info}
 
-<<echo=FALSE>>=
-library(ranger)
-library(ainet)
-library(pROC)
-library(glmnet)
-library(SimDesign)
-
-options(width = 70)
-sessionInfo()
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## R version 4.1.1 (2021-08-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 20.04.2 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_CH.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=de_CH.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=de_CH.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_CH.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods  
+## [7] base     
+## 
+## other attached packages:
+## [1] SimDesign_2.7       pROC_1.17.0.1       ainet_0.0.0.9000   
+## [4] glmnet_4.1-1        Matrix_1.3-4        randomForest_4.6-14
+## [7] ranger_0.13.1       knitr_1.33         
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.7        compiler_4.1.1    pillar_1.6.2     
+##  [4] plyr_1.8.6        highr_0.9         iterators_1.0.13 
+##  [7] tools_4.1.1       jsonlite_1.7.2    evaluate_0.14    
+## [10] lifecycle_1.0.0   tibble_3.1.3      lattice_0.20-44  
+## [13] pkgconfig_2.0.3   rlang_0.4.11      foreach_1.5.1    
+## [16] cli_3.0.1         DBI_1.1.1         curl_4.3.1       
+## [19] parallel_4.1.1    xfun_0.23         withr_2.4.2      
+## [22] stringr_1.4.0     dplyr_1.0.6       generics_0.1.0   
+## [25] vctrs_0.3.8       tidyselect_1.1.1  RPushbullet_0.3.4
+## [28] grid_4.1.1        glue_1.4.2        R6_2.5.0         
+## [31] pbapply_1.4-3     fansi_0.5.0       survival_3.2-11  
+## [34] sessioninfo_1.1.1 purrr_0.3.4       magrittr_2.0.1   
+## [37] codetools_0.2-18  ellipsis_0.3.2    splines_4.1.1    
+## [40] assertthat_0.2.1  shape_1.4.6       utf8_1.2.2       
+## [43] stringi_1.6.2     crayon_1.4.1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 
 

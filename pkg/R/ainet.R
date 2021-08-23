@@ -2,10 +2,11 @@
 
 #' ainet main function
 #' @export
-ai_net <- function(formula, data, imp_data = NULL, pen.f = NULL, plot = FALSE,
+ainet <- function(formula, data, imp_data = NULL, pen.f = NULL, plot = FALSE,
 									 ...) {
 	if (plot)
 		varImpPlot(rf)
+  # TODO: Implement cross validation for variable importance
 	if (is.null(pen.f))
 		pen.f <- .vimp(formula, ifelse(is.null(imp_data), list(data),
 																	 list(imp_data))[[1]])

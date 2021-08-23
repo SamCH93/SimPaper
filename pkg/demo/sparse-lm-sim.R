@@ -2,6 +2,8 @@
 # LK, SP
 # July 2021
 
+set.seed(14)
+
 # Dependencies ------------------------------------------------------------
 
 library(ainet)
@@ -22,26 +24,24 @@ if (measure == "nll") {
 # Sim ---------------------------------------------------------------------
 
 res <- replicate(100, {
-	train <- gen_dat()
-	tune <- gen_dat()
-	test <- gen_dat()
+	train <- generateData()
+	tune <- generateData()
+	test <- generateData()
 
 	fml <- Y ~ .
-	pen.f <- ainet:::.vimp(fml, tune, which = "impurity", gamma = 1)
-	cvm <- cv.fglmnet(fml, train, pen.f = pen.f, alpha = talp, family = "binomial",
-	                  renorm = "shift")
+	pen.f <- ainet:::.vimp(fml, tune, which = "impurity", gamma = 1, renorm = "trunc")
+	cvm <- cv.fglmnet(fml, train, pen.f = pen.f, alpha = talp, family = "binomial")
 
-	m <- ai_net(fml, data = train, pen.f = pen.f, plot = FALSE,
-							lambda = cvm$lambda.1se, alpha = talp, family = "binomial",
-							renorm = "shift")
-	AINET <- eval_mod(m, newx = ainet:::.rm_int(model.matrix(fml, test)),
+	m <- ainet(fml, data = train, pen.f = pen.f, plot = FALSE,
+							lambda = cvm$lambda.1se, alpha = talp, family = "binomial")
+	AINET <- evaluateModel(m, newx = ainet:::.rm_int(model.matrix(fml, test)),
 										y_true = test$Y, loss = loss, type = pred_type)
 
 	dd <- ainet:::.preproc(fml, train)
 	cbl <- cv.glmnet(x = dd$X, y = dd$Y, alpha = talp, family = "binomial")
 	bl <- glmnet(x = dd$X, y = dd$Y, alpha = talp, lambda = cbl$lambda.1se,
 							 family = "binomial")
-	BL <- eval_mod(bl, newx = ainet:::.rm_int(model.matrix(fml, test)),
+	BL <- evaluateModel(bl, newx = ainet:::.rm_int(model.matrix(fml, test)),
 								 y_true = test$Y, loss = loss, type = pred_type)
 
 	c(
