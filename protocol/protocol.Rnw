@@ -101,17 +101,16 @@ statistical superiority of any method, if we have enough flexibility in
 changing the simulation conditions and evaluations. We propose a mock-method
 termed \ainet{} which superficially seems reasonable and whose evaluation could actually be
 published in a statistics journal. However, as we will explain in Section~\ref{sec:methods},
-there are theoretical disadvantages which imply that the method should not be
-superior compared with methods of equal complexity. Throughout this protocol
+for theoretical reasons the method should actually not be
+superior compared to methods of equal complexity. Throughout this protocol
 we will make a serious attempt at evaluating \ainet{} using state-of-the-art
-simulation study methodology \citep{Morris2019}. After the serious simulations
-have been conducted, we will then start to apply questionable research practices
-in order to illustrate how easy one can become overoptimistic.
+simulation study methodology. After the serious simulations
+have been conducted, we will start to apply questionable research practices
+in order to find simulation conditions and evaluation metrics which favor
+\ainet{} over other methods.
 
 \section{Introduction}
 \label{sec:introduction}
-\todo{Disclaimer that this is a mock method and this paper is more about
-the process of sim-hacking}
 The purpose of this protocol is to describe our \emph{a priori} plans for a
 comprehensive simulation study to evaluate the statistical properties of the
 adaptive importance elastic net (\ainet) method. We will follow the ADEMP
@@ -361,12 +360,12 @@ denotes the log-likelihood of a binomial glm and
 $\wvec$ is derived from a random forest variable importance measure $\IMP$ as
 $$w_j = 1 - \left(\frac{\IMP_j}{\sum_{k=1}^p \IMP_k}\right)^\gamma,$$
 where we transform $\IMP$ to be non-negative via
-$$\IMP = \widetilde\IMP - \min_j\{\widetilde{\IMP}_j\},$$
-or
+% $$\IMP = \widetilde\IMP - \min_j\{\widetilde{\IMP}_j\},$$
+% or
 $$\IMP_j = \max\{0, \widetilde\IMP_j\}.$$
-There are arguments for both approaches, but we will use the second one
-since any variable which leads to an increase in the Gini index should be
-penalized equally.
+% There are arguments for both approaches, but we will use the second one
+% since any variable which leads to an increase in the Gini index should be
+% penalized equally.
 \ainet{} is fitted by maximizing its penalized log-likelihood assuming i.i.d.
 observations $\{(\ry_i, \rx_i)\}_{i=1}^n$, \ie
 $$\arg\max_{\beta_0, \shiftparm} \sum_{i = 1}^n \ell_{\text{AINET}}(\beta_0,
@@ -474,14 +473,14 @@ in the simulation study, we will handle them as follow:
 The simulation study is conducted in the \textsf{R} language for statistical
 computing \citep{pkg:base} using the most recent version (at the time of writing
 this protocol % \Sexpr{R.version$version.string}
-R version 4.1.0).
+R version 4.1.1).
 \ainet{} is implemented in the \pkg{ainet} package and available on GitHub 
 (\url{https://github.com/SamCH93/SimPaper}).
-We use \pkg{pROC} to compute the AUC \citep{pkg:proc}. 
-Random forests are fitted using \pkg{ranger} \citep{ranger2017}.
-For penalized likelihood methods, we use \pkg{glmnet} \citep{Friedman2010,Simon2011} 
-\todo{versions}.
-The \pkg{SimDesign} package is used to set up simulation scenarios
+We use \pkg{pROC} version 1.17.0.1 to compute the AUC \citep{pkg:proc}.
+Random forests are fitted using \pkg{ranger} version 0.13.1 \citep{ranger2017}.
+For penalized likelihood methods, we use \pkg{glmnet} version 4.1.1
+\citep{Friedman2010,Simon2011}.
+The \pkg{SimDesign} package version 2.7 is used to set up simulation scenarios
 \citep{Chalmers2020}.
 
 % Bibliography
