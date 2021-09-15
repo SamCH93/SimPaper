@@ -137,7 +137,7 @@ evaluateModel.ranger <- function(m, newx, y_true, loss, ...) {
 #' @method evaluateModel glmnet
 #' @export
 evaluateModel.glmnet <- function(m, newx, y_true, loss, ...) {
-	y_pred <- predict(m, newx = newx, type = "response", ... = ...)
+	y_pred <- predict(m, newx = newx, ... = ...)
 	loss(y_true, y_pred)
 }
 

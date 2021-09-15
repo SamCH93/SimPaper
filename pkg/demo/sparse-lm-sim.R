@@ -11,7 +11,7 @@ library(ainet)
 # Parms -------------------------------------------------------------------
 
 talp <- 0.5 # elastic net penalty
-measure <- "nll"
+measure <- "nll" # e.g. nll or acc
 
 if (measure == "nll") {
 	pred_type <- "response"
@@ -25,11 +25,10 @@ if (measure == "nll") {
 
 res <- replicate(100, {
 	train <- generateData()
-	tune <- generateData()
 	test <- generateData()
 
 	fml <- Y ~ .
-	pen.f <- ainet:::.vimp(fml, tune, which = "impurity", gamma = 1, renorm = "trunc")
+	pen.f <- ainet:::.vimp(fml, train, which = "impurity", gamma = 1, renorm = "trunc")
 	cvm <- cv.fglmnet(fml, train, pen.f = pen.f, alpha = talp, family = "binomial")
 
 	m <- ainet(fml, data = train, pen.f = pen.f, plot = FALSE,
