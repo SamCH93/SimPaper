@@ -392,22 +392,26 @@ performance, \ainet{} is not expected to outperform methods of comparable comple
    \item \textbf{Binary logistic regression} \citep{mccullagh2019generalized} 
    with and without ridge penalty for high- and
    low-dimensional settings, respectively. In case a ridge penalty is needed,
-   it is tuned via 5-fold cross-validation.
+   it is tuned via 5-fold cross-validation by following the ``one standard
+   error'' rule as implemented in \pkg{glmnet} \citep{Friedman2010}. 
    \item \textbf{Elastic net} \citep{Zou2005}, for which the penalized 
    log-likelihood is given by
     $$\ell_{\text{EN}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda) = 
       \ell(\beta_0, \shiftparm; \ry, \rx) + \llpen.$$
-    Here, $\alpha$ and $\lambda$ are tuned via 5-fold cross-validation.
+    Here, $\alpha$ and $\lambda$ are tuned via 5-fold cross-validation by following 
+    the ``one standard error'' rule.
    \item \textbf{Adaptive elastic net} \citep{Zou2006}, with penalized loss function
     $$\ell_{\text{adaptive}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda, \wvec)
     = \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen.$$
     Here, the penalty weights $\wvec$ are inverse coefficient estimates from a
     binary logistic regression
     $$\hat{w}_j = \lvert\hat\eparm_j\rvert^{-\gamma},$$
-    where $\lambda$ is tuned via 5-fold cross-validation.
+    where $\lambda$ and $\alpha$ are tuned via 5-fold cross-validation by 
+    following the ``one standard error'' rule.
     The hyperparameter $\gamma = 1$ will stay constant for all simulations.
-    In case $p > n$, we estimate the penalty weights using a LASSO penalty, tuned
-    via an additional nested 5-fold cross-validation.
+    In case $p > n$, we estimate the penalty weights using a ridge penalty, tuned
+    via an additional nested 5-fold cross-validation
+    by following the ``one standard error'' rule.
     \item \textbf{Random forests} \citep{Breiman2001} for binary outcomes without 
     hyperparameter tuning. The default parameters of \pkg{ranger} will be used 
     \citep{ranger2017}. % , \ie
