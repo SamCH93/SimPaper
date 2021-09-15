@@ -186,13 +186,14 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
   # TODO: Convergence checks, try-error exceptions
 
   ## AINET
-  # TODO: cross validate importance?
 	pen.f <- ainet:::.vimp(fml, train, which = "impurity", gamma = 1, renorm = "trunc")
 	cvAINET <- cv.fglmnet(fml, train, pen.f = pen.f, family = "binomial", relax = TRUE)
   AINET <- ainet(fml, data = train, pen.f = pen.f, lambda = cvAINET$relaxed$lambda.1se,
                  alpha = cvAINET$relaxed$gamma.1se)
 
   ## Logistic regression
+  # TODO: default to logistic regression w/o penalty if low-dim, otherwise
+  # use ridge. If fails to converge, NA
   cvGLM <- cv.fglmnet(fml, data = train, alpha = 0, family = "binomial")
   GLM <- fglmnet(fml, data = train, alpha = 0, lambda = cvGLM$lambda.1se,
                  family = "binomial")
@@ -203,8 +204,7 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
                  lambda = cvGLM$relaxed$lambda.1se, family = "binomial")
 
   ## Adaptive elastic net
-  # TODO: or adaptive lasso only? -> clarify in protocol
-  # TODO: Penalty factor
+  # TODO: Penalty factor with nested cv in the high-dim setting
   cvAEN <- cv.fglmnet(fml, data = train, alpha = 0, penalty.factor = NULL)
   AEN <- fglmnet(fml, data = train, alpha = 0, penalty.factor = NULL)
 
@@ -212,7 +212,7 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
   RF <- ranger(fml, data = train, probability = TRUE)
 
   ## Return
-  # TODO: Evaluate
+  # TODO: Evaluate all methods using all metrics
   ret <- c(stat1 = NaN, stat2 = NaN)
   ret
 }
@@ -220,6 +220,7 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
 #' SimDesign function for summarizing simulation results
 #' @export
 summarize <- function(condition, results, fixed_objects = NULL) {
+  # TODO: Add all summary metrics (anova, multcomp, visualization separately)
   ret <- c(bias = NaN, RMSE = NaN)
   ret
 }

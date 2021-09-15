@@ -23,6 +23,8 @@ simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n / log(p))),
 simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, 0))
 nScenarios <- nrow(simGrid)
 
+# TODO: Add seed column
+
 # Simulation --------------------------------------------------------------
 
 # res <- runSimulation(
