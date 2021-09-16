@@ -10,7 +10,7 @@ analyze(condition, dat, fixed_objects = NULL)
 SimDesign function for analyzing simulated data
 }
 \examples{
-condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, q = 3, rho = 0,
+condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, rho = 0,
 prev = 0.5, seed = 1)
 dat <- generate(condition)
 analyze(condition, dat)

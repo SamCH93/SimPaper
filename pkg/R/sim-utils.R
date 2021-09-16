@@ -3,8 +3,7 @@
 
 #' Generate data from sparse linear model
 #' @export
-generateData <- function(n = 1e2, p = 20, nz = 5, b = rep(1:0, c(nz, p - nz)),
-                         prev = 0.5, rho = 0) {
+generateData <- function(n = 1e2, p = 20, b = rnorm(p), prev = 0.5, rho = 0) {
   b0 <- qlogis(prev)
   Sigma <- matrix(rho, nrow = p, ncol = p)
   diag(Sigma) <- 1
@@ -157,32 +156,21 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   epv <- condition$epv
   sigma2 <- condition$sigma2
   p <- condition$p
-  q <- condition$q
   rho <- condition$rho
   prev <- condition$prev
 
-  ## Random number generation
-  # TODO: Seed in condition? Or where to generate?
-  # seed <- condition$seed
-  # set.seed(seed)
-
-  ## Simulate beta
-  if (q > 0) {
-    nzbetas <- rnorm(q)
-  } else {
-    nzbetas <- NULL
-  }
-  betas <- c(nzbetas, rep(0, p - q))
+  ## Simulation of coefficients
+  betas <- rnorm(p)
 
   ## Simulate training and test data
-  train <- generateData(n = n, p = p, nz = q, b = betas)
-  test <- generateData(n = fixed_objects$ntest, p = p, nz = q, b = betas)
+  train <- generateData(n = n, p = p, b = betas)
+  test <- generateData(n = fixed_objects$ntest, p = p, b = betas)
   list(train = train, test = test)
 }
 
 #' SimDesign function for analyzing simulated data
 #' @examples
-#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, q = 3, rho = 0,
+#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, rho = 0,
 #' prev = 0.5, seed = 1)
 #' dat <- generate(condition)
 #' analyze(condition, dat)
@@ -227,6 +215,7 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
   RF <- ranger(fml, data = train, probability = TRUE)
 
   ## Return
+  # TODO: Implement ground truth adjusted metrics
   metrics <- list(brier = brier, scaledBrier = scaledBrier, nll = nll, acc = acc,
                   auc = auroc, cslope = calibrationSlope, clarge = calibrationInTheLarge)
   models <- list(AINET = AINET, GLM = GLM, EN = EN, AEN = AEN, RF = RF)

@@ -4,14 +4,7 @@
 \alias{generateData}
 \title{Generate data from sparse linear model}
 \usage{
-generateData(
-  n = 100,
-  p = 20,
-  nz = 5,
-  b = rep(1:0, c(nz, p - nz)),
-  prev = 0.5,
-  rho = 0
-)
+generateData(n = 100, p = 20, b = rnorm(p), prev = 0.5, rho = 0)
 }
 \description{
 Generate data from sparse linear model
