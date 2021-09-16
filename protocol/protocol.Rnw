@@ -154,7 +154,6 @@ in biomedical research. In particular we want to evaluate the performance of
   \item low- and high-dimensional covariates
   \item (un-)correlated covariates
   \item small and large sample sizes
-  \item sparse and dense regression coefficient vectors
   \item varying baseline prevalences
 \end{itemize}
 \ainet{} will be compared to other (penalized) binary regression models
