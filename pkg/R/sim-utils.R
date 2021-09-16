@@ -223,6 +223,8 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
   ## Return
   metrics <- list(brier, scaledBrier, nll, acc, auroc, calibrationSlope, calibrationInTheLarge)
   models <- list(AINET, GLM, EN, AEN, RF)
+  # TODO: coerce ret to data.frame
+  # TODO: Check why nll and calibration throws NaNs
   ret <- lapply(models, function(mod) {
     lapply(metrics, function(met) {
       evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
