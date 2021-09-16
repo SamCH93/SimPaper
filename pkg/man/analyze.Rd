@@ -4,7 +4,7 @@
 \alias{analyze}
 \title{SimDesign function for analyzing simulated data}
 \usage{
-analyze(condition, dat, fixed_objects = NULL)
+analyze(condition, dat, fixed_objects = list(ntest = 10000))
 }
 \description{
 SimDesign function for analyzing simulated data

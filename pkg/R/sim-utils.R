@@ -175,7 +175,7 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
 #' dat <- generate(condition)
 #' analyze(condition, dat)
 #' @export
-analyze <- function(condition, dat, fixed_objects = NULL) {
+analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ## Data
   train <- dat$train
   test <- dat$test
