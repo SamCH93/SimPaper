@@ -145,6 +145,11 @@ evaluateModel.glmnet <- function(m, newx, y_true, loss, ...) {
 ### Sim Design Functions
 
 #' SimDesign function for generating the data
+#' @examples
+#' condition <- data.frame(n = 100, EPV = 20, sparsity = "dense", prev = 0.01,
+#' sigma2 = 1, rho = 0, p = 1, q = 0)
+#' debugonce(generate)
+#' generate(condition)
 #' @export
 generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   ## Condition
@@ -158,8 +163,8 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
 
   ## Random number generation
   # TODO: Seed in condition? Or where to generate?
-  seed <- condition$seed
-  set.seed(seed)
+  # seed <- condition$seed
+  # set.seed(seed)
 
   ## Simulate beta
   if (q > 0) {
@@ -231,7 +236,8 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
       evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
     })
   })
-  ret <- data.frame(t(res))
+  ret <- data.frame(condition, t(res))
+  ret$model <- names(models)
   ret
 }
 
