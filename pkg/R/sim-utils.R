@@ -225,7 +225,7 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
   metrics <- list(brier = brier, scaledBrier = scaledBrier, nll = nll, acc = acc,
                   auc = auroc, cslope = calibrationSlope, clarge = calibrationInTheLarge)
   models <- list(AINET = AINET, GLM = GLM, EN = EN, AEN = AEN, RF = RF)
-  # TODO: coerce ret to data.frame
+
   res <- sapply(models, function(mod) {
     sapply(metrics, function(met) {
       evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
