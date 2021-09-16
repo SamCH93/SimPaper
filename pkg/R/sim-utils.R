@@ -51,7 +51,7 @@ nll <- function(y_true, y_pred) {
 #' auroc(ndat$Y, preds)
 #' @export
 auroc <- function(y_true, y_pred) {
-  auc(y_true, y_pred)
+  auc(y_true, as.vector(y_pred))
 }
 
 #' Compute Brier score
@@ -171,17 +171,23 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   ## Simulate training and test data
   train <- generateData(n = n, p = p, nz = q, b = betas)
   test <- generateData(n = fixed_objects$ntest, p = p, nz = q, b = betas)
-  list(train, test)
+  list(train = train, test = test)
 }
 
 #' SimDesign function for analyzing simulated data
+#' @examples
+#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, q = 3, rho = 0,
+#' prev = 0.5, seed = 1)
+#' dat <- generate(condition)
+#' analyze(condition, dat)
 #' @export
 analyze <- function(condition, dat, fixed_objects = NULL) {
   ## Data
   train <- dat$train
   test <- dat$test
-
   fml <- Y ~ .
+  newx <- ainet:::.rm_int(model.matrix(fml, test))
+  y_true <- test$Y
 
   # TODO: Convergence checks, try-error exceptions
 
@@ -192,28 +198,36 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
                  alpha = cvAINET$relaxed$gamma.1se)
 
   ## Logistic regression
-  # TODO: default to logistic regression w/o penalty if low-dim, otherwise
-  # use ridge. If fails to converge, NA
-  cvGLM <- cv.fglmnet(fml, data = train, alpha = 0, family = "binomial")
-  GLM <- fglmnet(fml, data = train, alpha = 0, lambda = cvGLM$lambda.1se,
-                 family = "binomial")
+  if (condition$p < condition$n) {
+    GLM <- fglmnet(fml, data = train, alpha = 0, lambda = 0, family = "binomial")
+  } else {
+    cvGLM <- cv.fglmnet(fml, data = train, alpha = 0, family = "binomial")
+    GLM <- fglmnet(fml, data = train, alpha = 0, lambda = cvGLM$lambda.1se,
+                   family = "binomial")
+  }
 
   ## Elastic net
-  cvEN <- cv.fglmnet(fml, data = train, alpha = 0, relax = TRUE, family = "binomial")
-  GLM <- fglmnet(fml, data = train, alpha = cvEN$relaxed$gamma.1se,
-                 lambda = cvGLM$relaxed$lambda.1se, family = "binomial")
+  cvEN <- cv.fglmnet(fml, data = train, relax = TRUE, family = "binomial")
+  EN <- fglmnet(fml, data = train, alpha = cvEN$relaxed$gamma.1se,
+                 lambda = cvEN$relaxed$lambda.1se, family = "binomial")
 
   ## Adaptive elastic net
-  # TODO: Penalty factor with nested cv in the high-dim setting
-  cvAEN <- cv.fglmnet(fml, data = train, alpha = 0, penalty.factor = NULL)
-  AEN <- fglmnet(fml, data = train, alpha = 0, penalty.factor = NULL)
+  ENpenf <- 1 / abs(coef(GLM)[-1])
+  cvAEN <- cv.fglmnet(fml, data = train, relax = TRUE, pen.f = ENpenf, family = "binomial")
+  AEN <- fglmnet(fml, data = train, pen.f = ENpenf, alpha = cvAEN$relaxed$gamma.1se,
+                 lambda = cvAEN$relaxed$lambda.1se, family = "binomial")
 
   ## Random forest
   RF <- ranger(fml, data = train, probability = TRUE)
 
   ## Return
-  # TODO: Evaluate all methods using all metrics
-  ret <- c(stat1 = NaN, stat2 = NaN)
+  metrics <- list(brier, scaledBrier, nll, acc, auroc, calibrationSlope, calibrationInTheLarge)
+  models <- list(AINET, GLM, EN, AEN, RF)
+  ret <- lapply(models, function(mod) {
+    lapply(metrics, function(met) {
+      evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
+    })
+  })
   ret
 }
 
