@@ -92,7 +92,7 @@ scaledBrier <- function(y_true, y_pred) {
 calibrationSlope <- function(y_true, y_pred) {
   logits <- qlogis(y_pred)
   m <- glm(y_true ~ logits, family = binomial)
-  coef(m)[2]
+  unname(coef(m)[2])
 }
 
 #' Compute calibration in the large
@@ -106,7 +106,7 @@ calibrationSlope <- function(y_true, y_pred) {
 calibrationInTheLarge <- function(y_true, y_pred) {
   logits <- qlogis(y_pred)
   m <- glm(y_true ~ 1 + offset(logits), family = binomial)
-  coef(m)[1]
+  unname(coef(m)[1])
 }
 
 #' Evaluate model at new observations with `loss`
@@ -130,6 +130,7 @@ evaluateModel.ranger <- function(m, newx, y_true, loss, ...) {
 
 #' Evaluate glmnet
 #' @examples
+#' set.seed(10)
 #' dat <- generateData()
 #' ndat <- generateData()
 #' m <- fglmnet(Y ~ ., data = dat, alpha = 0.5, lambda = 0.01, family = "binomial")
@@ -137,7 +138,7 @@ evaluateModel.ranger <- function(m, newx, y_true, loss, ...) {
 #' @method evaluateModel glmnet
 #' @export
 evaluateModel.glmnet <- function(m, newx, y_true, loss, ...) {
-	y_pred <- predict(m, newx = newx, ... = ...)
+	y_pred <- predict(m, newx = newx, type = "response", ... = ...)
 	loss(y_true, y_pred)
 }
 
@@ -195,7 +196,7 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
 	pen.f <- ainet:::.vimp(fml, train, which = "impurity", gamma = 1, renorm = "trunc")
 	cvAINET <- cv.fglmnet(fml, train, pen.f = pen.f, family = "binomial", relax = TRUE)
   AINET <- ainet(fml, data = train, pen.f = pen.f, lambda = cvAINET$relaxed$lambda.1se,
-                 alpha = cvAINET$relaxed$gamma.1se)
+                 alpha = cvAINET$relaxed$gamma.1se, family = "binomial")
 
   ## Logistic regression
   if (condition$p < condition$n) {
@@ -221,15 +222,16 @@ analyze <- function(condition, dat, fixed_objects = NULL) {
   RF <- ranger(fml, data = train, probability = TRUE)
 
   ## Return
-  metrics <- list(brier, scaledBrier, nll, acc, auroc, calibrationSlope, calibrationInTheLarge)
-  models <- list(AINET, GLM, EN, AEN, RF)
+  metrics <- list(brier = brier, scaledBrier = scaledBrier, nll = nll, acc = acc,
+                  auc = auroc, cslope = calibrationSlope, clarge = calibrationInTheLarge)
+  models <- list(AINET = AINET, GLM = GLM, EN = EN, AEN = AEN, RF = RF)
   # TODO: coerce ret to data.frame
-  # TODO: Check why nll and calibration throws NaNs
-  ret <- lapply(models, function(mod) {
-    lapply(metrics, function(met) {
+  res <- sapply(models, function(mod) {
+    sapply(metrics, function(met) {
       evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
     })
   })
+  ret <- data.frame(t(res))
   ret
 }
 

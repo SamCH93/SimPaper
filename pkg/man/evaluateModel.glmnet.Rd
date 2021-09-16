@@ -10,6 +10,7 @@
 Evaluate glmnet
 }
 \examples{
+set.seed(10)
 dat <- generateData()
 ndat <- generateData()
 m <- fglmnet(Y ~ ., data = dat, alpha = 0.5, lambda = 0.01, family = "binomial")
