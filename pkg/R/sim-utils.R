@@ -165,7 +165,7 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   ## Simulate training and test data
   train <- generateData(n = n, p = p, b = betas)
   test <- generateData(n = fixed_objects$ntest, p = p, b = betas)
-  list(train = train, test = test)
+  list(train = train, test = test, beta = betas)
 }
 
 #' SimDesign function for analyzing simulated data
@@ -214,18 +214,24 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ## Random forest
   RF <- ranger(fml, data = train, probability = TRUE)
 
-  ## Return
-  # TODO: Implement ground truth adjusted metrics
+  ## Estimands
+  # TODO: Implement oracle metrics
   metrics <- list(brier = brier, scaledBrier = scaledBrier, nll = nll, acc = acc,
                   auc = auroc, cslope = calibrationSlope, clarge = calibrationInTheLarge)
   models <- list(AINET = AINET, GLM = GLM, EN = EN, AEN = AEN, RF = RF)
 
+  ## Compute oracle versions
+  oracle_predictions <- plogis(qlogis(condition$prev) + newx %*% dat$beta)
+  oracles <- lapply(metrics, function(met) met(y_true, oracle_predictions))
+  names(oracles) <- paste0(names(metrics), "_oracle")
+
+  ## Return
   res <- sapply(models, function(mod) {
     sapply(metrics, function(met) {
       evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
     })
   })
-  ret <- data.frame(condition, t(res))
+  ret <- data.frame(condition, t(res), t(oracles))
   ret$model <- names(models)
   ret
 }
