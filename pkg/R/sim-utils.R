@@ -205,7 +205,7 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ## Elastic net
   cvEN <- cv.fglmnet(fml, data = train, relax = TRUE, family = "binomial")
   EN <- fglmnet(fml, data = train, alpha = cvEN$relaxed$gamma.1se,
-                 lambda = cvEN$relaxed$lambda.1se, family = "binomial")
+                lambda = cvEN$relaxed$lambda.1se, family = "binomial")
 
   ## Adaptive elastic net
   ENpenf <- 1 / abs(coef(GLM)[-1])
