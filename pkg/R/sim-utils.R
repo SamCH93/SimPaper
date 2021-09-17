@@ -52,7 +52,9 @@ nll <- function(y_true, y_pred) {
 #' @export
 auroc <- function(y_true, y_pred) {
   suppressMessages({
-    auc(y_true, as.vector(y_pred))
+    tauc <- auc(y_true, as.vector(y_pred))
+    attributes(tauc) <- NULL
+    tauc
   })
 }
 
@@ -232,6 +234,7 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ## Compute oracle versions of the estimands
   oracle_predictions <- plogis(qlogis(condition$prev) + newx %*% dat$beta)
   oracles <- lapply(metrics, function(met) met(y_true, oracle_predictions))
+  oracles <- do.call("c", oracles)
   names(oracles) <- paste0(names(metrics), "_oracle")
 
   ## Return
@@ -251,7 +254,6 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
 #' prev = 0.5, seed = 1)
 #' dat <- generate(condition)
 #' res <- analyze(condition, dat)
-#' debugonce(summarize)
 #' summarize(condition, res)
 #' @importFrom tidyr gather
 #' @export
