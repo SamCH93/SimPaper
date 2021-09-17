@@ -12,6 +12,5 @@ SimDesign function for generating the data
 \examples{
 condition <- data.frame(n = 100, EPV = 20, sparsity = "dense", prev = 0.01,
 sigma2 = 1, rho = 0, p = 1, q = 0)
-debugonce(generate)
 generate(condition)
 }

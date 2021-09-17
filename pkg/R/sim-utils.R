@@ -184,6 +184,9 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   fml <- Y ~ .
   newx <- ainet:::.rm_int(model.matrix(fml, test))
   y_true <- test$Y
+  ncoef <- length(dat$beta)
+  nmcoef <- c("X.0", paste0("X.", seq_len(ncoef)))
+  ocoef <- c(qlogis(condition$prev), dat$beta)
 
   # TODO: Convergence checks, try-error exceptions
 
@@ -222,9 +225,9 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   models <- list(AINET = AINET, GLM = GLM, EN = EN, AEN = AEN, RF = RF)
 
   ## Coefs of all models but RF
-  coefs <- do.call("cbind", lapply(models[-length(models)],
-                                   function(mod) as.vector(coef(mod))))
-  coefs <- cbind(coefs, oracle = c(qlogis(condition$prev), dat$beta))
+  coefs <- lapply(models[-length(models)], function(mod) as.vector(coef(mod)))
+  coefs <- do.call("cbind", coefs)
+  coefs <- data.frame(coef = nmcoef, coefs, oracle = ocoef)
 
   ## Compute oracle versions of the estimands
   oracle_predictions <- plogis(qlogis(condition$prev) + newx %*% dat$beta)
@@ -260,11 +263,12 @@ summarize <- function(condition, results, fixed_objects = NULL) {
   estimands <- gather(estimands, key = "estimand", value = "value", brier:clarge)
   estimands <- gather(estimands, key = "oracle_estimand", value = "oracle_value",
                     brier_oracle:clarge_oracle)
-  estimands$estimaned_oracle_adjusted <- estimands$value - estimands$oracle_value
 
   ## Coefficients
+  coefs <- gather(coefs, key = "model", value = "estimate", AINET:AEN)
 
   # TODO: Add all summary metrics (anova, multcomp, visualization separately)
+  # TODO: Return statement
   estimands
 }
 
