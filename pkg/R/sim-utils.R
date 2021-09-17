@@ -1,14 +1,15 @@
 
 ### Data generating process
 
-#' Generate data from sparse linear model
+#' Generate data from logistic model
 #' @export
 generateData <- function(n = 1e2, p = 20, b = rnorm(p), prev = 0.5, rho = 0) {
-  b0 <- qlogis(prev)
-  Sigma <- matrix(rho, nrow = p, ncol = p)
+  b0 <- qlogis(p = prev)
+  Sigma <- matrix(data = rho, nrow = p, ncol = p)
   diag(Sigma) <- 1
-	X <- rmvnorm(n, sigma = Sigma)
-	Y <- factor(rbinom(n = n, size = 1, plogis(b0 + X %*% b)))
+	X <- rmvnorm(n = n , sigma = Sigma)
+	Y <- factor(x = rbinom(n = n, size = 1, prob = plogis(q = b0 + X %*% b)),
+              levels = c(0, 1))
 	return(data.frame(Y = Y, X = X))
 }
 
@@ -50,7 +51,9 @@ nll <- function(y_true, y_pred) {
 #' auroc(ndat$Y, preds)
 #' @export
 auroc <- function(y_true, y_pred) {
-  auc(y_true, as.vector(y_pred))
+  suppressMessages({
+    auc(y_true, as.vector(y_pred))
+  })
 }
 
 #' Compute Brier score
@@ -89,8 +92,8 @@ scaledBrier <- function(y_true, y_pred) {
 #' calibrationSlope(ndat$Y, preds)
 #' @export
 calibrationSlope <- function(y_true, y_pred) {
-  logits <- qlogis(y_pred)
-  m <- glm(y_true ~ logits, family = binomial)
+  logits <- qlogis(p = y_pred)
+  m <- glm(y_true ~ 1 + logits, family = binomial)
   unname(coef(m)[2])
 }
 
@@ -103,7 +106,7 @@ calibrationSlope <- function(y_true, y_pred) {
 #' calibrationInTheLarge(ndat$Y, preds)
 #' @export
 calibrationInTheLarge <- function(y_true, y_pred) {
-  logits <- qlogis(y_pred)
+  logits <- qlogis(p = y_pred)
   m <- glm(y_true ~ 1 + offset(logits), family = binomial)
   unname(coef(m)[1])
 }
@@ -147,7 +150,6 @@ evaluateModel.glmnet <- function(m, newx, y_true, loss, ...) {
 #' @examples
 #' condition <- data.frame(n = 100, EPV = 20, sparsity = "dense", prev = 0.01,
 #' sigma2 = 1, rho = 0, p = 1, q = 0)
-#' debugonce(generate)
 #' generate(condition)
 #' @export
 generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
@@ -203,7 +205,7 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ## Elastic net
   cvEN <- cv.fglmnet(fml, data = train, relax = TRUE, family = "binomial")
   EN <- fglmnet(fml, data = train, alpha = cvEN$relaxed$gamma.1se,
-                 lambda = cvEN$relaxed$lambda.1se, family = "binomial")
+                lambda = cvEN$relaxed$lambda.1se, family = "binomial")
 
   ## Adaptive elastic net
   ENpenf <- 1 / abs(coef(GLM)[-1])
