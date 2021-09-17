@@ -39,7 +39,7 @@
 % allows to show superiority of any method}
 \newcommand\subtitle{Questionable research practices in %Undisclosed flexibility in design, execution, and reporting of
 comparative simulation studies allows to show superiority of any method}
-\newcommand\longauthors{Samuel Pawel, Lucas Kook}
+\newcommand\longauthors{Samuel Pawel, Lucas Kook, Kelly Reeve}
 \newcommand\shortauthors{\longauthors} % if longauthors too long, change here
 \newcommand\affiliation{
   Epidemiology, Biostatistics and Prevention Institute (EBPI) \\

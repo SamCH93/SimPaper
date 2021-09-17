@@ -37,7 +37,7 @@
 \newcommand\longtitle{Pitfalls and Potentials in Simulation Studies}
 \newcommand\shorttitle{\longtitle}
 \newcommand\subtitle{Simulation Protocol}
-\newcommand\longauthors{Samuel Pawel, Lucas Kook}
+\newcommand\longauthors{Samuel Pawel, Lucas Kook, Kelly Reeve}
 \newcommand\shortauthors{\longauthors} % if longauthors too long, change here
 \newcommand\affiliation{
   Epidemiology, Biostatistics and Prevention Institute (EBPI) \\
@@ -330,7 +330,7 @@ independently generated test data.
 \end{itemize}
 
 To facilitate comparison between simulation conditions, all estimands will also
-be corrected by the oracale version of the estimand, \eg the Brier score will be
+be corrected by the oracle version of the estimand, \eg the Brier score will be
 computed from the ground truth parameters and the simulated data $\rx$,
 subsequently the oracle Brier score and will be subtracted from the estimated
 Brier score.
