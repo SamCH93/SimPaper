@@ -214,13 +214,17 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ## Random forest
   RF <- ranger(fml, data = train, probability = TRUE)
 
-  ## Estimands
-  # TODO: Implement oracle metrics
+  ## List estimands and models
   metrics <- list(brier = brier, scaledBrier = scaledBrier, nll = nll, acc = acc,
                   auc = auroc, cslope = calibrationSlope, clarge = calibrationInTheLarge)
   models <- list(AINET = AINET, GLM = GLM, EN = EN, AEN = AEN, RF = RF)
 
-  ## Compute oracle versions
+  ## Coefs of all models but RF
+  coefs <- do.call("cbind", lapply(models[-length(models)],
+                                   function(mod) as.vector(coef(mod))))
+  coefs <- cbind(coefs, oracle = c(qlogis(condition$prev), dat$beta))
+
+  ## Compute oracle versions of the estimands
   oracle_predictions <- plogis(qlogis(condition$prev) + newx %*% dat$beta)
   oracles <- lapply(metrics, function(met) met(y_true, oracle_predictions))
   names(oracles) <- paste0(names(metrics), "_oracle")
@@ -233,15 +237,33 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   })
   ret <- data.frame(condition, t(res), t(oracles))
   ret$model <- names(models)
-  ret
+  list(estimands = ret, coefs = coefs)
 }
 
 #' SimDesign function for summarizing simulation results
+#' @examples
+#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, rho = 0,
+#' prev = 0.5, seed = 1)
+#' dat <- generate(condition)
+#' res <- analyze(condition, dat)
+#' debugonce(summarize)
+#' summarize(condition, res)
+#' @importFrom tidyr gather
 #' @export
 summarize <- function(condition, results, fixed_objects = NULL) {
+  estimands <- results$estimands
+  coefs <- results$coefs
+
+  ## Estimands
+  estimands <- gather(estimands, key = "estimand", value = "value", brier:clarge)
+  estimands <- gather(estimands, key = "oracle_estimand", value = "oracle_value",
+                    brier_oracle:clarge_oracle)
+  estimands$estimaned_oracle_adjusted <- estimands$value - estimands$oracle_value
+
+  ## Coefficients
+
   # TODO: Add all summary metrics (anova, multcomp, visualization separately)
-  ret <- c(bias = NaN, RMSE = NaN)
-  ret
+  estimands
 }
 
 ### Helpers
