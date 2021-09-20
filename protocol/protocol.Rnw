@@ -190,6 +190,7 @@ simGrid <- expand.grid(n = n, EPV = EPV, # sparsity = sparsity,
 		       prev = prev,
                        sigma2 = sigma2, rho = rho, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
+simGrid$p[simGrid$p == 1] <- 2
 # simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
 # simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, 0))
 nScenarios <- nrow(simGrid)
@@ -232,7 +233,8 @@ because previous simulation studies showed that $\EPV$ rather than the absolute
 sample size $n$ influences
 the predictive performance of a method. $\EPV \in \{\Sexpr{EPV}\}$
 are chosen to cover scenarios with low- to high-dimensional covariates
-\citep[\cf][]{vanSmeden2018}.
+\citep[\cf][]{vanSmeden2018}. Lastly, we consider only multivariable models,
+\ie with $p \geq 2$.
 
 % \subsection*{Sparsity in $\shiftparm$}
 % We consider sparse and dense simulation settings for $\shiftparm$. We choose
