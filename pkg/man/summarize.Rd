@@ -10,9 +10,11 @@ summarize(condition, results, fixed_objects = NULL)
 SimDesign function for summarizing simulation results
 }
 \examples{
+set.seed(123)
 condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, rho = 0,
-prev = 0.5, seed = 1)
+prev = 0.5)
 dat <- generate(condition)
 res <- analyze(condition, dat)
+debugonce(summarize)
 summarize(condition, res)
 }

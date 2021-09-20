@@ -250,10 +250,12 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
 
 #' SimDesign function for summarizing simulation results
 #' @examples
+#' set.seed(123)
 #' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, rho = 0,
-#' prev = 0.5, seed = 1)
+#' prev = 0.5)
 #' dat <- generate(condition)
 #' res <- analyze(condition, dat)
+#' debugonce(summarize)
 #' summarize(condition, res)
 #' @importFrom tidyr gather
 #' @importFrom dplyr bind_rows mutate summarise group_by
@@ -278,14 +280,15 @@ summarize <- function(condition, results, fixed_objects = NULL) {
   }
 
   ## Estimands
-  estimands <- gather(estimands, key = "estimand", value = "value", brier:clarge)
-  estimands <- gather(estimands, key = "oracle_estimand", value = "oracle_value",
-                      brier_oracle:clarge_oracle)
+  estimands <- gather(estimands, key = "estimand", value = "value", brier:clarge_oracle) %>%
+    separate(estimand, into = c("estimand", "oracle"), sep = "_", fill = "right") %>%
+    spread(key = oracle, value = value) %>%
+    rename(value = `<NA>`)
 
   estimands_summary <- estimands %>%
-    mutate(oracle_adj = value - oracle_value) %>%
+    mutate(oracle_adj = value - oracle) %>%
     group_by(model, estimand) %>%
-    summarise(value = sumFUN(value), oracle_adj = sumFUN(oracle_adj))
+    summarise(value = sumFUN(value), oracle_adj = sumFUN(oracle_adj), oracle = oracle)
 
   ## Coefficients
   coefs_summary <- gather(coefs, key = "model", value = "estimate", AINET:AEN) %>%
