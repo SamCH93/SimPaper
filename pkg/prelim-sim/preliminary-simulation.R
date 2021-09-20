@@ -18,12 +18,13 @@ rho <- c(0, 0.3, 0.6, 0.95)
 simGrid <- createDesign(n = n, EPV = EPV, prev = prev, sigma2 = sigma2,
                         rho = rho, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n * prev / EPV))
+simGrid$p[simGrid$p == 1] <- 2
 nScenarios <- nrow(simGrid)
 
 # Simulation --------------------------------------------------------------
 
 res <- runSimulation(
-    design = simGrid[13, ],
+    design = simGrid[1:5, ],
     replications = 3, # TODO perform sample size calculation and adjust
     generate = generate,
     analyse = analyze,
