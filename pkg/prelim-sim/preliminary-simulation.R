@@ -24,10 +24,10 @@ nScenarios <- nrow(simGrid)
 
 res <- runSimulation(
     design = simGrid[13, ],
-    replications = 20, # TODO perform sample size calculation and adjust
+    replications = 3, # TODO perform sample size calculation and adjust
     generate = generate,
     analyse = analyze,
-    summarise = NA, # TODO write summarize function to compute summary stats
+    summarise = summarize, # TODO write summarize function to compute summary stats
     save = TRUE,
     save_seeds = TRUE,
     save_results = TRUE,

@@ -229,7 +229,7 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ## Coefs of all models but RF
   coefs <- lapply(models[-length(models)], function(mod) as.vector(coef(mod)))
   coefs <- do.call("cbind", coefs)
-  coefs <- data.frame(coef = nmcoef, coefs, oracle = ocoef)
+  coefs <- data.frame(condition, coef = nmcoef, coefs, oracle = ocoef)
 
   ## Compute oracle versions of the estimands
   oracle_predictions <- plogis(qlogis(condition$prev) + newx %*% dat$beta)
@@ -256,10 +256,20 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
 #' res <- analyze(condition, dat)
 #' summarize(condition, res)
 #' @importFrom tidyr gather
+#' @importFrom dplyr bind_rows mutate summarise group_by
+#' @importFrom magrittr `%>%`
+#' @importFrom tibble tibble
 #' @export
 summarize <- function(condition, results, fixed_objects = NULL) {
-  estimands <- results$estimands
-  coefs <- results$coefs
+  if (!is.null(names(results[1]))) { # only one sim, for testing
+    estimands <- results$estimands
+    coefs <- results$coefs
+  } else {
+    estimands <- bind_rows(lapply(results, function(x) x[["estimands"]]),
+                                  .id = "run")
+    coefs <- bind_rows(lapply(results, function(x) x[["coefs"]]),
+                              .id = "run")
+  }
 
   ## Estimands
   estimands <- gather(estimands, key = "estimand", value = "value", brier:clarge)
@@ -267,11 +277,25 @@ summarize <- function(condition, results, fixed_objects = NULL) {
                     brier_oracle:clarge_oracle)
 
   ## Coefficients
-  coefs <- gather(coefs, key = "model", value = "estimate", AINET:AEN)
+  coefs_summary <- gather(coefs, key = "model", value = "estimate", AINET:AEN) %>%
+    mutate(bias = estimate - oracle) %>%
+    group_by(model, coef) %>%
+    summarise(mean_est = mean(estimate),
+              mean_bias = mean(bias),
+              sd_est = sd(estimate),
+              sd_bias = sd(bias))
 
   # TODO: Add all summary metrics (anova, multcomp, visualization separately)
   # TODO: Return statement
-  estimands
+  estimands_summary <- estimands %>%
+    mutate(oracle_adj = value - oracle_value) %>%
+    group_by(model) %>%
+    summarise(mean_estimand = mean(value),
+              mean_oracle_adj = mean(oracle_adj),
+              sd_estimand = sd(value),
+              sd_oracle_adj = sd(oracle_adj))
+
+  tibble(estimands = list(estimands_summary), coefs = list(coefs_summary))
 }
 
 ### Helpers
