@@ -258,7 +258,6 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
 #' @importFrom tidyr gather
 #' @importFrom dplyr bind_rows mutate summarise group_by
 #' @importFrom magrittr `%>%`
-#' @importFrom tibble tibble
 #' @export
 summarize <- function(condition, results, fixed_objects = NULL) {
   if (!is.null(names(results[1]))) { # only one sim, for testing
@@ -271,31 +270,31 @@ summarize <- function(condition, results, fixed_objects = NULL) {
                               .id = "run")
   }
 
+  ## Summaries
+  sumFUN <- function(x, FUNs = list(mean = mean, median = median, sd = sd, iqr = IQR)) {
+    ret <- unlist(lapply(FUNs, function(fun) fun(x, na.rm = TRUE)))
+    names(ret) <- names(FUNs)
+    data.frame(t(ret))
+  }
+
   ## Estimands
   estimands <- gather(estimands, key = "estimand", value = "value", brier:clarge)
   estimands <- gather(estimands, key = "oracle_estimand", value = "oracle_value",
-                    brier_oracle:clarge_oracle)
+                      brier_oracle:clarge_oracle)
+
+  estimands_summary <- estimands %>%
+    mutate(oracle_adj = value - oracle_value) %>%
+    group_by(model, estimand) %>%
+    summarise(value = sumFUN(value), oracle_adj = sumFUN(oracle_adj))
 
   ## Coefficients
   coefs_summary <- gather(coefs, key = "model", value = "estimate", AINET:AEN) %>%
     mutate(bias = estimate - oracle) %>%
     group_by(model, coef) %>%
-    summarise(mean_est = mean(estimate),
-              mean_bias = mean(bias),
-              sd_est = sd(estimate),
-              sd_bias = sd(bias))
+    summarise(estimate = sumFUN(estimate), bias = sumFUN(bias))
 
-  # TODO: Add all summary metrics (anova, multcomp, visualization separately)
-  # TODO: Return statement
-  estimands_summary <- estimands %>%
-    mutate(oracle_adj = value - oracle_value) %>%
-    group_by(model) %>%
-    summarise(mean_estimand = mean(value),
-              mean_oracle_adj = mean(oracle_adj),
-              sd_estimand = sd(value),
-              sd_oracle_adj = sd(oracle_adj))
-
-  tibble(estimands = list(estimands_summary), coefs = list(coefs_summary))
+  ## Return
+  list(estimands = estimands_summary, coefs = coefs_summary)
 }
 
 ### Helpers

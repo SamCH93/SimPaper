@@ -40,6 +40,8 @@ res <- runSimulation(
     packages = c("ainet", "pROC", "glmnet")
 )
 
+SimExtract(res, what = "summarise")
+
 ## SimResults(results = res) ## can alternatively also read with readRDS
 ## boxplot(brier ~ model,
 ##         data = do.call("rbind", SimResults(results = res)$results))
