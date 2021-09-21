@@ -204,9 +204,9 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
                  alpha = cvAINET$relaxed$gamma.1se, family = "binomial")
 
   ## Logistic regression
-  if (condition$p < condition$n) {
+  if (condition$p < condition$n) { # Fit unpenalized glm if low-dim
     GLM <- fglmnet(fml, data = train, alpha = 0, lambda = 0, family = "binomial")
-  } else {
+  } else { # Tune a ridge regression if high-dim
     cvGLM <- cv.fglmnet(fml, data = train, alpha = 0, family = "binomial")
     GLM <- fglmnet(fml, data = train, alpha = 0, lambda = cvGLM$lambda.1se,
                    family = "binomial")
@@ -242,7 +242,7 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   oracles <- do.call("c", oracles)
   names(oracles) <- paste0(names(metrics), "_oracle")
 
-  ## Return
+  ## Return (compute all estimands to all predictions from all models)
   res <- sapply(models, function(mod) {
     sapply(metrics, function(met) {
       evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
@@ -276,7 +276,7 @@ summarize <- function(condition, results, fixed_objects = NULL) {
                               .id = "run")
   }
 
-  ## Exceptions
+  ## Exceptions (catch exceptions from analyze() function)
   if (is.null(results$estimands))
     return(list(estimands = NULL, coefs = NULL))
 
