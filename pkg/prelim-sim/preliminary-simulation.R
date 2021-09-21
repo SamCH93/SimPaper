@@ -28,7 +28,7 @@ res <- runSimulation(
     replications = 3, # TODO perform sample size calculation and adjust
     generate = generate,
     analyse = analyze,
-    summarise = summarize, # TODO write summarize function to compute summary stats
+    summarise = summarize,
     save = TRUE,
     save_seeds = TRUE,
     save_results = TRUE,
@@ -38,11 +38,13 @@ res <- runSimulation(
     parallel = TRUE,
     ## ncores = 1000, # TODO set to cores of our simulation machine
     fixed_objects = list(ntest = 1e4),
-    packages = c("ainet", "pROC", "glmnet")
+    packages = c("ainet")
 )
 
+## extract summaries
 SimExtract(res, what = "summarise")
 
+## extract raw simulation results
 estimands <- do.call("rbind", lapply(
     X = SimResults(results = res),
     FUN = function(x) {
@@ -64,7 +66,3 @@ coefs <- do.call("rbind", lapply(
         ))
     }
 ))
-
-## SimResults(results = res) ## can alternatively also read with readRDS
-## boxplot(brier ~ model,
-##         data = do.call("rbind", SimResults(results = res)$results))
