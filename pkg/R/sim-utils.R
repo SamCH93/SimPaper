@@ -74,6 +74,19 @@ brier <- function(y_true, y_pred) {
   mean((y_true - y_pred)^2)
 }
 
+#' Compute variance of Brier score contributions
+#' @examples
+#' dat <- generateData()
+#' ndat <- generateData()
+#' m <- glm(Y ~ ., data = dat, family = binomial)
+#' preds <- predict(m, type = "response", newdata = ndat)
+#' brierVar(ndat$Y, preds)
+#' @export
+brierVar <- function(y_true, y_pred) {
+  y_true <- .assert_numeric_binary(y_true)
+  var((y_true - y_pred)^2)
+}
+
 #' Compute scaled Brier score
 #' @examples
 #' dat <- generateData()
@@ -258,8 +271,8 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
 	}
 
   ## List estimands and models
-  metrics <- list(brier = brier, scaledBrier = scaledBrier, nll = nll, acc = acc,
-                  auc = auroc, cslope = calibrationSlope, clarge = calibrationInTheLarge)
+  metrics <- list(brier = brier, scaledBrier = scaledBrier, brierVar = brierVar, nll = nll,
+                  acc = acc, auc = auroc, cslope = calibrationSlope, clarge = calibrationInTheLarge)
   models <- list(AINET = AINET, GLM = GLM, EN = EN, AEN = AEN, RF = RF)
 
   ## Coefs of all models but RF
