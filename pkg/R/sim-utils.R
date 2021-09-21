@@ -2,6 +2,9 @@
 ### Data generating process
 
 #' Generate data from logistic model
+#' @examples
+#' dat <- generateData(p = 5, prev = 0.01, rho = 0.5)
+#' cor(dat[,-1])
 #' @export
 generateData <- function(n = 1e2, p = 20, b = rnorm(p), prev = 0.5, rho = 0) {
   b0 <- qlogis(p = prev)
@@ -95,8 +98,8 @@ scaledBrier <- function(y_true, y_pred) {
 #' @export
 calibrationSlope <- function(y_true, y_pred) {
   logits <- qlogis(p = y_pred)
-  m <- glm(y_true ~ 1 + logits, family = binomial)
-  unname(coef(m)[2])
+  m <- try(glm(y_true ~ 1 + logits, family = binomial))
+  ifelse(inherits(m, "try-error"), NA, unname(coef(m)[2]))
 }
 
 #' Compute calibration in the large
@@ -151,7 +154,7 @@ evaluateModel.glmnet <- function(m, newx, y_true, loss, ...) {
 #' SimDesign function for generating the data
 #' @examples
 #' condition <- data.frame(n = 100, EPV = 20, sparsity = "dense", prev = 0.01,
-#' sigma2 = 1, rho = 0, p = 1, q = 0)
+#' sigma2 = 1, rho = 0.9, p = 2)
 #' generate(condition)
 #' @export
 generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
@@ -167,15 +170,15 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   betas <- rnorm(p)
 
   ## Simulate training and test data
-  train <- generateData(n = n, p = p, b = betas)
-  test <- generateData(n = fixed_objects$ntest, p = p, b = betas)
+  train <- generateData(n = n, p = p, b = betas, prev = prev, rho = rho)
+  test <- generateData(n = fixed_objects$ntest, p = p, b = betas, prev = prev, rho = rho)
   list(train = train, test = test, beta = betas)
 }
 
 #' SimDesign function for analyzing simulated data
 #' @examples
-#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, rho = 0,
-#' prev = 0.5, seed = 1)
+#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 5, rho = 0.3,
+#' prev = 0.01)
 #' dat <- generate(condition)
 #' analyze(condition, dat)
 #' @export
@@ -255,7 +258,6 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
 #' prev = 0.5)
 #' dat <- generate(condition)
 #' res <- analyze(condition, dat)
-#' debugonce(summarize)
 #' summarize(condition, res)
 #' @importFrom tidyr gather
 #' @importFrom dplyr bind_rows mutate summarise group_by

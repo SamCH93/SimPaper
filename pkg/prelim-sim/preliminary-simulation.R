@@ -43,6 +43,28 @@ res <- runSimulation(
 
 SimExtract(res, what = "summarise")
 
+estimands <- do.call("rbind", lapply(
+    X = SimResults(results = res),
+    FUN = function(x) {
+        do.call("rbind", lapply(
+            X = x$results,
+            FUN = function(y)
+                y$estimands
+        ))
+    }
+))
+
+coefs <- do.call("rbind", lapply(
+    X = SimResults(results = res),
+    FUN = function(x) {
+        do.call("rbind", lapply(
+            X = x$results,
+            FUN = function(y)
+                y$coefs
+        ))
+    }
+))
+
 ## SimResults(results = res) ## can alternatively also read with readRDS
 ## boxplot(brier ~ model,
 ##         data = do.call("rbind", SimResults(results = res)$results))
