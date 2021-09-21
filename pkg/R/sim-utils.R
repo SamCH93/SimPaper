@@ -178,7 +178,7 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
 #' SimDesign function for analyzing simulated data
 #' @examples
 #' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 5, rho = 0.3,
-#' prev = 0.01)
+#' prev = 0.1)
 #' dat <- generate(condition)
 #' analyze(condition, dat)
 #' @export
@@ -193,40 +193,69 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   nmcoef <- c("X.0", paste0("X.", seq_len(ncoef)))
   ocoef <- c(qlogis(condition$prev), dat$beta)
 
-  # TODO: Convergence checks, try-error exceptions
-  if (all(train$Y == train$Y[1])) # Only events/non-events skipped
-    return(list(estimands = NULL, coefs = NULL))
-
-  # TODO: CV fails with low number of events --> exclude?
-
-  ## AINET
-	pen.f <- ainet:::.vimp(fml, train, which = "impurity", gamma = 1, renorm = "trunc")
-	cvAINET <- cv.fglmnet(fml, train, pen.f = pen.f, family = "binomial", relax = TRUE)
-  AINET <- ainet(fml, data = train, pen.f = pen.f, lambda = cvAINET$relaxed$lambda.1se,
-                 alpha = cvAINET$relaxed$gamma.1se, family = "binomial")
+  ## Checks
+  # Only events/non-events skipped
+  if (all(train$Y == train$Y[1]))
+    stop("No events.")
 
   ## Logistic regression
   if (condition$p < condition$n) { # Fit unpenalized glm if low-dim
-    GLM <- fglmnet(fml, data = train, alpha = 0, lambda = 0, family = "binomial")
+    GLM <- try(fglmnet(fml, data = train, alpha = 0, lambda = 0, family = "binomial"),
+               silent = TRUE)
   } else { # Tune a ridge regression if high-dim
-    cvGLM <- cv.fglmnet(fml, data = train, alpha = 0, family = "binomial")
-    GLM <- fglmnet(fml, data = train, alpha = 0, lambda = cvGLM$lambda.1se,
-                   family = "binomial")
+    cvGLM <- try(cv.fglmnet(fml, data = train, alpha = 0, family = "binomial"),
+                 silent = TRUE)
+    if (inherits(cvGLM, "try-error")) {
+      GLM <- NULL
+    } else {
+      GLM <- fglmnet(fml, data = train, alpha = 0, lambda = cvGLM$lambda.1se,
+                     family = "binomial")
+    }
   }
+  if (inherits(GLM, "try-error"))
+    GLM <- NULL
 
-  ## Elastic net
-  cvEN <- cv.fglmnet(fml, data = train, relax = TRUE, family = "binomial")
-  EN <- fglmnet(fml, data = train, alpha = cvEN$relaxed$gamma.1se,
-                lambda = cvEN$relaxed$lambda.1se, family = "binomial")
+  ## AINET
+	pen.f <- ainet:::.vimp(fml, train, which = "impurity", gamma = 1, renorm = "trunc")
+	cvAINET <- try(cv.fglmnet(fml, train, pen.f = pen.f, family = "binomial", relax = TRUE),
+	               silent = TRUE)
+	if (inherits(cvAINET, "try-error")) {
+	  AINET <- NULL
+	} else {
+	  AINET <- ainet(fml, data = train, pen.f = pen.f, lambda = cvAINET$relaxed$lambda.1se,
+	                 alpha = cvAINET$relaxed$gamma.1se, family = "binomial")
+	}
 
-  ## Adaptive elastic net
-  ENpenf <- 1 / abs(coef(GLM)[-1])
-  cvAEN <- cv.fglmnet(fml, data = train, relax = TRUE, pen.f = ENpenf, family = "binomial")
-  AEN <- fglmnet(fml, data = train, pen.f = ENpenf, alpha = cvAEN$relaxed$gamma.1se,
-                 lambda = cvAEN$relaxed$lambda.1se, family = "binomial")
+	## Elastic net
+	cvEN <- try(cv.fglmnet(fml, data = train, relax = TRUE, family = "binomial"),
+	            silent = TRUE)
+	if (inherits(cvEN, "try-error")) {
+	  EN <- NULL
+	} else {
+	  EN <- fglmnet(fml, data = train, alpha = cvEN$relaxed$gamma.1se,
+	                lambda = cvEN$relaxed$lambda.1se, family = "binomial")
+	}
 
-  ## Random forest
-  RF <- ranger(fml, data = train, probability = TRUE)
+	## Adaptive elastic net
+	if (!is.null(GLM)) {
+	  ENpenf <- 1 / abs(coef(GLM)[-1])
+	  cvAEN <- try(cv.fglmnet(fml, data = train, relax = TRUE, pen.f = ENpenf, family = "binomial"),
+	               silent = TRUE)
+	  if (inherits(cvAEN, "try-error")) {
+	    AEN <- NULL
+	  } else {
+	    AEN <- fglmnet(fml, data = train, pen.f = ENpenf, alpha = cvAEN$relaxed$gamma.1se,
+	                   lambda = cvAEN$relaxed$lambda.1se, family = "binomial")
+	  }
+	} else {
+	  AEN <- NULL
+	}
+
+	## Random forest
+	RF <- try(ranger(fml, data = train, probability = TRUE), silent = TRUE)
+	if (inherits(RF, "try-error")) {
+	  RF <- NULL
+	}
 
   ## List estimands and models
   metrics <- list(brier = brier, scaledBrier = scaledBrier, nll = nll, acc = acc,
@@ -234,7 +263,12 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   models <- list(AINET = AINET, GLM = GLM, EN = EN, AEN = AEN, RF = RF)
 
   ## Coefs of all models but RF
-  coefs <- lapply(models[-length(models)], function(mod) as.vector(coef(mod)))
+  # TODO: coef(NULL) throws NULL, so return rep(NA, length(coefs))
+  coefs <- lapply(models[-length(models)],
+                  function(mod) {
+                    ifelse(is.null(mod), rep(NA, ncoef), as.vector(coef(mod)))
+                  }
+  )
   coefs <- do.call("cbind", coefs)
   coefs <- data.frame(condition, coef = nmcoef, coefs, oracle = ocoef)
 
@@ -247,7 +281,7 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ## Return (compute all estimands to all predictions from all models)
   res <- sapply(models, function(mod) {
     sapply(metrics, function(met) {
-      evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
+      ifelse(is.null(mod), NA, evaluateModel(mod, newx = newx, y_true = y_true, loss = met))
     })
   })
   ret <- data.frame(condition, t(res), t(oracles))
@@ -279,8 +313,8 @@ summarize <- function(condition, results, fixed_objects = NULL) {
   }
 
   ## Exceptions (catch exceptions from analyze() function)
-  # if (is.null(results$estimands))
-    # return(list(estimands = NULL, coefs = NULL))
+  if (nrow(estimands) == 0)
+    return(list(estimands = NULL, coefs = NULL))
 
   ## Summaries
   sumFUN <- function(x, FUNs = list(mean = mean, median = median, sd = sd, iqr = IQR)) {

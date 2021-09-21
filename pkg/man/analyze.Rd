@@ -11,7 +11,7 @@ SimDesign function for analyzing simulated data
 }
 \examples{
 condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 5, rho = 0.3,
-prev = 0.01)
+prev = 0.001)
 dat <- generate(condition)
 analyze(condition, dat)
 }
