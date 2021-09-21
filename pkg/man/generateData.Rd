@@ -9,3 +9,7 @@ generateData(n = 100, p = 20, b = rnorm(p), prev = 0.5, rho = 0)
 \description{
 Generate data from logistic model
 }
+\examples{
+dat <- generateData(p = 5, prev = 0.01, rho = 0.5)
+cor(dat[,-1])
+}

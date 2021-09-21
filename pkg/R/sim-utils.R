@@ -2,6 +2,9 @@
 ### Data generating process
 
 #' Generate data from logistic model
+#' @examples
+#' dat <- generateData(p = 5, prev = 0.01, rho = 0.5)
+#' cor(dat[,-1])
 #' @export
 generateData <- function(n = 1e2, p = 20, b = rnorm(p), prev = 0.5, rho = 0) {
   b0 <- qlogis(p = prev)
@@ -95,8 +98,8 @@ scaledBrier <- function(y_true, y_pred) {
 #' @export
 calibrationSlope <- function(y_true, y_pred) {
   logits <- qlogis(p = y_pred)
-  m <- glm(y_true ~ 1 + logits, family = binomial)
-  unname(coef(m)[2])
+  m <- try(glm(y_true ~ 1 + logits, family = binomial), silent = TRUE)
+  ifelse(inherits(m, "try-error"), NA, unname(coef(m)[2]))
 }
 
 #' Compute calibration in the large
@@ -109,8 +112,8 @@ calibrationSlope <- function(y_true, y_pred) {
 #' @export
 calibrationInTheLarge <- function(y_true, y_pred) {
   logits <- qlogis(p = y_pred)
-  m <- glm(y_true ~ 1 + offset(logits), family = binomial)
-  unname(coef(m)[1])
+  m <- try(glm(y_true ~ 1 + offset(logits), family = binomial), silent = TRUE)
+  ifelse(inherits(m, "try-error"), NA, unname(coef(m)[1]))
 }
 
 #' Evaluate model at new observations with `loss`
@@ -151,7 +154,7 @@ evaluateModel.glmnet <- function(m, newx, y_true, loss, ...) {
 #' SimDesign function for generating the data
 #' @examples
 #' condition <- data.frame(n = 100, EPV = 20, sparsity = "dense", prev = 0.01,
-#' sigma2 = 1, rho = 0, p = 1, q = 0)
+#' sigma2 = 1, rho = 0.9, p = 2)
 #' generate(condition)
 #' @export
 generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
@@ -167,15 +170,15 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   betas <- rnorm(p)
 
   ## Simulate training and test data
-  train <- generateData(n = n, p = p, b = betas)
-  test <- generateData(n = fixed_objects$ntest, p = p, b = betas)
+  train <- generateData(n = n, p = p, b = betas, prev = prev, rho = rho)
+  test <- generateData(n = fixed_objects$ntest, p = p, b = betas, prev = prev, rho = rho)
   list(train = train, test = test, beta = betas)
 }
 
 #' SimDesign function for analyzing simulated data
 #' @examples
-#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 10, rho = 0,
-#' prev = 0.5, seed = 1)
+#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 5, rho = 0.3,
+#' prev = 0.01)
 #' dat <- generate(condition)
 #' analyze(condition, dat)
 #' @export
@@ -191,6 +194,8 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ocoef <- c(qlogis(condition$prev), dat$beta)
 
   # TODO: Convergence checks, try-error exceptions
+  if (all(train$Y == train$Y[1])) # Only events/non-events skipped
+    return(list(estimands = NULL, coefs = NULL))
 
   ## AINET
 	pen.f <- ainet:::.vimp(fml, train, which = "impurity", gamma = 1, renorm = "trunc")
@@ -199,9 +204,9 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
                  alpha = cvAINET$relaxed$gamma.1se, family = "binomial")
 
   ## Logistic regression
-  if (condition$p < condition$n) {
+  if (condition$p < condition$n) { # Fit unpenalized glm if low-dim
     GLM <- fglmnet(fml, data = train, alpha = 0, lambda = 0, family = "binomial")
-  } else {
+  } else { # Tune a ridge regression if high-dim
     cvGLM <- cv.fglmnet(fml, data = train, alpha = 0, family = "binomial")
     GLM <- fglmnet(fml, data = train, alpha = 0, lambda = cvGLM$lambda.1se,
                    family = "binomial")
@@ -237,7 +242,7 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   oracles <- do.call("c", oracles)
   names(oracles) <- paste0(names(metrics), "_oracle")
 
-  ## Return
+  ## Return (compute all estimands to all predictions from all models)
   res <- sapply(models, function(mod) {
     sapply(metrics, function(met) {
       evaluateModel(mod, newx = newx, y_true = y_true, loss = met)
@@ -255,7 +260,6 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
 #' prev = 0.5)
 #' dat <- generate(condition)
 #' res <- analyze(condition, dat)
-#' debugonce(summarize)
 #' summarize(condition, res)
 #' @importFrom tidyr gather
 #' @importFrom dplyr bind_rows mutate summarise group_by
@@ -271,6 +275,10 @@ summarize <- function(condition, results, fixed_objects = NULL) {
     coefs <- bind_rows(lapply(results, function(x) x[["coefs"]]),
                               .id = "run")
   }
+
+  ## Exceptions (catch exceptions from analyze() function)
+  if (is.null(results$estimands))
+    return(list(estimands = NULL, coefs = NULL))
 
   ## Summaries
   sumFUN <- function(x, FUNs = list(mean = mean, median = median, sd = sd, iqr = IQR)) {

@@ -28,7 +28,7 @@ res <- runSimulation(
     replications = 3, # TODO perform sample size calculation and adjust
     generate = generate,
     analyse = analyze,
-    summarise = summarize, # TODO write summarize function to compute summary stats
+    summarise = summarize,
     save = TRUE,
     save_seeds = TRUE,
     save_results = TRUE,
@@ -44,11 +44,25 @@ res <- runSimulation(
 ## extract summaries
 SimExtract(res, what = "summarise")
 
-## extract raw result
-resExtract <- do.call("rbind", lapply(X = SimResults(results = res),
-                                      FUN = function(x) {
-    do.call("rbind", lapply(X = x$results, FUN = function(y) y$estimands))
-}))
-## SimResults(results = res) ## can alternatively also read with readRDS
-## boxplot(brier ~ model,
-##         data = do.call("rbind", SimResults(results = res)$results))
+## extract raw simulation results
+estimands <- do.call("rbind", lapply(
+    X = SimResults(results = res),
+    FUN = function(x) {
+        do.call("rbind", lapply(
+            X = x$results,
+            FUN = function(y)
+                y$estimands
+        ))
+    }
+))
+
+coefs <- do.call("rbind", lapply(
+    X = SimResults(results = res),
+    FUN = function(x) {
+        do.call("rbind", lapply(
+            X = x$results,
+            FUN = function(y)
+                y$coefs
+        ))
+    }
+))
