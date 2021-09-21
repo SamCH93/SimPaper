@@ -197,6 +197,8 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   if (all(train$Y == train$Y[1])) # Only events/non-events skipped
     return(list(estimands = NULL, coefs = NULL))
 
+  # TODO: CV fails with low number of events --> exclude?
+
   ## AINET
 	pen.f <- ainet:::.vimp(fml, train, which = "impurity", gamma = 1, renorm = "trunc")
 	cvAINET <- cv.fglmnet(fml, train, pen.f = pen.f, family = "binomial", relax = TRUE)
@@ -277,8 +279,8 @@ summarize <- function(condition, results, fixed_objects = NULL) {
   }
 
   ## Exceptions (catch exceptions from analyze() function)
-  if (is.null(results$estimands))
-    return(list(estimands = NULL, coefs = NULL))
+  # if (is.null(results$estimands))
+    # return(list(estimands = NULL, coefs = NULL))
 
   ## Summaries
   sumFUN <- function(x, FUNs = list(mean = mean, median = median, sd = sd, iqr = IQR)) {
