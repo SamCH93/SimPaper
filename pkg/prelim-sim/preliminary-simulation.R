@@ -43,7 +43,7 @@ res <- runSimulation(
 )
 
 ## extract summaries
-SimExtract(res, what = "summarise")
+simSum <- SimExtract(res, what = "summarise")
 
 ## extract raw simulation results
 estimands <- do.call("rbind", lapply(
