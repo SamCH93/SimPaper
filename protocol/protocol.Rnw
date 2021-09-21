@@ -458,18 +458,17 @@ is sufficiently small. The variance of $\BS$ is given by
   % &= B^{-1}n_{\text{test}}^{-1} \left\{\Ex[(y_{ib} - \hat{y}_{ib})^{4}] -
   %   \Ex[(y_{ib} - \hat{y}_{ib})^{2}]^{2}\right\}
 \end{align*}
-and $\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}$ could be decomposed
-further \citep{Bradley2008}. However, the resulting expression is difficult to
-evaluate for our data-generating process as it dependens on several of the
-simulation parameters. We therefore follow a similar approach as in
-\citet{Morris2019} and estimate
-$\widehat{\Var}\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\} < V$ from an initial
-small simulation run to get an upper bound $V$ for worst-case variance across
-all simulation conditions. The number of simulations is then given by
+and $\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}$ could be decomposed further
+\citep{Bradley2008}. However, the resulting expression is difficult to evaluate
+for our data-generating process as it dependens on several of the simulation
+parameters. We therefore follow a similar approach as in \citet{Morris2019} and
+estimate $\widehat{\Var}\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\} < V$ from an
+initial small simulation run to get an upper bound $V$ for worst-case variance
+across all simulation conditions. The number of simulations is then given by
 $$B = \frac{V}{n_{\text{test}} \Var\left(\BS\right)}.$$
-Since $\BS \in [0, 0.5]$ we decide that we require the Monte Carlo standard
-error of $\BS$ to be lower than $0.001$, hence we obtain
-$$B =V/(n_{\text{test}} \cdot 0.001^{2}).$$
+Since $\BS \in [0, 1]$ we decide that we require the Monte Carlo standard error
+of $\BS$ to be lower than four significant digits, $0.0001$, hence we obtain
+$$B =V/(n_{\text{test}} \cdot 0.0001^{2}).$$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Handling exceptions} \label{sec:exceptions}
