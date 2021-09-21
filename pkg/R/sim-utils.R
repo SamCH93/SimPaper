@@ -98,7 +98,7 @@ scaledBrier <- function(y_true, y_pred) {
 #' @export
 calibrationSlope <- function(y_true, y_pred) {
   logits <- qlogis(p = y_pred)
-  m <- try(glm(y_true ~ 1 + logits, family = binomial))
+  m <- try(glm(y_true ~ 1 + logits, family = binomial), silent = TRUE)
   ifelse(inherits(m, "try-error"), NA, unname(coef(m)[2]))
 }
 
@@ -112,8 +112,8 @@ calibrationSlope <- function(y_true, y_pred) {
 #' @export
 calibrationInTheLarge <- function(y_true, y_pred) {
   logits <- qlogis(p = y_pred)
-  m <- glm(y_true ~ 1 + offset(logits), family = binomial)
-  unname(coef(m)[1])
+  m <- try(glm(y_true ~ 1 + offset(logits), family = binomial), silent = TRUE)
+  ifelse(inherits(m, "try-error"), NA, unname(coef(m)[1]))
 }
 
 #' Evaluate model at new observations with `loss`
@@ -194,6 +194,8 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   ocoef <- c(qlogis(condition$prev), dat$beta)
 
   # TODO: Convergence checks, try-error exceptions
+  if (all(train$Y == train$Y[1])) # Only events/non-events skipped
+    return(list(estimands = NULL, coefs = NULL))
 
   ## AINET
 	pen.f <- ainet:::.vimp(fml, train, which = "impurity", gamma = 1, renorm = "trunc")
@@ -273,6 +275,10 @@ summarize <- function(condition, results, fixed_objects = NULL) {
     coefs <- bind_rows(lapply(results, function(x) x[["coefs"]]),
                               .id = "run")
   }
+
+  ## Exceptions
+  if (is.null(results$estimands))
+    return(list(estimands = NULL, coefs = NULL))
 
   ## Summaries
   sumFUN <- function(x, FUNs = list(mean = mean, median = median, sd = sd, iqr = IQR)) {
