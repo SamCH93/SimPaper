@@ -7,6 +7,7 @@ set.seed(2410)
 # Dependencies ------------------------------------------------------------
 
 library(ainet)
+library(tidyverse)
 
 # Conditions --------------------------------------------------------------
 
@@ -66,3 +67,20 @@ coefs <- do.call("rbind", lapply(
         ))
     }
 ))
+
+## Visualize raw simulation results
+
+theme_set(theme_bw())
+
+ggplot(estimands, aes(x = model, y = brier - brier_oracle)) +
+    geom_point(alpha = 0.5) +
+    facet_wrap(~ paste0("n==", n, "~EPV==", EPV, "~prev==", prev, "~rho==", rho, "~p==", p),
+               labeller = label_parsed) +
+    labs(y = "Brier score (difference from oracle)")
+
+gather(coefs, key = "model", value = "estimate", AINET:AEN) %>%
+    ggplot(aes(x = model, y = estimate - oracle, color = coef)) +
+    geom_point(alpha = 0.7, position = position_dodge(0.5)) +
+    facet_wrap(~ paste0("n==", n, "~EPV==", EPV, "~prev==", prev, "~rho==", rho, "~p==", p),
+               labeller = label_parsed) +
+    labs(y = expression(hat(beta[j])-beta[j]^0))
