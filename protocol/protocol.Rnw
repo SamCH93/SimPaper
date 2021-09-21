@@ -463,8 +463,9 @@ and $\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}$ could be decomposed further
 for our data-generating process as it dependens on several of the simulation
 parameters. We therefore follow a similar approach as in \citet{Morris2019} and
 estimate $\widehat{\Var}\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\} < V$ from an
-initial small simulation run to get an upper bound $V$ for worst-case variance
-across all simulation conditions. The number of simulations is then given by
+initial small simulation run with 100 simulations per condtion to get an upper
+bound $V$ for worst-case variance across all simulation conditions. The number
+of simulations is then given by
 $$B = \frac{V}{n_{\text{test}} \Var\left(\BS\right)}.$$
 Since $\BS \in [0, 1]$ we decide that we require the Monte Carlo standard error
 of $\BS$ to be lower than four significant digits, $0.0001$, hence we obtain
