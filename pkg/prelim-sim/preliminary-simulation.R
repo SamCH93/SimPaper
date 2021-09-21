@@ -38,11 +38,17 @@ res <- runSimulation(
     parallel = TRUE,
     ## ncores = 1000, # TODO set to cores of our simulation machine
     fixed_objects = list(ntest = 1e4),
-    packages = c("ainet", "pROC", "glmnet")
+    packages = c("ainet")
 )
 
+## extract summaries
 SimExtract(res, what = "summarise")
 
+## extract raw result
+resExtract <- do.call("rbind", lapply(X = SimResults(results = res),
+                                      FUN = function(x) {
+    do.call("rbind", lapply(X = x$results, FUN = function(y) y$estimands))
+}))
 ## SimResults(results = res) ## can alternatively also read with readRDS
 ## boxplot(brier ~ model,
 ##         data = do.call("rbind", SimResults(results = res)$results))

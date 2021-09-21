@@ -226,15 +226,14 @@ in the model for easier interpretation \citep{vanSmeden2018, Riley2018}. We will
 reverse to determine the dimensionality of the parameters below.
 
 \subsection*{Dimensionality}
-Several low- and high-dimensionality scenarios in $p$ are considered. We will
-define the dimensionality $p$ via events per variable
-(EPV) by $$p = \ceil{\frac{n \cdot \prev}{\EPV}}$$
-because previous simulation studies showed that $\EPV$ rather than the absolute
-sample size $n$ influences
-the predictive performance of a method. $\EPV \in \{\Sexpr{EPV}\}$
-are chosen to cover scenarios with low- to high-dimensional covariates
-\citep[\cf][]{vanSmeden2018}. Lastly, we consider only multivariable models,
-\ie with $p \geq 2$.
+Several low- and high-dimensionality scenarios in $p$ are considered. Previous
+simulation studies showed that $\EPV$ rather than the absolute sample size $n$
+and dimensionality $p$ influences the predictive performance of a method. We
+will therefore define the dimensionality $p$ via events per variable (EPV)
+by $$p = \min\left\{\ceil{\frac{n \cdot \prev}{\EPV}}, 2\right\}.$$ The dimensionality is
+constrained to at least $p \geq 2$ because in practice prediction models are
+only multivariable models. $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover
+scenarios with low- to high-dimensional covariates \citep[\cf][]{vanSmeden2018}.
 
 % \subsection*{Sparsity in $\shiftparm$}
 % We consider sparse and dense simulation settings for $\shiftparm$. We choose
