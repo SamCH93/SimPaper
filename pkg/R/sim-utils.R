@@ -10,7 +10,7 @@ generateData <- function(n = 1e2, p = 20, b = rnorm(p), prev = 0.5, rho = 0) {
   b0 <- qlogis(p = prev)
   Sigma <- matrix(data = rho, nrow = p, ncol = p)
   diag(Sigma) <- 1
-	X <- rmvnorm(n = n , sigma = Sigma)
+	X <- rmvn(n = n, mu = rep(0, p), sigma = Sigma)
 	Y <- factor(x = rbinom(n = n, size = 1, prob = plogis(q = b0 + X %*% b)),
               levels = c(0, 1))
 	return(data.frame(Y = Y, X = X))
@@ -190,9 +190,10 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
 
 #' SimDesign function for analyzing simulated data
 #' @examples
-#' condition <- data.frame(n = 100, epv = 10, sigma2 = 1, p = 5, rho = 0.3,
+#' condition <- data.frame(n = 5000, epv = 0.1, sigma2 = 1, p = 1000, rho = 0.9,
 #' prev = 0.1)
 #' dat <- generate(condition)
+#' debugonce(analyze)
 #' analyze(condition, dat)
 #' @export
 analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
