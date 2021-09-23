@@ -450,11 +450,12 @@ simulations. A priori we set this level to 5\%.
 
 \subsection{Determining the number of simulations}
 We determine the number of simulation $B$ such that the Monte Carlo
-standard error of the primary estimand, the mean Brier score $\BS$,
-is sufficiently small. The variance of $\BS$ is given by
+standard error of the primary estimand, the mean Brier score $\BS/B$,
+is sufficiently small. The variance of $\BS/B$ is given by
 \begin{align*}
-  \Var\left(\BS\right)
-  &= B^{-1}n_{\text{test}}^{-1}\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}
+  \Var\left(\BS/B\right)
+  &= \frac{\Var\left\{(y -
+    \hat{y})^{2}\right\}}{B \cdot n_{\text{test}}}
   % &= B^{-1}n_{\text{test}}^{-1} \left\{\Ex[(y_{ib} - \hat{y}_{ib})^{4}] -
   %   \Ex[(y_{ib} - \hat{y}_{ib})^{2}]^{2}\right\}
 \end{align*}
