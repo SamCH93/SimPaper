@@ -21,12 +21,14 @@ fglmnet <- function(formula, data, ...) {
 
 #' cv.glmnet with formula interface
 #' @export
-cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, ...) {
+cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, nfolds = 5,
+                       ...) {
 	dat <- .preproc(formula, data)
 	if (is.null(pen.f))
 		pen.f <- .vimp(formula, ifelse(is.null(imp_data), list(data),
 																	 list(imp_data))[[1]])
-	cv.glmnet(x = dat$X, y = dat$Y, penalty.factor = pen.f, ... = ...)
+	cv.glmnet(x = dat$X, y = dat$Y, penalty.factor = pen.f, nfolds = nfolds,
+	          ... = ...)
 }
 
 ### Helpers

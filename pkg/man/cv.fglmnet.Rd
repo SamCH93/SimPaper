@@ -4,7 +4,7 @@
 \alias{cv.fglmnet}
 \title{cv.glmnet with formula interface}
 \usage{
-cv.fglmnet(formula, data, imp_data = NULL, pen.f = NULL, ...)
+cv.fglmnet(formula, data, imp_data = NULL, pen.f = NULL, nfolds = 5, ...)
 }
 \description{
 cv.glmnet with formula interface
