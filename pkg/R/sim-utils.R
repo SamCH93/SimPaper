@@ -29,7 +29,7 @@ generateData <- function(n = 1e2, p = 20, b = rnorm(p), prev = 0.5, rho = 0) {
 acc <- function(y_true, y_pred) {
   y_true <- .assert_numeric_binary(y_true)
   y_pred <- y_pred >= 0.5
-	mean(y_true == y_pred)
+	mean(y_true == y_pred, na.rm = TRUE)
 }
 
 #' Compute negative log-likelihood / n (log-score)
@@ -42,7 +42,7 @@ acc <- function(y_true, y_pred) {
 #' @export
 nll <- function(y_true, y_pred) {
   y_true <- .assert_numeric_binary(y_true)
-	- mean(y_true * log(y_pred) + (1 - y_true) * log(1 - y_pred))
+	- mean(y_true * log(y_pred) + (1 - y_true) * log(1 - y_pred), na.rm = TRUE)
 }
 
 #' Compute AUC
@@ -71,7 +71,7 @@ auroc <- function(y_true, y_pred) {
 #' @export
 brier <- function(y_true, y_pred) {
   y_true <- .assert_numeric_binary(y_true)
-  mean((y_true - y_pred)^2)
+  mean((y_true - y_pred)^2, na.rm = TRUE)
 }
 
 #' Compute variance of Brier score contributions
@@ -84,7 +84,7 @@ brier <- function(y_true, y_pred) {
 #' @export
 brierVar <- function(y_true, y_pred) {
   y_true <- .assert_numeric_binary(y_true)
-  var((y_true - y_pred)^2)
+  var((y_true - y_pred)^2, na.rm = TRUE)
 }
 
 #' Compute scaled Brier score
@@ -97,7 +97,7 @@ brierVar <- function(y_true, y_pred) {
 #' @export
 scaledBrier <- function(y_true, y_pred) {
   y_true <- .assert_numeric_binary(y_true)
-  prev <- mean(y_true)
+  prev <- mean(y_true, na.rm = TRUE)
   1 - brier(y_true, y_pred) / brier(y_true, prev)
 }
 
