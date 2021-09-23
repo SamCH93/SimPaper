@@ -339,3 +339,6 @@ TSWLatexianTemp*
 
 *.pdf
 *.rds
+
+*.txt
+
