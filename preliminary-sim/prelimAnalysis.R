@@ -87,14 +87,17 @@ iamerror <- lapply(X = files, FUN = function(filename) {
 
 unique(iamerror$type)
 
-ggplot(iamerror, aes(x = type, y = error / 100)) +
+perr <- iamerror %>% 
+    mutate(type = case_when(str_detect(type, "No events.") ~ "No events"))
+
+ggplot(perr %>% filter(!is.na(type)), aes(x = type, y = error / 100)) +
     geom_col() +
     facet_grid(EPV + rho ~ n + prev, labeller = label_both) +
     theme_bw() +
     coord_flip() +
-    theme(text = element_text(size = 7), axis.text.y = element_text(angle = 30, hjust = 1, vjust = 1)) +
+    theme(text = element_text(size = 7), axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1)) +
     labs(y = "Proportion of simulation with errors (among 100 simulations)", x = "Type of error")
-ggsave("figures/errors.pdf", height = 8.3, width = 11.7)
+ggsave("figures/errors.pdf", height = 8.3, width = 4.5)
 
 ## warnings
 iamwarning <- lapply(X = files, FUN = function(filename) {
