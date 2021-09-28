@@ -16,6 +16,7 @@
 \usepackage[toc, page]{appendix} % better appendices
 \usepackage{nameref} % reference appendices with names
 \usepackage{todonotes} 
+\usepackage{pdflscape} 
 
 \input{defs}
 
@@ -532,22 +533,90 @@ For penalized likelihood methods, we use \pkg{glmnet} version 4.1.1
 The \pkg{SimDesign} package version 2.7 is used to set up simulation scenarios
 \citep{Chalmers2020}.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Preliminary simulations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the following we report the results of the preliminary simulation study which
+was used to plan the size of the full simulation. We report convergence issues,
+errors, warnings, and any amendment that were made to the protocol.
+
+\subsection{Convergence issues}
+
+Figure~\ref{fig:failures} reports the proportion of simulations with convergence 
+issues. As outlined in Section~\ref{sec:exceptions},
+scenarios in which the proportion of simulations with convergence issues exceeds 
+$> 10\%$ warrant a closer look. 
+
+% ------------------------------------------------------------------------------
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.9\linewidth]{img/failed.pdf}
+\caption{Simulations with convergence issues.} \label{fig:failures}
+\end{figure}
+\end{landscape}
+% ------------------------------------------------------------------------------
+
+\subsection{Errors}
+
+Errors which terminated the whole simulation run only occurred in case no events
+were present in the training data (see Figure~\ref{fig:errors}), which happened
+only for low sample size ($n = 100$) and low prevalence ($\prev < 0.05$).
+In practice no model could be fitted for such a scenario, which is why they are
+dropped entirely from the analysis.
+
+% ------------------------------------------------------------------------------
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.7\textwidth]{img/errors.pdf}
+\caption{Simulation runs which were terminated due to an error.} \label{fig:errors}
+\end{figure}
+% ------------------------------------------------------------------------------
+
+\subsection{Warnings}
+
+Several different warnings were observed in the preliminary simulations, namely
+(i) a too low number of events, (ii) over-confident zero/one predictions of the
+random forest, (iii) \code{cv.glmnet()} convergence issues for a particular $\lambda$,
+and (iv) an empty model being returned (\ie no non-zero coefficients).
+Figure~\ref{fig:warnings} summarizes the occurrence of each warning over all
+scenarios.
+
+% ------------------------------------------------------------------------------
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.9\linewidth]{img/warnings.pdf}
+\caption{Warning messages across all simulation runs, conditions, and methods.} \label{fig:warnings}
+\end{figure}
+\end{landscape}
+% ------------------------------------------------------------------------------
+
+\subsection{Deviations}
+
+% ------------------------------------------------------------------------------
+\begin{table}[!ht]
+\center
+\caption{Changes compared to the previous version of the protocol.} \label{tab:deviations}
+\begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
+\hline
+\bf Deviation & \bf Justification \\
+\hline
+Remove high-dimensional conditions & We decided to remove all conditions involving
+$p > 100$ because such a high number of predictor rarely occurs in the context of clinical prediction models.
+Also, the burden of computation time was immense. \\
+Design not fully factorial & The above implies that the design is no longer fully
+factorial. \\
+\hline
+\end{tabular}
+\end{table}
+% ------------------------------------------------------------------------------
+
 % Bibliography
 % ======================================================================
 \bibliographystyle{../apalikedoiurl}
 \bibliography{../bibliography.bib}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Protocol deviations}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{tabular}{ll}
-\hline
-Deviation & Justification \\
-\hline
-NA & NA \\
-\hline
-\end{tabular}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Session info}
