@@ -449,6 +449,21 @@ simulations. A priori we set this level to 5\%.
 
 
 \subsection{Determining the number of simulations}
+<< "number-of-simulations" >>=
+## worst case variance in test run
+V <- 0.2
+
+## desired standard error of Brier score
+seBrier <- 0.0001
+
+## number of test samples
+ntest <- 10000
+
+## compute number of times we need to repeat simulations
+nsim <- V/(ntest*seBrier^2)
+
+options(scipen = 5)
+@
 We determine the number of simulation $B$ such that the Monte Carlo
 standard error of the primary estimand, the mean Brier score $\BS/B$,
 is sufficiently small. The variance of $\BS/B$ is given by
@@ -465,12 +480,17 @@ for our data-generating process as it dependens on several of the simulation
 parameters. We therefore follow a similar approach as in \citet{Morris2019} and
 estimate $\widehat{\Var}\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\} < V$ from an
 initial small simulation run with 100 simulations per condtion to get an upper
-bound $V$ for worst-case variance across all simulation conditions. The number
-of simulations is then given by
+bound $V$ for worst-case variance across all simulation conditions.
+Therefore, the number of simulations is then given by
 $$B = \frac{V}{n_{\text{test}} \Var\left(\BS\right)}.$$
 Since $\BS \in [0, 1]$ we decide that we require the Monte Carlo standard error
-of $\BS$ to be lower than four significant digits, $0.0001$, hence we obtain
-$$B =V/(n_{\text{test}} \cdot 0.0001^{2}).$$
+of $\BS$ to be lower than four significant digits, $0.0001$.
+
+The initial simulation run led to an estimated worst case variance of
+$\widehat{V} = \Sexpr{round(V, 2)}$. Therefore, we compute that
+$$B = 0.2/(\Sexpr{ntest} \times \Sexpr{seBrier}^{2}) = \Sexpr{ceiling(nsim)}$$
+replications are required to obtain Brier score estimates with the
+desired precision.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Handling exceptions} \label{sec:exceptions}
@@ -500,9 +520,9 @@ in the simulation study, we will handle them as follow:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The simulation study is conducted in the \textsf{R} language for statistical
-computing \citep{pkg:base} using the most recent version (at the time of writing
-this protocol % \Sexpr{R.version$version.string}
-R version 4.1.1).
+computing \citep{pkg:base} using the version
+% \Sexpr{R.version$version.string}
+R version 4.0.2.
 \ainet{} is implemented in the \pkg{ainet} package and available on GitHub 
 (\url{https://github.com/SamCH93/SimPaper}).
 We use \pkg{pROC} version 1.17.0.1 to compute the AUC \citep{pkg:proc}.
