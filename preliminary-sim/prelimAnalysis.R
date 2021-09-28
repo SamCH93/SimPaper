@@ -11,7 +11,8 @@ simres <- lapply(X = files, FUN = function(filename) {
     }) %>%
         bind_rows()
 }) %>%
-    bind_rows()
+    bind_rows() # %>% 
+    # mutate(oldEPV = EPV, EPV = n * prev / p)
 
 ## some plots
 # ggplot(data = simres,
