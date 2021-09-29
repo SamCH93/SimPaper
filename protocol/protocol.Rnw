@@ -182,7 +182,7 @@ four methods from above.
 << "simulation-parameters" >>=
 ## values for simulation
 n <- c(100, 500, 1000, 5000)
-EPV <- c(20, 10, 1, 0.1, 0.05)
+EPV <- c(20, 10, 1, 0.5)
 # sparsity <- c("dense", "sparse")
 prev <- c(0.01, 0.05, 0.1)
 sigma2 <- c(1)
@@ -230,11 +230,14 @@ reverse to determine the dimensionality of the parameters below.
 Several low- and high-dimensionality scenarios in $p$ are considered. Previous
 simulation studies showed that $\EPV$ rather than the absolute sample size $n$
 and dimensionality $p$ influences the predictive performance of a method. We
-will therefore define the dimensionality $p$ via events per variable (EPV)
-by $$p = \min\left\{\ceil{\frac{n \cdot \prev}{\EPV}}, 2\right\}.$$ The dimensionality is
-constrained to at least $p \geq 2$ because in practice prediction models are
-only multivariable models. $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover
-scenarios with low- to high-dimensional covariates \citep[\cf][]{vanSmeden2018}.
+will therefore define the dimensionality $p$ via events per variable (EPV) by
+$$p = \frac{n \cdot \prev}{\EPV}$$ and $2 \leq p \leq 100.$ If the above formula
+gives values above 100 or below 2, they will be replaced by either $100$ or $2$.
+This is done because in practice prediction models are only multivariable models
+($p \geq 2$), but at the same time the number of predictors is rarely larger
+than 100 (except for structured data, such as images, which are not the focus
+here). $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover scenarios with small to
+large number of covariates \citep[\cf][]{vanSmeden2018}.
 
 % \subsection*{Sparsity in $\shiftparm$}
 % We consider sparse and dense simulation settings for $\shiftparm$. We choose
@@ -546,7 +549,13 @@ errors, warnings, and any amendment that were made to the protocol.
 Figure~\ref{fig:failures} reports the proportion of simulations with convergence 
 issues. As outlined in Section~\ref{sec:exceptions},
 scenarios in which the proportion of simulations with convergence issues exceeds 
-$> 10\%$ warrant a closer look. 
+$> 10\%$ warrant a closer look.
+
+Most convergence issues seem to arise for low sample size ($n = 100$) and low
+prevalence ($\prev < 0.05$). This leads to a low number of cases and therefore
+problems with the methods that use cross-validation. We decided to still run
+this simulation conditions and just exclude the not-converged observations and
+in the end report the proportion of simulations that fail.
 
 % ------------------------------------------------------------------------------
 \begin{landscape}
@@ -605,7 +614,7 @@ scenarios.
 \hline
 Remove high-dimensional conditions & We decided to remove all conditions involving
 $p > 100$ because such a high number of predictor rarely occurs in the context of clinical prediction models.
-Also, the burden of computation time was immense. \\
+Also, the computation time for these conditions was much larger than for the others. \\
 Design not fully factorial & The above implies that the design is no longer fully
 factorial. \\
 \hline
