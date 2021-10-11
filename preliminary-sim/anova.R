@@ -64,10 +64,10 @@ ggplot(out2, aes(y = contrast, x = Estimate, xmin = lwr, xmax = upr,
     geom_errorbarh(height = 0.5) +
     facet_grid(EPV + prev ~ n + rho, labeller = label_both) +
     theme_bw() +
-    theme(legend.position = "none") +
+    theme(legend.position = "none", axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1)) +
     scale_color_manual(values = c("AINET better" = "orange",
                                   "AINET worse" = "cornflowerblue",
                                   "Neutral" = "black")) +
-    labs(x = "AINET - Method (Brier score)", y = element_blank())
+    labs(x = "Difference in Brier score (AINET - other method)", y = element_blank())
     
 ggsave("figures/tie-fighter_brier.pdf", height = 1.5 * 8.3, width = 1.5 * 11.7)
