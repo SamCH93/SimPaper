@@ -140,7 +140,7 @@ Section~\ref{sec:performance}, some preliminary simulation runs will be conducte
 to estimate the number of simulations needed to ensure a sufficiently small Monte
 Carlo error. The test run will also be used to assess whether there are severe
 convergence problems and if so, the simulation parameters may be modified 
-(Section~\ref{sec:exceptions}). Also this milestone will be time\-stamped.
+(Section~\ref{sec:exceptions}). This milestone will also be time\-stamped.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Aims} \label{sec:aims}
@@ -174,7 +174,7 @@ serve as a reasonable benchmark for \ainet. There are many more extensions of
 the adaptive elastic net in the literature \citep[see \eg the review by][]{Vidaurre2013}.
 However, most of these extensions focus on variable selection and
 estimation instead of prediction, which is why we restrict our focus only on the
-four methods from above.
+four methods above.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data-generating process} \label{sec:dgp}
@@ -215,7 +215,7 @@ $\shiftparm$ is generated from
   \shiftparm \sim \ND_p(0, \Id)
 \end{align*}
 once per simulation. Finally, the simulation parameters are varied
-fully factorially as described below, leading to a total of \Sexpr{nScenarios}
+fully factorially (except for the removal of some unreasonable conditions) as described below, leading to a total of \Sexpr{nScenarios}
 scenarios, see below.
 
 \subsection*{Sample size}
@@ -235,8 +235,8 @@ $$p = \frac{n \cdot \prev}{\EPV}$$ and $2 \leq p \leq 100.$ If the above formula
 gives values above 100 or below 2, they will be replaced by either $100$ or $2$.
 This is done because in practice prediction models are only multivariable models
 ($p \geq 2$), but at the same time the number of predictors is rarely larger
-than 100 (except for structured data, such as images, which are not the focus
-here). $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover scenarios with small to
+than 100 \citep{Kreuzberger2020,Seker2020,Wynants2020}, except in studies considering complex data, such as images, which are not the focus
+here. $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover scenarios with small to
 large number of covariates \citep[\cf][]{vanSmeden2018}.
 
 % \subsection*{Sparsity in $\shiftparm$}
@@ -281,8 +281,8 @@ independently generated test data.
   where $\hat{y} = \widehat\Prob(Y = 1 \given \rx)$.
   Lower values indicate better predictive performance in terms of calibration and
   sharpness. A prediction is well-calibrated if the observed proportion
-  of events is close to the predicted probabilities. Sharpness referes to how
-  concentrated a predictive distribution is (\eg how long/short a prediction interval is),
+  of events is close to the predicted probabilities. Sharpness refers to how
+  concentrated a predictive distribution is (\eg how wide/narrow a prediction interval is),
   and the predictive goal is to maximize sharpness subject to calibration
   \citep{Gneiting2008}.
   The Brier score is a proper scoring rule, meaning that it is minimized if a
@@ -316,7 +316,7 @@ independently generated test data.
   indicate better discriminative ability. Discrimination describes the ability
   of a prediction model to discriminate between cases and non-cases.
   Other discrimination measures, such as accuracy, sensitivity, specificity, etc.,
-  are not considered because we want to evluated predictive performance
+  are not considered because we want to evaluate predictive performance
   in terms of probabilistic predictions instead of point predictions/classification.
 
   \item \textbf{Calibration slope $\hat b$.}  
@@ -329,7 +329,7 @@ independently generated test data.
 
   \item \textbf{Calibration in the large $\hat a$.} We inspect calibration in the
   large $\hat a$ on independently generated test data, from the model
-  $$\logit\Ex[Y \given \hat\ry] = a + \logit(\hat{y})$$
+  $$\logit\Ex[Y \given \hat\ry] = a + \logit(\hat{y}).$$
   This measure will also be used to assess calibration and deviations of $\hat a$ from
   zero indicate miscalibration \citep{steyerberg2019clinical}.
 \end{itemize}
@@ -337,7 +337,7 @@ independently generated test data.
 To facilitate comparison between simulation conditions, all estimands will also
 be corrected by the oracle version of the estimand, \eg the Brier score will be
 computed from the ground truth parameters and the simulated data $\rx$,
-subsequently the oracle Brier score and will be subtracted from the estimated
+subsequently the oracle Brier score will be subtracted from the estimated
 Brier score.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -354,7 +354,7 @@ especially in the case of highly correlated predictors \citep{Algamal2015}.
 The adaptive importance elastic net (\ainet{}) circumvents this problem by
 employing a random forest to estimate the
 penalization weights via an \emph{a priori} chosen variable importance measure.
-This way, the importance of all variables enter the penalization weights simultaneously.
+In this way, the importance of all variables enter the penalization weights simultaneously.
 
 The penalized log-likelihood for \ainet{} for a single observation $(\ry, \rx)$
 is defined as
@@ -480,7 +480,7 @@ is sufficiently small. The variance of $\BS/B$ is given by
 \end{align*}
 and $\Var\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\}$ could be decomposed further
 \citep{Bradley2008}. However, the resulting expression is difficult to evaluate
-for our data-generating process as it dependens on several of the simulation
+for our data-generating process as it depends on several of the simulation
 parameters. We therefore follow a similar approach as in \citet{Morris2019} and
 estimate $\widehat{\Var}\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\} < V$ from an
 initial small simulation run with 100 simulations per condtion to get an upper
@@ -500,13 +500,13 @@ desired precision.
 \section{Handling exceptions} \label{sec:exceptions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 It is inevitable that convergence issues and other problems will arise
-in the simulation study, we will handle them as follow:
+in the simulation study. We will handle them as follows:
 \begin{itemize}
   \item If a method fails to converge, the simulation will be excluded from the
   analysis. The failing simulations will not be replaced with new simulations that
   successfully converge as convergence may be impossible for some scenarios.
   \item We will report the proportion of simulations with convergence issues
-  for each method and discuss the potential reasons of their emergence
+  for each method and discuss the potential reasons for their emergence.
   \item In case of severe convergence issues or other problems (more than 10\% of the
   simulations failing within a setting), we may adjust
   the simulation parameters post hoc. This will be indicated in the discussion of
@@ -542,7 +542,7 @@ The \pkg{SimDesign} package version 2.7.1 is used to set up simulation scenarios
 
 In the following we report the results of the preliminary simulation study which
 was used to plan the size of the full simulation. We report convergence issues,
-errors, warnings, and any amendment that were made to the protocol.
+errors, warnings, and any amendments that were made to the protocol.
 
 \subsection{Convergence issues}
 
@@ -554,7 +554,7 @@ $> 10\%$ warrant a closer look.
 Most convergence issues seem to arise for low sample size ($n = 100$) and low
 prevalence ($\prev < 0.05$). This leads to a low number of cases and therefore
 problems with the methods that use cross-validation. We decided to still run
-this simulation conditions and just exclude the not-converged observations and
+this simulation condition and just exclude the non-converged observations and
 in the end report the proportion of simulations that fail.
 
 % ------------------------------------------------------------------------------
