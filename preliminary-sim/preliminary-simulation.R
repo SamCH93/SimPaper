@@ -32,7 +32,7 @@ res <- runSimulation(
                         save_results_dirname = "simResults",
                         save_seeds_dirname = "simSeeds"),
     parallel = TRUE,
-    ncores = 20, # number of (available) cores on the server from LK
+    ncores = 50, # cores on box 
     fixed_objects = list(ntest = 1e4),
     packages = c("ainet")
 )
