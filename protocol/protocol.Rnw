@@ -449,7 +449,9 @@ We will rank pairwise comparison between two methods within a single condition
 by their $p$-values, to more easily identify conditions where methods
 show differences in predictive performance. The choice of a significance level
 at which a method is deemed superior will be determined based on preliminary
-simulations. A priori we set this level to 5\%.
+simulations. We set this level to 5\%, where $p$-values will be adjusted using
+the single-step method \citep{pkg:multcomp} within a single simulation condition
+for comparisons between \ainet{} and any other method.
 
 
 \subsection{Determining the number of simulations}
@@ -543,6 +545,28 @@ The \pkg{SimDesign} package version 2.7.1 is used to set up simulation scenarios
 In the following we report the results of the preliminary simulation study which
 was used to plan the size of the full simulation. We report convergence issues,
 errors, warnings, and any amendments that were made to the protocol.
+
+\subsection{Results}
+
+Figure~\ref{fig:tiebrier} displays the results for the difference in Brier scores
+between \ainet{} and all other methods. Confidence intervals are adjusted within
+a simulation condition, because each simulation run is independent. The adjustment
+is based on the single-step method using the \pkg{multcomp} package \citep{pkg:multcomp}.
+We show only the results for the primary estimand.
+
+% ------------------------------------------------------------------------------
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.9\linewidth]{img/tie-fighter_brier.pdf}
+\caption{Tie-fighter plot for the difference in Brier score between any method
+  on the $y$-axis and \ainet{}. Empty facets correspond to simulation conditions
+  for which $p < 1$ or $p > 100$. Confidence intervals are colored according to
+  significance at the 5\% level, indicating a better (negative difference), neutral
+  (including zero), or worse (positive difference) performance of \ainet{}.} \label{fig:tiebrier}
+\end{figure}
+\end{landscape}
+% ------------------------------------------------------------------------------
 
 \subsection{Convergence issues}
 

@@ -18,7 +18,8 @@ rho <- c(0, 0.3, 0.6, 0.95)
 simGrid <- createDesign(n = n, EPV = EPV, prev = prev, sigma2 = sigma2,
                         rho = rho, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n * prev / EPV))
-simGrid$p[simGrid$p == 1] <- 2
+simGrid <- simGrid[simGrid$p != 1,]
+simGrid <- simGrid[simGrid$p <= 100,]
 simGrid <- simGrid[order(simGrid$p),]
 nScenarios <- nrow(simGrid)
 
