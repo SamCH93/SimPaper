@@ -21,14 +21,16 @@ simres <- lapply(X = files, FUN = function(filename) {
     bind_rows()
 
 adat <- simres %>% 
-	mutate_at(c("n", "p", "prev", "rho"), as.factor) %>% 
-	mutate(fct = factor(paste0(model, "n", n, "p", p, "prev", prev, "rho", rho)))
+    mutate(inputp = ceiling(n * prev / EPV)) %>% 
+    filter(inputp != 1) %>% 
+	mutate_at(c("n", "EPV", "prev", "rho"), as.factor) %>% 
+	mutate(fct = factor(paste0(model, "n", n, "EPV", EPV, "prev", prev, "rho", rho)))
 
 # ANOVA -------------------------------------------------------------------
 
 m <- lm(brier ~ 0 + fct, data = adat)
 
-conds <- with(adat, unique(paste0("n", n, "p", p, "prev", prev, "rho", rho)))
+conds <- with(adat, unique(paste0("n", n, "EPV", EPV, "prev", prev, "rho", rho)))
 models <- unique(adat$model)[-1]
 out <- list()
 
@@ -43,26 +45,29 @@ for (cond in seq_along(conds)) {
        next 
     pval <- summary(res)$test$pvalues
     cf <- confint(res)$confint
-    nms <- str_split(conds[cond], pattern = "[a-z]")[[1]]
+    nms <- str_split(conds[cond], pattern = "[a-z]|[A-Z]")[[1]]
     nms <- nms[nms != ""]
-    out[[cond]] <- data.frame(cf, pval = pval, n = nms[1], p = nms[2],
+    out[[cond]] <- data.frame(cf, pval = pval, n = nms[1], EPV = nms[2],
                               prev = nms[3], rho = nms[4], contrast = models)
 }
 
 out2 <- out %>% 
     bind_rows() %>% 
-    mutate(p = factor(as.numeric(as.character(p))))
+    mutate(EPV = factor(EPV))
 
 ggplot(out2, aes(y = contrast, x = Estimate, xmin = lwr, xmax = upr,
                  color = case_when(upr < 0 ~ "AINET better", 
                                    lwr > 0 ~ "AINET worse",
                                    TRUE ~ "Neutral"))) +
     geom_vline(xintercept = 0, linetype = 2, alpha = 0.5) +
-    geom_pointrange(fatten = 1) +
-    geom_errorbarh() +
-    facet_grid(p + prev ~ n + rho, labeller = label_both) +
+    geom_pointrange(fatten = 0.75) +
+    geom_errorbarh(height = 0.5) +
+    facet_grid(EPV + prev ~ n + rho, labeller = label_both) +
     theme_bw() +
     theme(legend.position = "none") +
     scale_color_manual(values = c("AINET better" = "orange",
                                   "AINET worse" = "cornflowerblue",
-                                  "Neutral" = "black"))
+                                  "Neutral" = "black")) +
+    labs(x = "AINET - Method (Brier score)", y = element_blank())
+    
+ggsave("figures/tie-fighter_brier.pdf", height = 1.5 * 8.3, width = 1.5 * 11.7)
