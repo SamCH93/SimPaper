@@ -62,7 +62,7 @@ ggplot(out2, aes(y = contrast, x = Estimate, xmin = lwr, xmax = upr,
     geom_vline(xintercept = 0, linetype = 2, alpha = 0.5) +
     geom_pointrange(fatten = 0.75) +
     geom_errorbarh(height = 0.5) +
-    facet_grid(EPV + prev ~ n + rho, labeller = label_both) +
+    facet_grid(EPV + rho ~ n + prev, labeller = label_both) +
     theme_bw() +
     theme(legend.position = "none", axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1)) +
     scale_color_manual(values = c("AINET better" = "orange",
