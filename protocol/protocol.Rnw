@@ -191,7 +191,9 @@ simGrid <- expand.grid(n = n, EPV = EPV, # sparsity = sparsity,
 		       prev = prev,
                        sigma2 = sigma2, rho = rho, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
-simGrid$p[simGrid$p == 1] <- 2
+simGrid <- simGrid[simGrid$p != 1,]
+simGrid <- simGrid[simGrid$p <= 100,]
+#simGrid$p[simGrid$p == 1] <- 2
 # simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
 # simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, 0))
 nScenarios <- nrow(simGrid)
@@ -232,12 +234,8 @@ simulation studies showed that $\EPV$ rather than the absolute sample size $n$
 and dimensionality $p$ influences the predictive performance of a method. We
 will therefore define the dimensionality $p$ via events per variable (EPV) by
 $$p = \frac{n \cdot \prev}{\EPV}$$ and $2 \leq p \leq 100.$ If the above formula
-gives values above 100 or below 2, they will be replaced by either $100$ or $2$.
-This is done because in practice prediction models are only multivariable models
-($p \geq 2$), but at the same time the number of predictors is rarely larger
-than 100 \citep{Kreuzberger2020,Seker2020,Wynants2020}, except in studies considering complex data, such as images, which are not the focus
-here. $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover scenarios with small to
-large number of covariates \citep[\cf][]{vanSmeden2018}.
+gives values above 100 or below 2, they will be removed. This is done because in practice prediction models are only multivariable models ($p \geq 2$), but at the same time the number of predictors is rarely larger than 100
+\citep{Kreuzberger2020,Seker2020,Wynants2020}, except in studies considering complex data, such as images, which are not the focus here. $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover scenarios with small to large number of covariates \citep[\cf][]{vanSmeden2018}.
 
 % \subsection*{Sparsity in $\shiftparm$}
 % We consider sparse and dense simulation settings for $\shiftparm$. We choose
