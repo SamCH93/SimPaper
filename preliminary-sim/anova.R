@@ -23,7 +23,7 @@ simres <- lapply(X = files, FUN = function(filename) {
 adat <- simres %>% 
     mutate(inputp = ceiling(n * prev / EPV)) %>% 
     filter(inputp != 1) %>% 
-	mutate_at(c("n", "EPV", "prev", "rho"), as.factor) %>% 
+	mutate_at(c("n", "EPV", "prev", "rho"), ~ factor(.x, levels = sort(unique(.x)))) %>% 
 	mutate(fct = factor(paste0(model, "n", n, "EPV", EPV, "prev", prev, "rho", rho)))
 
 # ANOVA -------------------------------------------------------------------
@@ -53,7 +53,7 @@ for (cond in seq_along(conds)) {
 
 out2 <- out %>% 
     bind_rows() %>% 
-    mutate(EPV = factor(EPV))
+	mutate_at(c("n", "EPV", "prev", "rho"), ~ factor(.x, levels = sort(unique(as.numeric(as.character(.x))))))
 
 ggplot(out2, aes(y = contrast, x = Estimate, xmin = lwr, xmax = upr,
                  color = case_when(upr < 0 ~ "AINET better", 
