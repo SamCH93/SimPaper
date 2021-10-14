@@ -30,7 +30,7 @@ adat <- simres %>%
 
 run_anova <- function(formula = brier ~ 0 + fct, data = adat,
                       conds = with(data, unique(paste0("n", n, "EPV", EPV, "prev", prev, "rho", rho))),
-                      models = unique(data$model)[-1], compare_against = "AINET") {
+                      models = c("GLM", "EN", "AEN", "RF"), compare_against = "AINET") {
     m <- lm(formula, data = data)
     out <- list()
     
