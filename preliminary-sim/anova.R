@@ -9,6 +9,11 @@ library(tidyverse)
 library(multcomp)
 library(ggpubr)
 
+outdir <- "results_anova"
+if (!dir.exists(outdir)) {
+    dir.create(outdir)
+}
+
 # Load --------------------------------------------------------------------
 
 files <- list.files(path = "simResults/")
@@ -86,12 +91,14 @@ vis_results <- function(pdat, xlab = "brier", save = TRUE) {
     }
     
     ps <- lapply(unique(as.numeric(as.character(out2$rho))), rho_plot)
-    ggarrange(plotlist = ps, common.legend = TRUE, ncol = 2, nrow = 2)
+    pf <- ggarrange(plotlist = ps, common.legend = TRUE, ncol = 2, nrow = 2)
     
     if (save) {
         pnm <- file.path("figures", paste0("tie-fighter_", xlab, ".pdf"))
-        ggsave(pnm, height = 1.5 * 8.3, width = 1.5 * 11.7)
+        ggsave(pnm, plot = pf, height = 1.5 * 8.3, width = 1.5 * 11.7)
     }
+    
+    return(pf)
 }
 
 # Run ---------------------------------------------------------------------
@@ -100,9 +107,11 @@ metrics <- c("brier", "scaledBrier", "nll", "acc", "auc")
 
 sapply(metrics, function(met) {
     mdat <- adat %>% filter(is.finite(!!sym(met)))
-    cat("Removed", nrow(adat) - nrow(mdat), 
+    cat("\nRemoved", nrow(adat) - nrow(mdat), 
         "rows due to infinite values / missingness in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
     out <- run_anova(formula = fml, data = mdat)
+    try(write.csv(out, file.path(outdir, paste0("anova_", met, ".csv")),
+                  row.names = FALSE, quote = FALSE))
     vis_results(out, xlab = met)
 })
