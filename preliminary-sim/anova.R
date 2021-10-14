@@ -96,6 +96,8 @@ vis_results <- function(pdat, xlab = "brier", save = TRUE) {
     if (save) {
         pnm <- file.path("figures", paste0("tie-fighter_", xlab, ".pdf"))
         ggsave(pnm, plot = pf, height = 1.5 * 8.3, width = 1.5 * 11.7)
+        write.csv(out2, file.path(outdir, paste0("anova_", xlab, ".csv")),
+                  row.names = FALSE, quote = FALSE)
     }
     
     return(pf)
@@ -111,7 +113,5 @@ sapply(metrics, function(met) {
         "rows due to infinite values / missingness in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
     out <- run_anova(formula = fml, data = mdat)
-    try(write.csv(out, file.path(outdir, paste0("anova_", met, ".csv")),
-                  row.names = FALSE, quote = FALSE))
     vis_results(out, xlab = met)
 })
