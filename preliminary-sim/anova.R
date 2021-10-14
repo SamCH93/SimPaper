@@ -7,6 +7,7 @@
 library(SimDesign)
 library(tidyverse)
 library(multcomp)
+library(ggpubr)
 
 # Load --------------------------------------------------------------------
 
@@ -56,27 +57,36 @@ run_anova <- function(formula = brier ~ 0 + fct, data = adat,
 }
 
 vis_results <- function(pdat, xlab = "brier", save = TRUE) {
+    
+    xxlab <- switch(xlab, "brier" = "Brier score",
+                   "scaledBrier" = "scaled Brier score",
+                   "nll" = "log score",
+                   "acc" = "accuracy",
+                   "auc" = "AUC")
+    
     out2 <- pdat %>% 
         bind_rows() %>% 
         mutate_at(c("n", "EPV", "prev", "rho"), 
                   ~ factor(.x, levels = sort(unique(as.numeric(as.character(.x))))))
     
+    rho_plot <- function(trho) {
+        ggplot(out2 %>% filter(rho == trho), aes(x = contrast, y = Estimate, ymin = lwr, ymax = upr,
+                                                 color = ordered(EPV))) +
+            geom_hline(yintercept = 0, linetype = 2, alpha = 0.5) +
+            geom_pointrange(fatten = 0.75, position = position_dodge(width = 0.7)) +
+            geom_errorbar(width = 0.35, position = position_dodge(width = 0.7)) +
+            facet_grid(prev ~ n, labeller = label_both) +
+            theme_bw() +
+            theme(legend.position = "top", panel.grid.major.y = element_blank(),
+                  axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1, size = 7)) +
+            labs(y = paste("Difference in", xxlab, "(AINET - other method)"), 
+                 x = "Contrast", subtitle = bquote(rho==~.(trho)), color = "EPV") +
+            geom_vline(xintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8) +
+            coord_flip()
+    }
     
-    ggplot(out2, aes(y = contrast, x = Estimate, xmin = lwr, xmax = upr,
-                     color = case_when(upr < 0 ~ "AINET better", 
-                                       lwr > 0 ~ "AINET worse",
-                                       TRUE ~ "Neutral"))) +
-        geom_vline(xintercept = 0, linetype = 2, alpha = 0.5) +
-        geom_pointrange(fatten = 0.75) +
-        geom_errorbarh(height = 0.5) +
-        facet_grid(EPV + rho ~ n + prev, labeller = label_both) +
-        theme_bw() +
-        theme(legend.position = "none", axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1)) +
-        scale_color_manual(values = c("AINET better" = "orange",
-                                      "AINET worse" = "cornflowerblue",
-                                      "Neutral" = "black")) +
-    labs(x = paste("Difference in", xlab, "(AINET - other method)"), 
-         y = element_blank())
+    ps <- lapply(unique(as.numeric(as.character(out2$rho))), rho_plot)
+    ggarrange(plotlist = ps, common.legend = TRUE, ncol = 2, nrow = 2)
     
     if (save) {
         pnm <- file.path("figures", paste0("tie-fighter_", xlab, ".pdf"))
