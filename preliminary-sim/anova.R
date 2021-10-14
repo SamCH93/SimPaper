@@ -88,15 +88,11 @@ vis_results <- function(pdat, xlab = "brier", save = TRUE) {
 
 metrics <- c("brier", "scaledBrier", "nll", "acc", "auc")
 
-metrics <- metrics[-1:-2]
 sapply(metrics, function(met) {
     mdat <- adat %>% filter(is.finite(!!sym(met)))
+    cat("Removed", nrow(adat) - nrow(mdat), 
+        "rows due to infinite values / missingness in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
     out <- run_anova(formula = fml, data = mdat)
     vis_results(out, xlab = met)
 })
-
-
-
-
-
