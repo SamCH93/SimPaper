@@ -25,7 +25,8 @@ nScenarios <- nrow(simGrid)
 
 # Write conditions --------------------------------------------------------
 
-write.csv(G$G$G)
+write.csv(simGrid, "simulation-conditions.csv", row.names = FALSE, quote =
+	  FALSE)
 
 # Simulation --------------------------------------------------------------
 
@@ -42,7 +43,7 @@ res <- runSimulation(
                         save_results_dirname = "simResults",
                         save_seeds_dirname = "simSeeds"),
     parallel = TRUE,
-    ncores = 30, 
+    ncores = 60, 
     fixed_objects = list(ntest = 1e4),
     packages = c("ainet")
 )
