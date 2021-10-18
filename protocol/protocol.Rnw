@@ -191,7 +191,9 @@ simGrid <- expand.grid(n = n, EPV = EPV, # sparsity = sparsity,
 		       prev = prev,
                        sigma2 = sigma2, rho = rho, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n*prev/EPV))
-simGrid$p[simGrid$p == 1] <- 2
+simGrid <- simGrid[simGrid$p != 1,]
+simGrid <- simGrid[simGrid$p <= 100,]
+#simGrid$p[simGrid$p == 1] <- 2
 # simGrid$q <- with(simGrid, ifelse(sparsity == "sparse", floor(sqrt(n/log(p))), p))
 # simGrid$q <- with(simGrid, ifelse(!is.finite(q), p, 0))
 nScenarios <- nrow(simGrid)
@@ -227,17 +229,19 @@ in the model for easier interpretation \citep{vanSmeden2018, Riley2018}. We will
 reverse to determine the dimensionality of the parameters below.
 
 \subsection*{Dimensionality}
-Several low- and high-dimensionality scenarios in $p$ are considered. Previous
-simulation studies showed that $\EPV$ rather than the absolute sample size $n$
-and dimensionality $p$ influences the predictive performance of a method. We
-will therefore define the dimensionality $p$ via events per variable (EPV) by
-$$p = \frac{n \cdot \prev}{\EPV}$$ and $2 \leq p \leq 100.$ If the above formula
-gives values above 100 or below 2, they will be replaced by either $100$ or $2$.
-This is done because in practice prediction models are only multivariable models
-($p \geq 2$), but at the same time the number of predictors is rarely larger
-than 100 \citep{Kreuzberger2020,Seker2020,Wynants2020}, except in studies considering complex data, such as images, which are not the focus
-here. $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover scenarios with small to
-large number of covariates \citep[\cf][]{vanSmeden2018}.
+Previous simulation studies showed that $\EPV$ rather than the absolute sample
+size $n$ and dimensionality $p$ influences the predictive performance of a
+method. We will therefore define the dimensionality $p$ via events per variable
+(EPV) by $$p = \frac{n \cdot \prev}{\EPV}$$ and $2 \leq p \leq 100.$ If the
+above formula gives non-integer values, the next larger integer will be used for
+$p$. When the formula gives values above 100 or below 2, this simulation
+condition will be removed from the design. This is done because prediction
+models are in practice only multivariable models ($p \geq 2$), but at the same
+time the number of predictors is rarely larger than $p \geq 100$
+\citep{Kreuzberger2020,Seker2020,Wynants2020}. The exception are studies
+considering complex data, such as images, omics, or text data which are not the
+focus here. The values $\EPV \in \{\Sexpr{EPV}\}$ are chosen to cover scenarios
+with small to large number of covariates \citep[\cf][]{vanSmeden2018}.
 
 % \subsection*{Sparsity in $\shiftparm$}
 % We consider sparse and dense simulation settings for $\shiftparm$. We choose
@@ -287,7 +291,7 @@ independently generated test data.
   \citep{Gneiting2008}.
   The Brier score is a proper scoring rule, meaning that it is minimized if a
   predicted distribution is equal to the data-generating distribution
-  \citep{Gneiting2007}. Proper scoring rules thus encourage careful and honest
+  \citep{Gneiting2007}. Proper scoring rules thus encourage honest
   predictions. The Brier score is therefore a principled choice for our primary estimand.
 \end{itemize}
 
@@ -528,7 +532,7 @@ in the simulation study. We will handle them as follows:
 The simulation study is conducted in the \textsf{R} language for statistical
 computing \citep{pkg:base} using the version
 % \Sexpr{R.version$version.string}
-R version 4.0.2.
+4.1.1.
 \ainet{} is implemented in the \pkg{ainet} package and available on GitHub 
 (\url{https://github.com/SamCH93/SimPaper}).
 We use \pkg{pROC} version 1.18.0 to compute the AUC \citep{pkg:proc}.
@@ -633,15 +637,21 @@ scenarios.
 \center
 \caption{Changes compared to the previous version of the protocol.} \label{tab:deviations}
 \begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
-\hline
-\bf Deviation & \bf Justification \\
-\hline
-Remove high-dimensional conditions & We decided to remove all conditions involving
-$p > 100$ because such a high number of predictor rarely occurs in the context of clinical prediction models.
-Also, the computation time for these conditions was much larger than for the others. \\
-Design not fully factorial & The above implies that the design is no longer fully
-factorial. \\
-\hline
+  \toprule
+  \textbf{Deviation} & \textbf{Justification} \\
+  \midrule
+  Remove high-dimensional conditions
+                     & We decided to remove all conditions involving
+                       $p > 100$ because such a high number of predictor rarely occurs in the context of clinical prediction models.
+                       Also, the computation time for these conditions was much larger than for the others. \\
+  Remove univariable conditions
+                     & Previously, simulation conditions with EPV's leading to $p < 2$ were
+                       set to $p = 2$. We decided to remove these conditions because they
+                       add not much information and also because visualization of the
+                       results in terms of EPV becomes much easier. \\
+  Design not fully factorial
+                     & Due to the removal of the mentioned conditions, the design is no longer fully factorial. \\
+  \bottomrule
 \end{tabular}
 \end{table}
 % ------------------------------------------------------------------------------

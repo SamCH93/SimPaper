@@ -11,7 +11,9 @@ simres <- lapply(X = files, FUN = function(filename) {
     }) %>%
         bind_rows()
 }) %>%
-    bind_rows() # %>% 
+    bind_rows() %>% 
+    mutate(inputp = ceiling(n * prev / EPV)) %>% 
+    filter(inputp != 1)
     # mutate(oldEPV = EPV, EPV = n * prev / p)
 
 ## some plots
