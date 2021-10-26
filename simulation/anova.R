@@ -105,8 +105,7 @@ vis_results <- function(pdat, xlab = "brier", save = TRUE) {
 
 # Run ---------------------------------------------------------------------
 
-# metrics <- c("brier", "scaledBrier", "nll", "acc", "auc")
-metrics <- c("acc", "auc")
+metrics <- c("brier", "scaledBrier", "nll", "acc", "auc")
 
 sapply(metrics, function(met) {
     mdat <- adat %>% filter(is.finite(!!sym(met)))
