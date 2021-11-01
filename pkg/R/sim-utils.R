@@ -190,7 +190,7 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
 
 #' SimDesign function for analyzing simulated data
 #' @examples
-#' condition <- data.frame(n = 100, epv = 0.1, sigma2 = 1, p = 20, rho = 0.9,
+#' condition <- data.frame(n = 100, epv = 0.1, sigma2 = 1, p = 2, rho = 0.9,
 #' prev = 0.1)
 #' dat <- generate(condition)
 #' analyze(condition, dat)
@@ -279,7 +279,7 @@ analyze <- function(condition, dat, fixed_objects = list(ntest = 1e4)) {
   # TODO: coef(NULL) throws NULL, so return rep(NA, length(coefs))
   coefs <- lapply(models[-length(models)],
                   function(mod) {
-                    ifelse(is.null(mod), rep(NA, ncoef), as.vector(coef(mod)))
+                    if (is.null(mod)) rep(NA, ncoef) else as.vector(coef(mod))
                   }
   )
   coefs <- do.call("cbind", coefs)

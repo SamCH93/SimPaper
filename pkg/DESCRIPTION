@@ -7,5 +7,5 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
 Depends: ranger, glmnet, SimDesign, mvnfast, pROC, dplyr, tidyr, magrittr
