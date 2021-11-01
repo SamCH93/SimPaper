@@ -178,9 +178,15 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   p <- condition$p
   rho <- condition$rho
   prev <- condition$prev
+  sparsity <- condition$sparsity
 
   ## Simulation of coefficients
   betas <- rnorm(p)
+
+  if (!is.null(sparsity)) {
+    idx <- sample.int(p, ceiling(sparsity * p))
+    betas[idx] <- 0
+  }
 
   ## Simulate training and test data
   train <- generateData(n = n, p = p, b = betas, prev = prev, rho = rho)
