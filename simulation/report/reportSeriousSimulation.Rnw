@@ -36,7 +36,7 @@
 %% ----------------------------------------------------------------------------
 \newcommand\longtitle{Pitfalls and Potentials in Simulation Studies}
 \newcommand\shorttitle{\longtitle}
-\newcommand\subtitle{Report of pre-registered simulations}
+\newcommand\subtitle{Report of preregistered simulations}
 \newcommand\longauthors{Samuel Pawel, Lucas Kook, Kelly Reeve}
 \newcommand\shortauthors{\longauthors} % if longauthors too long, change here
 \newcommand\affiliation{
@@ -96,24 +96,40 @@ opts_chunk$set(fig.height = 4,
                eval = TRUE)
 @
 
+In this document we describe the outcomes of the preregistered simulations.
+$\dots$
 
+Taken together, the performance of \ainet{} was virtually identical to elastic
+net regression. The addition of the adaptive penalization weights does not seem
+to make a difference for the data generating mechanism considered. Moreover,
+since the data were generated under a process equivalent to a logistic
+regression model, it is of no surprise that for reasonably sample sizes, this
+model also performed the best with respect to various metrics (most notably the
+the Brier score). The only exception are conditions with very small sample size
+and low number of events per variable. The random forest was outperformed by
+\ainet{} in most simulation condtions, with exception of very small sample size
+and prevalence simulation conditions, as well as when a high correlation between
+covariates was present. Finally, the performance of the adpative elastic net was
+generally worse compared to \ainet{}.
 
 \section{Brier score (main estimand)}
 Figure~\ref{fig:tiebrier} shows the differences in mean Brier score between
 \ainet{} and the other methods stratified by simulation conditions.
 
 % elastic net
-We see that there is no difference between \ainet{} and elastic net (EN) across
-all simulation conditions meaning that predictive performance of both methods
-seems to be very similar in the investigated scenarios.
+We see that there is hardly any difference between \ainet{} and elastic net (EN)
+across all simulation conditions meaning that predictive performance of both
+methods seems to be very similar in the investigated scenarios.
 
 % random forest
 The random forest (RF) shows better predictive performance than \ainet{} in
-conditions with very low sample size and prevalence. For increasing sample size,
-prevalence, the performance of \ainet{} seems to become more similar or improve
-over RF when the correlation of the covariates is not too large ($\rho = 0.6$)
-especially for low events per variable. For highly correlated covariates, the
-performance of \ainet{} is similar or worse across most simulation conditions.
+conditions with very low sample size ($n = 100$) and prevalence
+($\mbox{prev} = 0.01$). For increasing sample size and prevalence, the
+performance of \ainet{} seems to become more similar or improve over RF when the
+correlation of the covariates is not too large ($\rho \leq 0.6$) especially for
+low events per variable ($\mbox{EPV} \leq 1$). For highly correlated covariates
+($\rho = 0.95$), the performance of \ainet{} is similar or worse across most
+simulation conditions.
 
 Logistic regression (GLM) showed better predictive performance compared to
 \ainet{} in most simulation conditions. An exception are the conditions with
@@ -137,11 +153,45 @@ that for most conditions the plots look like a flipped version of the unscaled
 Brier scores from Figure~\ref{fig:tiebrier}. Therefore, conclusions are mostly
 the same. For very small sample sizes coupled with low prevalence and low events
 per variable (the topleft plots), the scaled Brier score indicates superiority
-of \ainet{} which is opposite the conclusion based on the raw Brier score. We
-advise to interpret these conditions cautiously since the prevalence prediction
-which is used for scaling is based on the much larger test data set.
+of \ainet{} over RF and GLM, which is opposite the conclusion based on the raw
+Brier score. We advise to interpret these conditions cautiously since the
+prevalence prediction which is used for scaling is based on the much larger test
+data set.
+
+\section{Log score (secondary estimand)}
+Figure~\ref{fig:tienll} shows the differences in log score between \ainet{} and
+the other methods stratified by simulation conditions. We see that in certain
+conditions, the error bars of certain methods are much larger. This is due to
+the log score's sensitivity to extreme predictions, which often happen under the
+RF (and sometimes under the GLM). Despite the larger variability of the log
+score, conclusion regarding the comparison between \ainet{} and the other
+methods are largely the same as under the Brier score.
 
 
+\section{Area under the curve (secondary estimand)}
+Figure~\ref{fig:tienll} shows the differences in area under the curve (AUC)
+between \ainet{} and the other methods stratified by simulation conditions.
+
+As with the other estimands, \ainet{} delivers virtually identical performance
+as EN regression across all simulation conditions.
+
+\ainet{} seems to outperform RF across most simulation conditions, with the
+exception of a conditions with low sample size ($n = 100$), medium prevalence
+($\mbox{prev} = 0.05$), and low events per variable ($\mbox{EPV} \leq 1$).
+
+GLM, typically outperforms \ainet{} conditions with small to medium sample size
+($n \leq 500$), and also in conditions with larger sample size when the
+events per variable is normal to high ($\mbox{EPV} \geq 10$) and the prevalence
+is small ($\mbox{prev}  = 0.01$).
+
+Finally, the AEN is worse with respect to AUC than \ainet{} across all
+simulation conditions.
+
+
+\section{Calibration slope (secondary estimand)}
+
+
+\section{Calibration in the large (secondary estimand)}
 
 
 
