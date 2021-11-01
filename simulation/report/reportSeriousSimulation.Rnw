@@ -98,14 +98,60 @@ opts_chunk$set(fig.height = 4,
 
 
 
+\section{Brier score (main estimand)}
+Figure~\ref{fig:tiebrier} shows the differences in mean Brier score between
+\ainet{} and the other methods stratified by simulation conditions.
+
+% elastic net
+We see that there is no difference between \ainet{} and elastic net (EN) across
+all simulation conditions meaning that predictive performance of both methods
+seems to be very similar in the investigated scenarios.
+
+% random forest
+The random forest (RF) shows better predictive performance than \ainet{} in
+conditions with very low sample size and prevalence. For increasing sample size,
+prevalence, the performance of \ainet{} seems to become more similar or improve
+over RF when the correlation of the covariates is not too large ($\rho = 0.6$)
+especially for low events per variable. For highly correlated covariates, the
+performance of \ainet{} is similar or worse across most simulation conditions.
+
+Logistic regression (GLM) showed better predictive performance compared to
+\ainet{} in most simulation conditions. An exception are the conditions with
+small sample size ($n = 100$), medium to large prevalence
+($\mbox{prev} \geq 0.05$) and low events per variable ($\mbox{EPV} \leq 1$),
+where \ainet{} performed better than GLM.
+
+The adaptive elastic net (AEN) method performed worse than \ainet{} in almost
+all simulation conditions. Only in conditions with very large sample size
+($n = 5000$), very small prevalence ($\mbox{prev} = 0.01$), and high events per
+variable ($\mbox{EPV} = 20$), AEN showed predictive performance on par with
+\ainet{}.
+
+\section{Scaled Brier score (secondary estimand)}
+Figure~\ref{fig:tiesbrier} shows the differences in scaled Brier score between
+\ainet{} and the other methods stratified by simulation conditions. The scaled
+Brier score is useful to compare the actual values of Brier scores across
+conditions with different prevalence, but not so much to compare Brier scores of
+different methods within a simulation condition with fixed prevalence. We see
+that for most conditions the plots look like a flipped version of the unscaled
+Brier scores from Figure~\ref{fig:tiebrier}. Therefore, conclusions are mostly
+the same. For very small sample sizes coupled with low prevalence and low events
+per variable (the topleft plots), the scaled Brier score indicates superiority
+of \ainet{} which is opposite the conclusion based on the raw Brier score. We
+advise to interpret these conditions cautiously since the prevalence prediction
+which is used for scaling is based on the much larger test data set.
+
+
+
+
 
 \begin{landscape}
 \begin{figure}[!ht]
 \center
 \includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_brier.pdf}
 \caption{Tie-fighter plot for the difference in Brier score between any method
-  on the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted using
-  per simulation condition using the single-step method. Lower values indicate
+  on the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted per
+  simulation condition using the single-step method. Lower values indicate
   better performance of \ainet{}. } \label{fig:tiebrier}
 \end{figure}
 \end{landscape}
@@ -116,7 +162,7 @@ opts_chunk$set(fig.height = 4,
 \includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_scaledBrier.pdf}
 \caption{Tie-fighter plot for the difference in scaled Brier score between any
   method on the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted
-  using per simulation condition using the single-step method. Larger
+  per simulation condition using the single-step method. Larger
   values indicate better performance of \ainet{}. } \label{fig:tiesbrier}
 \end{figure}
 \end{landscape}
@@ -126,8 +172,8 @@ opts_chunk$set(fig.height = 4,
 \center
 \includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_nll.pdf}
 \caption{Tie-fighter plot for the difference in log score between any method on
-  the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted using
-  per simulation condition using the single-step method. Lower values indicate
+  the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted per
+  simulation condition using the single-step method. Lower values indicate
   better performance of \ainet{}. } \label{fig:tienll}
 \end{figure}
 \end{landscape}
@@ -138,8 +184,8 @@ opts_chunk$set(fig.height = 4,
 \includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_auc.pdf}
 \caption{Tie-fighter plot for the difference in area under the curve between any
   method on the $y$-axis and \ainet{}. The 95\% confidence intervals are
-  adjusted using per simulation condition using the single-step method. Larger
-  values indicate better performance of \ainet{}. } \label{fig:tiesbrier}
+  adjusted per simulation condition using the single-step method. Larger values
+  indicate better performance of \ainet{}. } \label{fig:tiesbrier}
 \end{figure}
 \end{landscape}
 
