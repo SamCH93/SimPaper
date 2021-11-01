@@ -1,0 +1,146 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphics}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath, amssymb}
+\usepackage{textcomp}
+\usepackage[sc]{mathpazo}
+\usepackage{times}
+\usepackage{doi} % automatic doi-links
+\usepackage[round]{natbib} % bibliography
+\usepackage{multirow} % multi rows and columns for tables
+\usepackage{longtable} % tables that span several pages
+\usepackage{booktabs} % nicer tables
+\usepackage[toc, page]{appendix} % better appendices
+\usepackage{nameref} % reference appendices with names
+\usepackage{todonotes} 
+\usepackage{pdflscape} 
+
+\input{defs}
+
+%% margins
+%% ----------------------------------------------------------------------------
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=25mm,
+ right=25mm,
+ top=20mm,
+ bottom=20mm,
+ }
+
+%% title, authors, affiliations, mail
+%% ----------------------------------------------------------------------------
+\newcommand\longtitle{Pitfalls and Potentials in Simulation Studies}
+\newcommand\shorttitle{\longtitle}
+\newcommand\subtitle{Report of pre-registered simulations}
+\newcommand\longauthors{Samuel Pawel, Lucas Kook, Kelly Reeve}
+\newcommand\shortauthors{\longauthors} % if longauthors too long, change here
+\newcommand\affiliation{
+  Epidemiology, Biostatistics and Prevention Institute (EBPI) \\
+  Center for Reproducible Science (CRS) \\
+  University of Zurich
+}
+\newcommand\mail{}
+\title{
+  \vspace{-2em}
+  \textbf{\longtitle} \\
+  \subtitle
+}
+\author{
+  \textbf{\longauthors}
+}
+\date{\today} % don't forget to hard-code date when submitting to arXiv!
+
+%% hyperref options
+%% ----------------------------------------------------------------------------
+\usepackage{hyperref}  
+\hypersetup{
+  bookmarksopen=true, 
+  breaklinks=true,
+  pdftitle={\shorttitle}, 
+  pdfauthor={\shortauthors},
+  pdfsubject={},
+  pdfkeywords={},
+  colorlinks=true,
+  linkcolor=RoyalPurple,
+  anchorcolor=black,
+  citecolor=MidnightBlue,
+  urlcolor=BrickRed,
+}
+
+%% Headers and footers
+%% ----------------------------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\shorttitle}
+\rhead{\shortauthors}
+
+\begin{document}
+\maketitle
+
+
+
+% knitr options
+% =============================================================================
+<< "main-setup", include = FALSE >>=
+library(knitr)
+opts_chunk$set(fig.height = 4,
+               echo = FALSE,
+               warning = FALSE,
+               message = FALSE,
+               cache = FALSE, 
+               eval = TRUE)
+@
+
+
+
+
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_brier.pdf}
+\caption{Tie-fighter plot for the difference in Brier score between any method
+  on the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted using
+  per simulation condition using the single-step method. Lower values indicate
+  better performance of \ainet{}. } \label{fig:tiebrier}
+\end{figure}
+\end{landscape}
+
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_scaledBrier.pdf}
+\caption{Tie-fighter plot for the difference in scaled Brier score between any
+  method on the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted
+  using per simulation condition using the single-step method. Larger
+  values indicate better performance of \ainet{}. } \label{fig:tiesbrier}
+\end{figure}
+\end{landscape}
+
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_nll.pdf}
+\caption{Tie-fighter plot for the difference in log score between any method on
+  the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted using
+  per simulation condition using the single-step method. Lower values indicate
+  better performance of \ainet{}. } \label{fig:tienll}
+\end{figure}
+\end{landscape}
+
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_auc.pdf}
+\caption{Tie-fighter plot for the difference in area under the curve between any
+  method on the $y$-axis and \ainet{}. The 95\% confidence intervals are
+  adjusted using per simulation condition using the single-step method. Larger
+  values indicate better performance of \ainet{}. } \label{fig:tiesbrier}
+\end{figure}
+\end{landscape}
+
+\end{document}
