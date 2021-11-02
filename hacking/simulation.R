@@ -39,7 +39,7 @@ res <- runSimulation(
     analyse = analyze,
     summarise = summarize,
     save = TRUE,
-    save_seeds = TRUE,
+    save_seeds = FALSE,
     save_results = TRUE,
     save_details = list(safe = TRUE,
                         save_results_dirname = "simResults",
