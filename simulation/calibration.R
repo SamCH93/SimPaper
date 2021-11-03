@@ -75,4 +75,4 @@ vis_results <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
 # Run ---------------------------------------------------------------------
 
 vis_results(adat, metric = "cslope", save = TRUE, lim = c(-10, 10))
-vis_results(adat, metric = "clarge", save = TRUE, lim = c(-10, 10))
+vis_results(adat, metric = "clarge", save = TRUE, lim = c(-5, 5))
