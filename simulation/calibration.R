@@ -35,7 +35,7 @@ adat <- simres %>%
 # Funs --------------------------------------------------------------------
 
 vis_results <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
-												lim = c(-100, 100), only_one = TRUE) {
+												lim = c(-100, 100)) {
 	
 	metric <- match.arg(metric)
 	yint <- switch(metric, "cslope" = 1, "clarge" = 0)	
@@ -60,9 +60,6 @@ vis_results <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
 			labs(y = xxlab, x = element_blank(), subtitle = bquote(rho==~.(trho)), color = "EPV") +
 			ylim(lim[1], lim[2])
 	}
-	
-	if (only_one)
-		return(rho_plot(0))
 	
 	ps <- lapply(unique(as.numeric(as.character(out2$rho))), rho_plot)
 	pf <- ggarrange(plotlist = ps, common.legend = TRUE, ncol = 2, nrow = 2)
