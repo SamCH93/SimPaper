@@ -9,7 +9,7 @@ library(tidyverse)
 library(multcomp)
 library(ggpubr)
 
-outdir <- "results_anova"
+outdir <- "figures"
 if (!dir.exists(outdir)) {
     dir.create(outdir)
 }
@@ -51,14 +51,14 @@ vis_results <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
 		ggplot(out2 %>% filter(rho == trho), 
 					 aes(x = model, y = !!sym(metric), color = ordered(EPV))) +
 			geom_hline(yintercept = yint, linetype = 2, alpha = 0.5) +
-			geom_violin(position = position_dodge(width = 0.7)) +
+			geom_boxplot(position = position_dodge(width = 0.7), outlier.size = 0.1) +
 			stat_mean(shape = 4, position = position_dodge(width = 0.7)) +
 			facet_grid(prev ~ n, labeller = label_both) +
 			theme_bw() +
 			theme(legend.position = "top", panel.grid.major.y = element_blank(),
-						axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1, size = 7)) +
+						axis.text.x = element_text(size = 7)) +
 			labs(y = xxlab, x = element_blank(), subtitle = bquote(rho==~.(trho)), color = "EPV") +
-			ylim(lim[1], lim[2])
+			coord_flip(ylim = lim)
 	}
 	
 	ps <- lapply(unique(as.numeric(as.character(out2$rho))), rho_plot)
