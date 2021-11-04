@@ -189,6 +189,20 @@ simulation conditions.
 
 
 \section{Calibration slope (secondary estimand)}
+Figure~\ref{fig:cslope} shows boxplots of the calibration slope stratified by
+simulation condition and method.
+
+\todo{Add information on non-convergent calibration slope}
+We caution to interpret the random forest (RF) calibration slopes because
+this method often resulted in predicted probabilities of zero or one, so that
+a calibration slope could not be fitted.
+
+We see that logistic regression (GLM) shows on average optimal calibration in
+most simulation condition. In cases where it is off the optimal value of one,
+its calibration slopes are usually too small indicating overoptimistic
+predictions. In general, worse calibration slopes are obtained for lower event
+per variable (EPV).
+
 
 
 \section{Calibration in the large (secondary estimand)}
@@ -231,11 +245,21 @@ simulation conditions.
 \begin{landscape}
 \begin{figure}[!ht]
 \center
-\includegraphics[width=0.9\linewidth]{../results_anova/tie-fighter_auc.pdf}
-\caption{Tie-fighter plot for the difference in area under the curve between any
-  method on the $y$-axis and \ainet{}. The 95\% confidence intervals are
-  adjusted per simulation condition using the single-step method. Larger values
-  indicate better performance of \ainet{}. } \label{fig:tiesbrier}
+\includegraphics[width=0.9\linewidth]{../figures/calibration-cslope.pdf}
+\caption{Boxplots of calibration slopes stratified by method and simulation
+  conditions. Mean calibration slope is indicated by a cross. A value of one
+  indicates optimal calibration.} \label{fig:cslope}
+\end{figure}
+\end{landscape}
+
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.9\linewidth]{../figures/calibration-clarge.pdf}
+\caption{Boxplots of calibration in the large stratified by method and
+  simulation conditions. Mean calibration in the large is indicated by a cross.
+  A value of zero indicates optimal calibration in the
+  large.} \label{fig:clarge}
 \end{figure}
 \end{landscape}
 
