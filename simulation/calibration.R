@@ -47,6 +47,11 @@ vis_results <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
 		mutate_at(c("n", "EPV", "prev", "rho"), 
 							~ factor(.x, levels = sort(unique(as.numeric(as.character(.x))))))
 	
+	nadat <- out2 %>% 
+		group_by(n, EPV, prev, rho, model) %>% 
+		summarize(frac_na = round(100 * mean(is.na(!!sym(metric))), 1),
+							frac_na = paste0(frac_na, "%"))
+	
 	rho_plot <- function(trho) {
 		ggplot(out2 %>% filter(rho == trho), 
 					 aes(x = model, y = !!sym(metric), color = ordered(EPV))) +
@@ -54,6 +59,8 @@ vis_results <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
 			geom_boxplot(position = position_dodge(width = 0.7), outlier.size = 0.1) +
 			stat_mean(shape = 4, position = position_dodge(width = 0.7)) +
 			facet_grid(prev ~ n, labeller = label_both) +
+			geom_text(aes(y = lim[1] * 0.9, label = frac_na), data = nadat %>% filter(rho == trho),
+								position = position_dodge(width = 0.7)) +
 			theme_bw() +
 			theme(legend.position = "top", panel.grid.major.y = element_blank(),
 						axis.text.x = element_text(size = 7)) +
