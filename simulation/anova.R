@@ -26,10 +26,10 @@ simres <- lapply(X = files, FUN = function(filename) {
 }) %>%
     bind_rows()
 
-adat <- simres %>% 
-    mutate(inputp = ceiling(n * prev / EPV)) %>% 
-    filter(inputp != 1) %>% 
-	mutate_at(c("n", "EPV", "prev", "rho"), ~ factor(.x, levels = sort(unique(.x)))) %>% 
+adat <- simres %>%
+    mutate(inputp = ceiling(n * prev / EPV)) %>%
+    filter(inputp != 1) %>%
+	mutate_at(c("n", "EPV", "prev", "rho"), ~ factor(.x, levels = sort(unique(.x)))) %>%
 	mutate(fct = factor(paste0(model, "n", n, "EPV", EPV, "prev", prev, "rho", rho)))
 
 # ANOVA -------------------------------------------------------------------
@@ -39,7 +39,7 @@ run_anova <- function(formula = brier ~ 0 + fct, data = adat,
                       models = c("GLM", "EN", "AEN", "RF"), compare_against = "AINET") {
     m <- lm(formula, data = data)
     out <- list()
-    
+
     pb <- txtProgressBar(min = 1, max = length(conds), style = 3)
     for (cond in seq_along(conds)) {
         setTxtProgressBar(pb, cond)
@@ -48,7 +48,7 @@ run_anova <- function(formula = brier ~ 0 + fct, data = adat,
         lfct <- paste(g1, "-", g2, "== 0")
         res <- try(glht(m, linfct = lfct))
         if (inherits(res, "try-error"))
-            next 
+            next
         pval <- summary(res)$test$pvalues
         cf <- confint(res)$confint
         nms <- str_split(conds[cond], pattern = "[0-9]|\\.")[[1]]
@@ -58,7 +58,7 @@ run_anova <- function(formula = brier ~ 0 + fct, data = adat,
         names(nums) <- nms
         out[[cond]] <- data.frame(cf, pval = pval, contrast = models, t(nums))
     }
-    return(out) 
+    return(out)
 }
 
 vis_results <- function(pdat, xlab = "brier", save = TRUE) {
@@ -78,14 +78,15 @@ vis_results <- function(pdat, xlab = "brier", save = TRUE) {
         ggplot(out2 %>% filter(rho == trho), aes(x = contrast, y = Estimate, ymin = lwr, ymax = upr,
                                                  color = ordered(EPV))) +
             geom_hline(yintercept = 0, linetype = 2, alpha = 0.5) +
-            geom_pointrange(fatten = 0.75, position = position_dodge(width = 0.7)) +
+            geom_pointrange(fatten = 0.75, position = position_dodge(width = 0.7),
+                            key_glyph = "point") +
             geom_errorbar(width = 0.35, position = position_dodge(width = 0.7)) +
             facet_grid(prev ~ n, labeller = label_both) +
             theme_bw() +
             theme(legend.position = "top", panel.grid.major.y = element_blank(),
                   axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1, size = 7)) +
             labs(y = paste("Difference in", xxlab, "(AINET - other method)"), 
-                 x = "Contrast", subtitle = bquote(rho==~.(trho)), color = "EPV") +
+                 x = "Contrast", subtitle = bquote(rho==~.(trho)), color = "EPV       ") +
             geom_vline(xintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8) +
             coord_flip()
     }
@@ -108,10 +109,11 @@ vis_results <- function(pdat, xlab = "brier", save = TRUE) {
 metrics <- c("brier", "scaledBrier", "nll", "acc", "auc")
 
 sapply(metrics, function(met) {
-    mdat <- adat %>% filter(is.finite(!!sym(met)))
-    cat("\nRemoved", nrow(adat) - nrow(mdat), 
-        "rows due to infinite values / missingness in", met, "\n")
-    fml <- as.formula(paste(met, "~ 0 + fct"))
-    out <- run_anova(formula = fml, data = mdat)
+    ## mdat <- adat %>% filter(is.finite(!!sym(met)))
+    ## cat("\nRemoved", nrow(adat) - nrow(mdat),
+    ##     "rows due to infinite values / missingness in", met, "\n")
+    ## fml <- as.formula(paste(met, "~ 0 + fct"))
+    ## out <- run_anova(formula = fml, data = mdat)
+    out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
     vis_results(out, xlab = met)
 })

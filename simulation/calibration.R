@@ -65,7 +65,8 @@ vis_results <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
 			theme_bw() +
 			theme(legend.position = "top", panel.grid.major.y = element_blank(),
 						axis.text.x = element_text(size = 7)) +
-			labs(y = xxlab, x = element_blank(), subtitle = bquote(rho==~.(trho)), color = "EPV") +
+			labs(y = xxlab, x = element_blank(), subtitle = bquote(rho==~.(trho)),
+				 color = "EPV      ") +
 			coord_flip(ylim = lim)
 	}
 	
