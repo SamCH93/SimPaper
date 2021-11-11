@@ -117,9 +117,10 @@ metrics <- c("brier", "scaledBrier", "nll", "acc", "auc")
 
 sapply(metrics, function(met) {
 	mdat <- adat %>% filter(is.finite(!!sym(met)))
-	cat("\nRemoved", nrow(adat) - nrow(mdat), 
+	cat("\nRemoved", nrow(adat) - nrow(mdat),
 			"rows due to infinite values / missingness in", met, "\n")
 	fml <- as.formula(paste(met, "~ 0 + fct"))
 	out <- run_anova(formula = fml, data = mdat)
+	## out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
 	vis_results(out, xlab = met)
 })

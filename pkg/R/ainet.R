@@ -63,13 +63,13 @@ cv.fglmnet <- function(formula, data, imp_data = NULL, pen.f = NULL, nfolds = 5,
 
 # compute importance penalty
 .importance_penalty <- function(rf, gamma = 1, which = c("impurity", "adaptive lasso"),
-																renorm = c("trunc", "shift")) {
+								renorm = c("shift", "trunc")) {
 	which <- match.arg(which)
 	renorm <- match.arg(renorm)
 	if (which == "impurity") {
 		imp <- importance(rf)
 		imp <- switch(renorm, "trunc" = pmax(imp, 0),
-									"shift" = imp - min(imp))
+					  "shift" = imp - min(imp))
 		ret <- 1 - (imp / sum(imp))^gamma
 	} else if (which == "adaptive lasso") {
 		ret <- 1 / abs(coef(rf))^gamma
