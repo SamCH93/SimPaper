@@ -9,7 +9,7 @@ library(tidyverse)
 library(multcomp)
 library(ggpubr)
 
-inp <- "simResults-sparse"
+inp <- "simResults-trunc"
 
 outdir <- paste0(inp, "-results")
 if (!dir.exists(outdir)) {
@@ -18,9 +18,9 @@ if (!dir.exists(outdir)) {
 
 # Load --------------------------------------------------------------------
 
-files <- list.files(path = inp)
+files <- list.files(path = inp, pattern = ".rds", full.names = TRUE)
 simres <- lapply(X = files, FUN = function(filename) {
-    resList <- readRDS(file = paste0(inp, filename))
+    resList <- readRDS(file = filename)
     lapply(X = resList$results, FUN = function(resListSimi) {
         resListSimi$estimands
     }) %>%
