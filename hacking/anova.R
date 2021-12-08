@@ -9,6 +9,8 @@ library(tidyverse)
 library(multcomp)
 library(ggpubr)
 
+inp <- "simResults"
+
 outdir <- "results_anova"
 if (!dir.exists(outdir)) {
     dir.create(outdir)
