@@ -1,3 +1,0 @@
-# 1st hack
-
-Sparse
