@@ -114,13 +114,13 @@ vis_results <- function(pdat, xlab = "brier", save = TRUE,
     return(pf)
 }
 
-vis_na <- function(pdat, rhos = unique(as.numeric(as.character(adat$rho))), 
-                   sparsities = unique(as.numeric(as.character(adat$sparsity))),
+vis_na <- function(pdat, rhos = unique(as.numeric(as.character(pdat$rho))), 
+                   sparsities = unique(as.numeric(as.character(pdat$sparsity))),
                    xlab = "brier") {
     lapply(rhos, function(trho) {
         lop <- lapply(sparsities, function(tsparse) {
             pdat %>% 
-                filter(rho == thro, sparsity == tsparse) %>% 
+                filter(rho == trho, sparsity == tsparse) %>% 
                 ggplot(aes(x = model, y = EPV, fill = frac_na)) +
                 geom_tile(alpha = 0.3) +
                 geom_text(aes(label = paste0(frac_na, "%"))) +
