@@ -4,7 +4,14 @@
 \alias{generateData}
 \title{Generate data from logistic model}
 \usage{
-generateData(n = 100, p = 20, b = rnorm(p), prev = 0.5, rho = 0)
+generateData(
+  n = 100,
+  p = 20,
+  b = rnorm(p),
+  prev = 0.5,
+  rho = 0,
+  nonlin = FALSE
+)
 }
 \description{
 Generate data from logistic model
