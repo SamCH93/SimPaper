@@ -154,6 +154,6 @@ sapply(metrics, function(met) {
     fml <- as.formula(paste(met, "~ 0 + fct"))
     out <- run_anova(formula = fml, data = mdat)
     # out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
-    vis_results(out, xlab = met)
-    vis_na(pdat = nadat, xlab = met)
+    try(vis_results(out, xlab = met))
+    try(vis_na(pdat = nadat, xlab = met))
 })
