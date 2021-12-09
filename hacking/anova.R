@@ -9,7 +9,7 @@ library(tidyverse)
 library(multcomp)
 library(ggpubr)
 
-inp <- "simResults-trunc"
+inp <- "simResults-sparse"
 
 outdir <- paste0(inp, "-results")
 if (!dir.exists(outdir)) {
