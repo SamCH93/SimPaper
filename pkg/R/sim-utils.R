@@ -6,12 +6,17 @@
 #' dat <- generateData(p = 5, prev = 0.01, rho = 0.5)
 #' cor(dat[,-1])
 #' @export
-generateData <- function(n = 1e2, p = 20, b = rnorm(p), prev = 0.5, rho = 0) {
+generateData <- function(n = 1e2, p = 20, b = rnorm(p), prev = 0.5, rho = 0,
+                         nonlin = FALSE) {
+  if (is.null(nonlin))
+    nonlin <- FALSE
   b0 <- qlogis(p = prev)
   Sigma <- matrix(data = rho, nrow = p, ncol = p)
   diag(Sigma) <- 1
-	X <- rmvn(n = n, mu = rep(0, p), sigma = Sigma)
-	Y <- factor(x = rbinom(n = n, size = 1, prob = plogis(q = b0 + X %*% b)),
+	X <- tX <- rmvn(n = n, mu = rep(0, p), sigma = Sigma)
+	if (nonlin)
+	  tX[, 1] <- ifelse(X[, 1] > 0, X[, 1], 0)
+	Y <- factor(x = rbinom(n = n, size = 1, prob = plogis(q = b0 + tX %*% b)),
               levels = c(0, 1))
 	return(data.frame(Y = Y, X = X))
 }
@@ -179,18 +184,20 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   rho <- condition$rho
   prev <- condition$prev
   sparsity <- condition$sparsity
+  nonlin <- condition$nonlin
 
   ## Simulation of coefficients
   betas <- rnorm(p)
 
   if (!is.null(sparsity)) {
-    idx <- sample.int(p, ceiling(sparsity * p))
+    idx <- 1 + sample.int(p - 1, ceiling(sparsity * (p - 1)))
     betas[idx] <- 0
   }
 
   ## Simulate training and test data
-  train <- generateData(n = n, p = p, b = betas, prev = prev, rho = rho)
-  test <- generateData(n = fixed_objects$ntest, p = p, b = betas, prev = prev, rho = rho)
+  train <- generateData(n = n, p = p, b = betas, prev = prev, rho = rho, nonlin = nonlin)
+  test <- generateData(n = fixed_objects$ntest, p = p, b = betas, prev = prev, rho = rho,
+                       nonlin = nonlin)
   list(train = train, test = test, beta = betas)
 }
 
