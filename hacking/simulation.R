@@ -8,7 +8,7 @@ set.seed(42)
 
 library(ainet)
 
-name <- "nonlin"
+name <- "nonlin_fix"
 
 # Conditions --------------------------------------------------------------
 
@@ -16,8 +16,8 @@ n <- c(100, 500, 1000) # remove 5000
 EPV <- c(20, 10, 1, 0.5)
 prev <- c(0.01, 0.05, 0.1)
 sigma2 <- c(1)
-rho <- c(0, 0.3, 0.6, 0.95)
-sparsity <- c(0.3, 0.6, 0.9) # add sparsity
+rho <- c(0, 0.95)
+sparsity <- c(0, 0.9) # add sparsity
 simGrid <- createDesign(n = n, EPV = EPV, prev = prev, sigma2 = sigma2,
                         rho = rho, sparsity = sparsity, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n * prev / EPV))
