@@ -171,8 +171,8 @@ evaluateModel.glmnet <- function(m, newx, y_true, loss, ...) {
 
 #' SimDesign function for generating the data
 #' @examples
-#' condition <- data.frame(n = 100, EPV = 20, sparsity = "dense", prev = 0.01,
-#' sigma2 = 1, rho = 0.9, p = 2)
+#' condition <- data.frame(n = 100, EPV = 20, sparsity = 0.9, prev = 0.01,
+#' sigma2 = 1, rho = 0.9, p = 2, nonlin = TRUE)
 #' generate(condition)
 #' @export
 generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
@@ -187,7 +187,7 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   nonlin <- condition$nonlin
 
   ## Simulation of coefficients
-  betas <- rnorm(p)
+  betas <- c(3, rnorm(p - 1))
 
   if (!is.null(sparsity)) {
     idx <- 1 + sample.int(p - 1, ceiling(sparsity * (p - 1)))
