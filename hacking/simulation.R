@@ -37,7 +37,7 @@ write.csv(simGrid, paste0(name, "-conditions.csv"), row.names = FALSE, quote = F
 
 res <- runSimulation(
     design = simGrid,
-    replications = 500,
+    replications = 1e3,
     generate = generate,
     analyse = analyze,
     summarise = summarize,
