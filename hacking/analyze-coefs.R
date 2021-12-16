@@ -39,7 +39,7 @@ filter_coef <- function(dat, cf = "X.0") {
 
 summarize_coef <- function(dat, svars = c("estimate", "bias"),
                            funs = list(mean = mean, sd = sd,
-                                       n = \(.x, ...) length(na.omit(.x)))) {
+                                       n = function(.x, ...) length(na.omit(.x)))) {
     dat %>% 
         summarize_at(svars, funs, na.rm = TRUE) %>% 
         mutate(bias_lwr = bias_mean - 1.96 * bias_sd / sqrt(bias_n),
