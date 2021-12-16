@@ -9,7 +9,7 @@ library(tidyverse)
 library(multcomp)
 library(ggpubr)
 
-inp <- "simResults-sparse"
+inp <- "simResults-nonlin"
 
 outdir <- paste0(inp, "-results")
 if (!dir.exists(outdir)) {
@@ -153,7 +153,7 @@ sapply(metrics, function(met) {
         "rows due to infinite values / missingness in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
     out <- run_anova(formula = fml, data = mdat)
-    # out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
+    # out <- read.csv(file.path(outdir, paste0("anova_", met, ".csv")))
     try(vis_results(out, xlab = met))
     try(vis_na(pdat = nadat, xlab = met))
 })
