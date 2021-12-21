@@ -187,7 +187,7 @@ generate <- function(condition, fixed_objects = list(ntest = 1e4)) {
   nonlin <- condition$nonlin
 
   ## Simulation of coefficients
-  betas <- c(3, rnorm(p - 1))
+  betas <- c(1.1, rnorm(p - 1))
 
   if (!is.null(sparsity)) {
     idx <- 1 + sample.int(p - 1, ceiling(sparsity * (p - 1)))
