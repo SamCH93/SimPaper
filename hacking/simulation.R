@@ -8,7 +8,7 @@ set.seed(42)
 
 library(ainet)
 
-name <- "nonlin_fix"
+name <- "nonlin_fix_smaller"
 
 # Conditions --------------------------------------------------------------
 
