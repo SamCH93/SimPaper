@@ -38,15 +38,14 @@
 % \newcommand\subtitle{How undisclosed flexibility in simulation experiments
 % allows to show superiority of any method}
 \newcommand\subtitle{Questionable research practices in %Undisclosed flexibility in design, execution, and reporting of
-comparative simulation studies allows to show superiority of any method}
+comparative simulation studies allow to show superiority of any method}
 \newcommand\longauthors{Samuel Pawel, Lucas Kook, Kelly Reeve}
 \newcommand\shortauthors{\longauthors} % if longauthors too long, change here
 \newcommand\affiliation{
-  Epidemiology, Biostatistics and Prevention Institute (EBPI) \\
-  Center for Reproducible Science (CRS) \\
+  Epidemiology, Biostatistics and Prevention Institute  \\
+  % Center for Reproducible Science (CRS) \\
   University of Zurich
 }
-\newcommand\mail{samuel.pawel@uzh.ch}
 \title{
   \vspace{-2em}
   \textbf{\longtitle} \\
@@ -55,7 +54,8 @@ comparative simulation studies allows to show superiority of any method}
 \author{
   \textbf{\longauthors} \\
   \affiliation \\
-  E-mail: \href{mailto:\mail}{\mail}
+  \{samuel.pawel, lucasheinrich.kook, kelly.reeve\}@uzh.ch
+
 }
 \date{\today} % don't forget to hard-code date when submitting to arXiv!
 
@@ -132,10 +132,6 @@ comparative simulation studies allows to show superiority of any method}
 \newcommand{\sprod}[1]{\left\langle#1\right\rangle} % Scalarproduct
 \newcommand{\Ind}[2]{\mathsf{I}_{#2}(#1)} % Indicatorfunction
 \newcommand{\IdMat}{\boldsymbol{\mathrm{I}}} % Identity matrix
-\DeclareMathOperator{\BF}{BF} % Bayes factor
-\newcommand\BFsub[2]{\BF_{\scriptscriptstyle{#1:#2}}} % BF with subscript
-\newcommand{\that}{\hat{\theta}} % Effect estimate
-\newcommand{\lw}[1]{W_{\scriptscriptstyle{#1}}} % Lambert W function
 %% ----------------------------------------------------------------------------
 
 \begin{document}
@@ -163,7 +159,7 @@ opts_chunk$set(fig.height = 4,
 % Statisticians and methodologists often emphasize methodological flaws 
 % in research from other scientific disciplines, yet the methodological 
 % standards of empirical research in their own field are themeselves poor: 
-Comparative simulation studies have become a workhorse tool for benchmarking
+Comparative simulation studies are a workhorse tool for benchmarking
 % operating characteristics 
 of statistical methods. But if done in nontransparent and uncritical manner, they
 may lead to over-optimism. Furthermore, the current publication requirements of 
@@ -213,21 +209,21 @@ After you've not fooled yourself, it's easy not to fool other scientists.''}
 
 % exploratory vs confirmatory also for simulation studies?
 
-Statisticians frequently emphasize methodological flaws 
-in research from other scientific disciplines. To name a few: 
-Confidence intervals and $p$-values are misinterpreted, multiplicity is
-not corrected, 
-% the wrong inferential paradigm is chosen, 
-$p$-hacking and HARKing inflate the Type-I error rate, selection bias, unblinded 
-assessment, or observational data lead to confounded estimates of associations. 
-These deficiencies are considered to be major drivers for
-low reproducibility and replicability in many areas of science. 
-It is therefore fairly surprising that the standards of empirical research in
-statistics, especially the comparison of statistical methods with 
-simulation studies or real data-sets, 
-% simulation studies and benchmarking with real data sets, 
-fall far short of the level of rigor that statisticians 
-expect from their applied colleagues \citep{Boulesteix2020}.
+% Statisticians frequently emphasize methodological flaws
+% in research from other scientific disciplines. To name a few:
+% Confidence intervals and $p$-values are misinterpreted, multiplicity is
+% not corrected,
+% % the wrong inferential paradigm is chosen,
+% $p$-hacking and HARKing inflate the Type-I error rate, selection bias, unblinded
+% assessment, or observational data lead to confounded estimates of associations.
+% These deficiencies are considered to be major drivers for
+% low reproducibility and replicability in many areas of science.
+% It is therefore fairly surprising that the standards of empirical research in
+% statistics, especially the comparison of statistical methods with
+% simulation studies or real data-sets,
+% % simulation studies and benchmarking with real data sets,
+% fall far short of the level of rigor that statisticians
+% expect from their applied colleagues \citep{Boulesteix2020}.
 
 Simulation studies are to a statistician what experiments are to a scientist.
 They have become an ubiquitous tool for the evaluation of 
@@ -282,27 +278,27 @@ quality of evidence that a simulation study provides.
 % This may ultimately lead
 % to publication bias \citep{Boulesteix2015}
 
-Statistical research is exploratory by nature, and of course not every 
-simulation should require a simulation protocol or other stringent measures.
-However, if the goal is to generate high-quality evidence, researchers
-should adopt rigorous simulation methodology. 
-The purpose of this paper is not to propose new guidelines, as they are all 
-already available, but rather to highlight the need for
-their adoption by the general statistics community. 
-To this end, we list questionable research practices
-(QRPs) related to comparative simulation studies (Section \ref{sec:QRP}) 
-which may undermine their validity but can easily go undetected by
-current standards. We then
-show with an empirical study how easy it is to present any statistical method as an 
-improvement over others, if QRPs remain undisclosed (Section \ref{sec:study}).
-We also use the same example to show how over-optimism can be avoided if a sound 
-methodological route is taken instead.
-Similar studies have been conducted by \citet{Jelizarow2010} in the context
-of data-set fishing and by \citet{Simmons2011} in the context of $p$-hacking
-in psychological research, and were the main inspiration for this work. 
-Finally, we provide simple and concrete suggestions for researchers, reviewers,
-and other academic stakeholders to improve the methodological quality of 
-comparative simulation studies (Section \ref{sec:discussion}).
+Statistical research is both, exploratory and confirmatory, so not every
+simulation study requires a simulation protocol or other stringent measures.
+However, if the goal is to generate high-quality evidence, researchers should
+adopt rigorous simulation methodology. The aim of this paper is % not to
+% propose new guidelines, as they are all already available, but rather
+% but to highlight the need for their adoption by the general statistics
+% community.
+to highlight the need for the adoption of more rigorous simulation methodolgoy
+by the general statistics community. To this end, we list questionable research
+practices (QRPs) related to comparative simulation studies (Section
+\ref{sec:QRP}) which may undermine their validity but can easily go undetected
+by current standards. We then show with an empirical study how easy it is to
+present any statistical method as an improvement over others, if QRPs remain
+undisclosed (Section \ref{sec:study}). We also use the same example to show how
+over-optimism can be avoided if a sound methodological route is taken instead.
+Similar studies have been conducted by \citet{Niessl2021} and
+\citet{Jelizarow2010}, and by \citet{Simmons2011} in the context of $p$-hacking
+in psychological research, and were the main inspiration for this work. Finally,
+we provide simple and concrete suggestions for researchers, reviewers, and other
+academic stakeholders to improve the methodological quality of comparative
+simulation studies (Section \ref{sec:discussion}).
 
 % showed
 % how a statistical method can be presented as superior if one looks long enough
@@ -313,11 +309,11 @@ comparative simulation studies (Section \ref{sec:discussion}).
 % \citet{Kerr1998, Boulesteix2013, Boulesteix2017,  Boulesteix2020}
 
 
-\section{Questionable research practices} \label{sec:QRP}
-\begin{itemize}
-  \item Discuss all the QRPs, their relationship and their 
-  consequences from Table \ref{table:QRPs}
-\end{itemize}
+\section{Questionable research practices in comparative simulation
+  studies} \label{sec:QRP}
+Table~\ref{table:QRPs} lists different types of QRPs which threathen the
+validity of comparative simulation studies. They are categorized with respect to
+the stage of research at which they can occur.
 
 \begin{table}[!htbp]
   \caption{Types of Questionable research practices (QRPs) in comparative simulation
@@ -331,45 +327,77 @@ comparative simulation studies (Section \ref{sec:discussion}).
   		\midrule
   		\multicolumn{2}{p{.15\textwidth}}{\textit{Design}} & \\ 
   		% \cmidrule{1-1}
-  		D1 & R2 & Not/vaguely defining objectives of simulation study \\
-  		D2 & E1 & Not/vaguely defining data-generating mechanism \\ 
+    D1 & R2 & Not/vaguely defining objectives of simulation study \\
+    D2 & E1 & Not/vaguely defining data-generating mechanism \\
   		%(data-generating mechanism, parameters of the method, etc.) \\
-  		D3 & E2, E3 & Not/vaguely defining which methods will be compared and how their
-  		parameters are specified \\ 
-  		D4 & E4 & Not/vaguely defining evaluation criteria \\
-  		D5 & E5 & Not computing required number of simulations to achieve 
-  		reasonable precision \\
-  		D6 & E6 & Not/vaguely defining how to handle ambiguous analytic situations 
-  		(\eg non-convergence of methods) \\
-  		\vdots & \vdots & \vdots \\[2em]
+    D3 & E2, E3 & Not/vaguely defining which methods will be compared and how their
+                  parameters are specified \\
+    D4 & E4 & Not/vaguely defining evaluation criteria \\
+    D5 & E6 & Not/vaguely defining how to handle ambiguous analytic situations
+              (\eg non-convergence of methods) \\
+    D6 & E5 & Not computing required number of simulations to achieve
+              desired precision \\
+    \vdots & \vdots & \vdots \\[2em]
   
-  		\multicolumn{2}{p{.15\textwidth}}{\textit{Execution}} & \\
+    \multicolumn{2}{p{.15\textwidth}}{\textit{Execution}} & \\
   		% \cmidrule{1-1}
-  		E1 & D2 & Adapting data-generating mechanism to achieve certain outcomes \\
-  		E2 & D3 & Including/excluding certain methods based on their performance \\
-  		E3 & D3 & Changing parameters of methods based on their performance \\
-  		E4 & D4 & Choosing evaluation criteria based on outcome of simulations \\
-  		E5 & D5 & Choosing number of simulations to achieve desired outcome \\
-  		E6 & D6 & Including/excluding certain simulations to achieve desired outcome \\
-  		\vdots & \vdots & \vdots \\[2em]
+    E1 & D2 & Adapting data-generating mechanism to achieve certain outcomes \\
+    E2 & D3 & Including/excluding certain methods based on their performance \\
+    E3 & D3 & Changing parameters of methods based on their performance \\
+    E4 & D4 & Choosing evaluation criteria based on outcome of simulations \\
+    E5 & D5 & Choosing number of simulations to achieve desired outcome \\
+    E6 & D6 & Including/excluding certain simulations to achieve desired outcome \\
+    \vdots & \vdots & \vdots \\[2em]
   		
   		
-  		\multicolumn{2}{p{.15\textwidth}}{\textit{Reporting}} & \\
+    \multicolumn{2}{p{.15\textwidth}}{\textit{Reporting}} & \\
   		% \cmidrule{1-1}
-  		R1 & & Selective reporting of results from simulation conditions
-  		that lead to certain outcomes \\
-  		R2 & D1 & Presenting exploratory simulation studies as confirmatory
-  		(HARKing) \\
-  		R3 & & Failing to report Monte Carlo uncertainty \\
-  		R4 & & Failing to assure reproducibility (\eg sharing computer code and
-  		details about computing environment) \\
-  		R5 & & Failing to assure replicability (\eg reporting of design and 
-  		execution	methodology) \\
-  		\vdots & \vdots & \vdots \\
+    R1 & & Selective reporting of results from simulation conditions
+           that lead to certain outcomes \\
+    R2 & D1 & Presenting exploratory simulation studies as confirmatory
+              (HARKing) \\
+    R3 & & Failing to report Monte Carlo uncertainty \\
+    R4 & & Failing to assure reproducibility (\eg sharing computer code and
+           details about computing environment) \\
+    R5 & & Failing to assure replicability (\eg reporting of design and
+           execution	methodology) \\
+    \vdots & \vdots & \vdots \\
   		
 		\bottomrule	
 	\end{longtable}
 \end{table}
+
+\subsection{Design}
+The \emph{a priori} specification of research hypotheses, study design, and
+analytic choices is what separates \emph{confirmatory} from \emph{exploratory}
+research. To prevent over-optimistic study conclusions and allow research
+consumers to distinguish between confirmatory and exploratory research, many
+non-methodological journals research require preregistration of study design and
+analysis protocols. % This
+% practice has not been adopted by the statistics community.
+If researchers attempt to conduct confirmatory research, it is generally
+recommended to write a simulation protocol \citep{Morris2019}. In contrast,
+vaguely or not defining the goals and means of a simulation study can be
+considered a QRP. This is arguably even more important than in
+non-methodological research because the multiplicity involved in simulation
+studies is far higher \citep{Hoffmann2021}. For instance, it is extremely easy
+to change the data-generating mechanism (D2), the methods under investigation
+(D3), or the evaluation metrics (D4) so that a certain method is shown to be
+superior. Researchers will usually not engage in these QRPs with ill intent, but
+because of their subconscious biases, hopes, and expectations.
+
+Another crucial part of rigorous design is a sample size calculation, see
+Section 5.3 in \citet{Morris2019} for an overview. By failing to conduct a
+sample size calculation (D5), researchers are a at a higher risk of drawing the
+wrong conclusions (if their sample size is too small), or wasting computer
+resources (if their sample size is too large).
+
+\dots
+
+\subsection{Execution}
+If researchers have prespecified their simulation study, its execution is mostly
+just following their simulation protocol. However,
+
 
 \section{Empirical study: The Adaptive Importance Elastic Net (AINET)} \label{sec:study}
 
