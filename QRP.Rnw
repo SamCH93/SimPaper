@@ -472,70 +472,87 @@ researcher are unable to replicate and expand on the simulation study (R5).
 		\toprule
     \textit{Researchers} \\
     \midrule
-    \dots \\
+    \begin{itemize}
+      \item Use simulation protocols
+      \item Collaboration between different research groups (with possibly
+            ``competing'' methods)
+      \item Blinded analyses of simulation results
+      \item Distinguish exploratory from confirmatory findings
+    \end{itemize}
+    \\[1em]
 
-    \textit{Journals editors and reviewers} \\
+    \textit{Editors and reviewers} \\
     \midrule
-    \dots \\
+    \begin{itemize}
+      \item Provide incentives for rigorous simulation studies (\eg badges on
+            paper)
+      \item Require/demand (preregistered) simulation protocols
+      \item Provide enough space for description of simulation methodology
+    \end{itemize}
+    \\[1em]
 
 
-    \textit{Funders} \\
+    \textit{Journals and funders} \\
     \midrule
-    \dots \\
-
+    \begin{itemize}
+      \item Adopt reporting guidelines
+      \item Promote/fund methodology and software to facilitate sound design,
+            execution, and reporting of simulation studies
+    \end{itemize}
+    \\[1em]
 
 		\bottomrule
 	\end{longtable}
 \end{table}
 
-\begin{itemize}
-  \item emphasize that researchers usually engage in QRPs without malicious 
-  intent but because: ``people are self-serving in their interpretation
-  of ambiguous information and remarkably adept at reaching justifiable 
-  conclusions that mesh with their desires'' \citep{Simmons2011} and also 
-  because ``superior'' methods are easier published (publication bias in 
-  methods research \citep{Boulesteix2015}?)
-  
-  \item different stages of methodological research warrant different
-  levels of stringency $\rightarrow$ draw comparison to clinical research
-  
-  \item separate exploratory from confirmatory research also in methodology
-  
-  \item Some suggestions for researchers: 
-    \begin{itemize}
-      \item use simulation protocols, follow the ``ADEMP'' approach from
-      \citet{Morris2019}
-      \item collaboration between different research groups (with possibly 
-      ``competing'' methods)
-      \item blind yourself when analyzing simulation results (\eg shuffle the
-      method labels as proposed by \citet{Dutilh2019})
-    \end{itemize}
-  
-  \item Some suggestions for reviewers, editors: 
-    \begin{itemize}
-      \item need to shift focus from ``showing superiority of method'' to
-  ``showing where method works and where it fails''
-    \item two ways to increase use of simulation protocols :
-    \begin{itemize}
-      \item[+] positive reinforcement: provide incentives for researchers, 
-      \eg badges on papers that indicate that simulation has a protocol
-      (very successful in psychology \citep{Kidwell2016})
-      \item[-] negative reinforcement: require simulation protocol for 
-      publication of comparison study (\eg similar to Cochrane systematic 
-      reviews)
-    \end{itemize}
-    \item provide enough space for description of methodology, require 
-    supplementary materials, etc.
-    \end{itemize}
-  
-  
-    
-  \item more software needs to be developed that facilitates sound design, 
-  execution, and reporting of simulation studies 
-  \citep{White2010, Gasparini2018, Chalmers2020}
-  
-  
-\end{itemize}
+% \begin{itemize}
+%   \item emphasize that researchers usually engage in QRPs without malicious
+%   intent but because: ``people are self-serving in their interpretation
+%   of ambiguous information and remarkably adept at reaching justifiable
+%   conclusions that mesh with their desires'' \citep{Simmons2011} and also
+%   because ``superior'' methods are easier published (publication bias in
+%   methods research \citep{Boulesteix2015}?)
+
+%   \item different stages of methodological research warrant different
+%   levels of stringency $\rightarrow$ draw comparison to clinical research
+
+%   \item separate exploratory from confirmatory research also in methodology
+
+%   \item Some suggestions for researchers:
+%     \begin{itemize}
+%       \item use simulation protocols, follow the ``ADEMP'' approach from
+%       \citet{Morris2019}
+%       \item collaboration between different research groups (with possibly
+%       ``competing'' methods)
+%       \item blind yourself when analyzing simulation results (\eg shuffle the
+%       method labels as proposed by \citet{Dutilh2019})
+%     \end{itemize}
+
+%   \item Some suggestions for reviewers, editors:
+%     \begin{itemize}
+%       \item need to shift focus from ``showing superiority of method'' to
+%   ``showing where method works and where it fails''
+%     \item two ways to increase use of simulation protocols :
+%     \begin{itemize}
+%       \item[+] positive reinforcement: provide incentives for researchers,
+%       \eg badges on papers that indicate that simulation has a protocol
+%       (very successful in psychology \citep{Kidwell2016})
+%       \item[-] negative reinforcement: require simulation protocol for
+%       publication of comparison study (\eg similar to Cochrane systematic
+%       reviews)
+%     \end{itemize}
+%     \item provide enough space for description of methodology, require
+%     supplementary materials, etc.
+%     \end{itemize}
+
+
+
+%   \item more software needs to be developed that facilitates sound design,
+%   execution, and reporting of simulation studies
+%   \citep{White2010, Gasparini2018, Chalmers2020}
+
+
+% \end{itemize}
 
 % Bibliography
 % ======================================================================
