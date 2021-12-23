@@ -472,34 +472,26 @@ researcher are unable to replicate and expand on the simulation study (R5).
 		\toprule
     \textit{Researchers} \\
     \midrule
-    \begin{itemize}
-      \item Use simulation protocols
-      \item Collaboration between different research groups (with possibly
-            ``competing'' methods)
-      \item Blinded analyses of simulation results
-      \item Distinguish exploratory from confirmatory findings
-    \end{itemize}
+    Adopt simulation protocols \\
+    Collaboration between different research groups (with possibly
+    ``competing'' methods) \\
+    Blinded analyses of simulation results \\
+    Distinguish exploratory from confirmatory findings
     \\[1em]
 
     \textit{Editors and reviewers} \\
     \midrule
-    \begin{itemize}
-      \item Provide incentives for rigorous simulation studies (\eg badges on
-            paper)
-      \item Require/demand (preregistered) simulation protocols
-      \item Provide enough space for description of simulation methodology
-    \end{itemize}
+    Provide incentives for rigorous simulation studies (\eg badges on
+    paper) \\
+    Require/demand (preregistered) simulation protocols \\
+    Provide enough space for description of simulation methodology
     \\[1em]
 
 
     \textit{Journals and funders} \\
     \midrule
-    \begin{itemize}
-      \item Adopt reporting guidelines
-      \item Promote/fund methodology and software to facilitate sound design,
-            execution, and reporting of simulation studies
-    \end{itemize}
-    \\[1em]
+    Adopt reporting guidelines \\
+    Promote/fund research and software to improve of simulation study methodology  \\[1em]
 
 		\bottomrule
 	\end{longtable}
