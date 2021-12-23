@@ -55,7 +55,6 @@ comparative simulation studies allow to show superiority of any method}
   \textbf{\longauthors} \\
   \affiliation \\
   \{samuel.pawel, lucasheinrich.kook, kelly.reeve\}@uzh.ch
-
 }
 \date{\today} % don't forget to hard-code date when submitting to arXiv!
 

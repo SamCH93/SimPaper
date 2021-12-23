@@ -43,3 +43,6 @@ pkgclean:
 	rm ainet*.tar.gz
 
 pkgall: build install pkgclean
+
+knit2pdf: $(FILE).Rnw
+	Rscript -e "library(knitr); knit2pdf('$<')"
