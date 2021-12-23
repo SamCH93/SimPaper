@@ -40,7 +40,7 @@
 \newcommand\subtitle{Questionable research practices in %Undisclosed flexibility in design, execution, and reporting of
 comparative simulation studies allow to show superiority of any method}
 \newcommand\longauthors{Samuel Pawel, Lucas Kook, Kelly Reeve}
-\newcommand\shortauthors{\longauthors} % if longauthors too long, change here
+\newcommand\shortauthors{S. Pawel, L. Kook, K. Reeve} % if longauthors too long, change here
 \newcommand\affiliation{
   Epidemiology, Biostatistics and Prevention Institute  \\
   % Center for Reproducible Science (CRS) \\
@@ -395,30 +395,48 @@ resources (if their sample size is too large).
 If researchers have prespecified their simulation study, its execution is mostly
 just following their simulation protocol. However, if no protocol is in place,
 they can exploit various QRPs in order to increase the chance for showing
-superiority of a particular.
+superiority of a particular method.
 
 For example, if their favored method does not perform better than its
-competitors they can adapt the data-generating mechanism (E1) \dots
+competitors under the data-generating mechanism they initially had in mind, they
+can adapt the mechanism (E1) until they find conditions where their method is
+superior.
 
-If researchers are unable to find data-generating mechanisms under which their
-favored method beats a competitor method, they can exclude the competitor from
-the comparison (E2). Similarly, to make the favored method look better,
+If researchers are unable to find any data-generating mechanisms under which
+their favored method beats a competitor method, they can exclude the competitor
+from the comparison (E2). Similarly, to make their favored method look better,
 additional methods may be included in the simulation study which perform worse
 under the (adapted) data-generating mechanisms.
 
-The methods under comparison may come with hyper/tuning parameters (for example
+The methods under comparison may come with hyper-/tuning-parameters (for example
 \dots). Researchers can tune the parameters of their favored method to achieve
 superiority over others (E3), while leaving the parameters of the competitor
 methods at their default values, or even search for parameters which make them
 look worse.
 
 The evaluation criteria for comparing the performance of the investigated
-methods, can be changed to make a particular method look better than the others
+methods can be changed to make a particular method look better than the others
 (E4). For example, \dots Similarly, the whole objective of the simulation study
 may be changed, for example, an initial comparison of predictive performance of
 methods may be changed to comparing estimation performance of methods when the
-researchers realizes that their favored method performs worse in predition
+researchers realizes that their favored method performs worse in prediction
 tasks.
+
+If no sample size calculation has been conducted a priori, researchers can
+choose the number of simulations until they arrive at their desired conclusion
+(E5). If the number of simulations is small (relative to the noise level), the
+risk for a false positive findings are drastically higher. Similarly,
+researchers can ``tune'' the random numbers by changing the initialization seed
+of their random number generator until they find a realization where their
+preferred method seems superior.
+
+It can happen that methods fail to converge an therefore fail to output a result
+in a particular simulation. If researchers do not prespecify how they will
+handle these situations, they can try different inclusion/exclusion or
+imputations strategies until their favored method looks superior.
+
+
+\subsection{Reporting}
 
 
 
