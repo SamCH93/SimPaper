@@ -462,17 +462,20 @@ researcher are unable to replicate and expand on the simulation study (R5).
 \todo{write intro and theory of ainet}
 
 \section{Discussion and recommendations} \label{sec:discussion}
+We have \dots
 
+Table~\ref{table:recommendations} shows our recommendations for improving the
+quality of comparative simulations studies, and prevent QRPs.
 \begin{table}[!htb]
   \caption{Recommendations to improve rigour of comparative simulation studies
-    and prevent QRPs}
+    and prevent QRPs.}
   \label{table:recommendations}
   \centering
 	\begin{longtable}[b]{p{.95\textwidth}}
 		\toprule
     \textit{Researchers} \\
     \midrule
-    Adopt simulation protocols \\
+    Adopt (preregistered) simulation protocols \\
     Collaboration between different research groups (with possibly
     ``competing'' methods) \\
     Blinded analyses of simulation results \\
@@ -482,7 +485,7 @@ researcher are unable to replicate and expand on the simulation study (R5).
     \textit{Editors and reviewers} \\
     \midrule
     Provide incentives for rigorous simulation studies (\eg badges on
-    paper) \\
+    papers) \\
     Require/demand (preregistered) simulation protocols \\
     Provide enough space for description of simulation methodology
     \\[1em]
@@ -491,7 +494,7 @@ researcher are unable to replicate and expand on the simulation study (R5).
     \textit{Journals and funders} \\
     \midrule
     Adopt reporting guidelines \\
-    Promote/fund research and software to improve of simulation study methodology  \\[1em]
+    Promote/fund research and software to improve simulation study methodology  \\[1em]
 
 		\bottomrule
 	\end{longtable}
