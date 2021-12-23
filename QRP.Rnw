@@ -333,8 +333,7 @@ the stage of research at which they can occur.
     D5 & E6 & Not/vaguely defining how to handle ambiguous analytic situations
               (\eg non-convergence of methods) \\
     D6 & E5 & Not computing required number of simulations to achieve
-              desired precision \\
-    \vdots & \vdots & \vdots \\[2em]
+              desired precision \\[1em]
   
     \multicolumn{2}{p{.15\textwidth}}{\textit{Execution}} & \\
   		% \cmidrule{1-1}
@@ -343,8 +342,7 @@ the stage of research at which they can occur.
     E3 & D3 & Changing parameters of methods based on their performance \\
     E4 & D4 & Choosing evaluation criteria based on outcome of simulations \\
     E5 & D5 & Choosing number of simulations to achieve desired outcome \\
-    E6 & D6 & Including/excluding certain simulations to achieve desired outcome \\
-    \vdots & \vdots & \vdots \\[2em]
+    E6 & D6 & Including/excluding certain simulations to achieve desired outcome \\[1em]
   		
   		
     \multicolumn{2}{p{.15\textwidth}}{\textit{Reporting}} & \\
@@ -358,8 +356,6 @@ the stage of research at which they can occur.
            details about computing environment) \\
     R5 & & Failing to assure replicability (\eg reporting of design and
            execution	methodology) \\
-    \vdots & \vdots & \vdots \\
-  		
 		\bottomrule	
 	\end{longtable}
 \end{table}
@@ -391,73 +387,81 @@ resources (if their sample size is too large).
 \dots
 
 \subsection{Execution}
-If researchers have prespecified their simulation study, its execution is mostly
-just following their simulation protocol. However, if no protocol is in place,
-they can exploit various QRPs in order to increase the chance for showing
-superiority of a particular method.
+If researchers have prespecified their simulation study, they simply have to
+follow their protocol in the execution phase. However, if no protocol is in
+place, they can engage in various QRPs in order to increase the chance for
+showing superiority of their preferred method.
 
-For example, if their favored method does not perform better than its
-competitors under the data-generating mechanism they initially had in mind, they
-can adapt the mechanism (E1) until they find conditions where their method is
-superior.
+If under the data-generating mechanism the researcher initially had in mind,
+their favored method does not perform better than its competitors, they can
+adapt the mechanism until they find conditions where their method is
+superior (E1). For example, \dots
 
 If researchers are unable to find any data-generating mechanisms under which
 their favored method beats a competitor method, they can exclude the competitor
-from the comparison (E2). Similarly, to make their favored method look better,
-additional methods may be included in the simulation study which perform worse
-under the (adapted) data-generating mechanisms.
+from the comparison (E2). To make their favored method look better, additional
+methods which perform worse under the (adapted) data-generating mechanisms may
+also be included in the simulation study. \dots
 
 The methods under comparison may come with hyper-/tuning-parameters (for example
 \dots). Researchers can tune the parameters of their favored method to achieve
 superiority over others (E3), while leaving the parameters of the competitor
-methods at their default values, or even search for parameters which make them
+methods at their default values, or even search for parameter values which make them
 look worse.
 
 The evaluation criteria for comparing the performance of the investigated
 methods can be changed to make a particular method look better than the others
-(E4). For example, \dots Similarly, the whole objective of the simulation study
-may be changed, for example, an initial comparison of predictive performance of
-methods may be changed to comparing estimation performance of methods when the
-researchers realizes that their favored method performs worse in prediction
+(E4). For example, a researcher who initially wanted to compare predictive
+performance of methods using the Brier score, could change to area under the
+curve if they realize that their method performs better with respect to the
+latter measure. Similarly, the objective of the simulation study may also be
+changed depending on the outcome, \eg an initial comparison of predictive
+performance may be changed to comparing estimation performance when the
+researcher realizes that their favored method performs worse in prediction
 tasks.
 
-If no sample size calculation has been conducted a priori, researchers can
-choose the number of simulations until they arrive at their desired conclusion
-(E5). If the number of simulations is small (relative to the noise level), the
-risk for a false positive findings are drastically higher. Similarly,
-researchers can ``tune'' the random numbers by changing the initialization seed
-of their random number generator until they find a realization where their
-preferred method seems superior.
+If no a priori size calculation has been conducted, researchers can choose the
+number of simulations until they arrive at their desired conclusion (E5). If the
+number of simulations is small (relative to the noise level), the risk that a
+positive finding is a false positive increases. Similarly, when too few
+simulations are conducted, researchers can ``tune'' the random numbers by
+changing the initialization seed of their random number generator until they
+find a realization where their preferred method seems superior.
 
-It can happen that methods fail to converge an therefore fail to output a result
-in a particular simulation. If researchers do not prespecify how they will
-handle these situations, they can try different inclusion/exclusion or
-imputations strategies until their favored method looks superior.
-
+It can happen that methods fail to converge and thus not output a result in a
+particular simulation. If researchers do not prespecify how they will handle
+these situations, they can try different inclusion/exclusion or imputations
+strategies until their favored method looks superior.
 
 \subsection{Reporting}
+In the reporting stage, researchers are faced with the challenge of reporting
+the design, results, and analyses of their simulation study in a digestible
+manner. Various QRPs can be employed to make a particular method look better.
 
+Researchers may selectively report results from simulation conditions in which
+their favored method performed best (R1). Not mentioning the conditions in which
+the method was inferior or at least not superior to competitors creates
+over-optimistic impressions, and may lead readers to think that the method
+uniformly outperforms competitors. Similarly, when researchers conduct
+exploratory simulation studies but present their results as if they were
+hypothesized a priori (R2), this leads to over-confidence in the method.
 
+Failing to report Monte Carlo uncertainty (R3), \eg error bars or confidence
+intervals, is a QRP with various consequences. It confounds the research
+consumers ability to assess the quality of evidence from the simulation study.
+It also allows the research to present random differences between methods
+performance as if they were systematic.
 
-\section{Empirical study: The Adaptive Importance Elastic Net (AINET)} \label{sec:study}
+Finally, by failing to assure reproducibility of the simulation study (R4),
+coding errors with fatal consequences may go undetected. Moreover, by not
+reporting the design and execution of the study in enough detail, other
+researcher are unable to replicate and expand on the simulation study (R5).
 
+\section{Empirical study: The Adaptive Importance Elastic Net
+  (AINET)} \label{sec:study}
 \todo{write intro and theory of ainet}
-% The method should be:
-% \begin{itemize}
-%   \item suitable method for comparative simulation study, \eg method to estimate
-%   one-dimensional parameter with CI?
-%   \item several other methods available to which we can compare method
-%   (and possibly remove superior methods from comparison)
-%   \item no closed form solution? Or maybe closed form solutions so that we know
-%   the true (bad) characteristics of the method?
-%   \item ``promising'' and intuitive idea
-%   \item tunable parameters such that we can fish for superiority of the method
-%   \item several possible evaluation criteria so that we can pick the best one
-%   \item easy to present graphically
-%   (e.g. two subfigures: one the QRP approach, one the sound approach)
-% \end{itemize}
 
-\section{Discussion} \label{sec:discussion}
+\section{Discussion and recommendations} \label{sec:discussion}
 
 \begin{table}[!htb]
   \caption{Recommendations to improve rigour of comparative simulation studies
