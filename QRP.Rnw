@@ -230,15 +230,13 @@ They have become an ubiquitous tool for the evaluation of
 statistical methods, mainly because simulation can be used to
 solve problems which cannot be solved using purely theoretical arguments.
 % There is no single statistical method to rule them all and thus 
-In this paper we mainly focus on simulation studies where the objective is
-to compare the performance of two or more statistical methods 
-(\emph{comparative simulation studies}).
-Such studies are needed to ensure that previously proposed methods
+In this paper we focus on simulation studies where the objective is to compare
+the performance of two or more statistical methods (\emph{comparative simulation
+  studies}). Such studies are needed to ensure that previously proposed methods
 work as expected under various conditions, and also to find conditions where
-they fail. Moreover, evidence from
-comparative simulation studies is often the only guidance for
-statistics practitioners to choose from the plethora of available methods 
-\citep{Boulesteix2013, Boulesteix2017b}.
+they fail. Moreover, evidence from comparative simulation studies is often the
+only guidance for statistics practitioners to choose from the plethora of
+available methods \citep{Boulesteix2013, Boulesteix2017b}.
 % Moreover, advances in statistical software have made conducting a simulation
 % study much easier than it used to be. 
 % For example, it is
@@ -250,25 +248,23 @@ statistics practitioners to choose from the plethora of available methods
 % simulation study has become so easy that a number of theoretical
 % solutions might have been overlooked.
 
-Just as real experiments, simulation studies require many decisions
-to be made, for instance:
-How will the data be generated? 
-How many times will the simulation be repeated?
-Which statistical methods will be compared and how are their parameters specified?
-How will the performance of the methods be evaluated? 
-The degree of flexibility, however, is much higher for simulation studies 
-than for the real experiments, since they can be repeated under 
-different conditions in short time at practically no cost.
-This is why numerous guidelines and best practices for design, execution, and 
-reporting of simulation studies have been proposed 
-\citep{Hoaglin1975, Holford2000, Burton2006, Smith2010, OKelly2016, Monks2018, Elofsson2019, Morris2019, Boulesteix2020B},
-we recommend \citet{Morris2019} for an introduction to state-of-the-art 
-simulation study methodology. %for evaluating statistical methods. 
+Just as real experiments, comparative simulation studies require many decisions
+to be made, for instance: How will the data be generated? How many times will
+the simulation be repeated? Which statistical methods will be compared and how
+are their parameters specified? How will the performance of the methods be
+evaluated? The degree of flexibility, however, is much higher for simulation
+studies than for the real experiments, since they can be repeated under
+different conditions in short time at practically no cost. This is why numerous
+guidelines and best practices for design, execution, and reporting of simulation
+studies have been proposed \citep{Hoaglin1975, Holford2000, Burton2006,
+  Smith2010, OKelly2016, Monks2018, Elofsson2019, Morris2019, Boulesteix2020B},
+we recommend \citet{Morris2019} for an introduction to state-of-the-art
+simulation study methodology. %for evaluating statistical methods.
 
 Despite the availability of these guidelines, statistics articles usually 
-provide few details about the contained simulation studies. 
+provide few details about the contained simulation studies.
 Journal policies sometimes require the computer code to reproduce the results,
-but they rarely require or promote sound simulation methodology (\eg  
+but they rarely require or promote sound simulation methodology (\eg
 the preparation of a simulation protocol). This leaves %simulation study
 researchers with considerable flexibility in how they conduct and present
 simulations studies. 
@@ -289,16 +285,18 @@ to highlight the need for the adoption of more rigorous simulation methodolgoy
 by the general statistics community. To this end, we list questionable research
 practices (QRPs) related to comparative simulation studies (Section
 \ref{sec:QRP}) which may undermine their validity but can easily go undetected
-by current standards. We then show with an empirical study how easy it is to
-present any statistical method as an improvement over others, if QRPs remain
-undisclosed (Section \ref{sec:study}). We also use the same example to show how
-over-optimism can be avoided if a sound methodological route is taken instead.
-Similar studies have been conducted by \citet{Niessl2021} and
-\citet{Jelizarow2010}, and by \citet{Simmons2011} in the context of $p$-hacking
-in psychological research, and were the main inspiration for this work. Finally,
-we provide simple and concrete suggestions for researchers, reviewers, and other
-academic stakeholders to improve the methodological quality of comparative
-simulation studies (Section \ref{sec:discussion}).
+by current standards. Researchers do usually not engage in these QRPs with ill
+intent, but because of their subconscious biases, hopes, and expectations. We
+then show with an empirical study how easy it is to present any statistical
+method as an improvement over others, if QRPs remain undisclosed (Section
+\ref{sec:study}). We also use the same example to show how over-optimism can be
+avoided if a sound methodological route is taken instead. Similar studies have
+been conducted by \citet{Niessl2021} and \citet{Jelizarow2010}, and by
+\citet{Simmons2011} in the context of $p$-hacking in psychological research, and
+were the main inspiration for this work. Finally, we provide simple and concrete
+suggestions for researchers, reviewers, and other academic stakeholders to
+improve the methodological quality of comparative simulation studies (Section
+\ref{sec:discussion}).
 
 % showed
 % how a statistical method can be presented as superior if one looks long enough
@@ -372,19 +370,18 @@ The \emph{a priori} specification of research hypotheses, study design, and
 analytic choices is what separates \emph{confirmatory} from \emph{exploratory}
 research. To prevent over-optimistic study conclusions and allow research
 consumers to distinguish between confirmatory and exploratory research, many
-non-methodological journals research require preregistration of study design and
-analysis protocols. % This
+non-methodological journals require preregistration of study design and analysis
+protocols. % This
 % practice has not been adopted by the statistics community.
 If researchers attempt to conduct confirmatory research, it is generally
 recommended to write a simulation protocol \citep{Morris2019}. In contrast,
 vaguely or not defining the goals and means of a simulation study can be
 considered a QRP. This is arguably even more important than in
 non-methodological research because the multiplicity involved in simulation
-studies is far higher \citep{Hoffmann2021}. For instance, it is extremely easy
-to change the data-generating mechanism (D2), the methods under investigation
-(D3), or the evaluation metrics (D4) so that a certain method is shown to be
-superior. Researchers will usually not engage in these QRPs with ill intent, but
-because of their subconscious biases, hopes, and expectations.
+studies is far higher \citep{Hoffmann2021}. For instance, not a priori defining
+the data-generating mechanism (D2), the methods under investigation (D3), or the
+evaluation metrics (D4) leaves a high number of \emph{researcher degrees of
+  freedom} open, which increase the chance of over-optimistic conclusions.
 
 Another crucial part of rigorous design is a sample size calculation, see
 Section 5.3 in \citet{Morris2019} for an overview. By failing to conduct a
@@ -396,7 +393,33 @@ resources (if their sample size is too large).
 
 \subsection{Execution}
 If researchers have prespecified their simulation study, its execution is mostly
-just following their simulation protocol. However,
+just following their simulation protocol. However, if no protocol is in place,
+they can exploit various QRPs in order to increase the chance for showing
+superiority of a particular.
+
+For example, if their favored method does not perform better than its
+competitors they can adapt the data-generating mechanism (E1) \dots
+
+If researchers are unable to find data-generating mechanisms under which their
+favored method beats a competitor method, they can exclude the competitor from
+the comparison (E2). Similarly, to make the favored method look better,
+additional methods may be included in the simulation study which perform worse
+under the (adapted) data-generating mechanisms.
+
+The methods under comparison may come with hyper/tuning parameters (for example
+\dots). Researchers can tune the parameters of their favored method to achieve
+superiority over others (E3), while leaving the parameters of the competitor
+methods at their default values, or even search for parameters which make them
+look worse.
+
+The evaluation criteria for comparing the performance of the investigated
+methods, can be changed to make a particular method look better than the others
+(E4). For example, \dots Similarly, the whole objective of the simulation study
+may be changed, for example, an initial comparison of predictive performance of
+methods may be changed to comparing estimation performance of methods when the
+researchers realizes that their favored method performs worse in predition
+tasks.
+
 
 
 \section{Empirical study: The Adaptive Importance Elastic Net (AINET)} \label{sec:study}
