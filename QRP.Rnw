@@ -313,7 +313,7 @@ Table~\ref{table:QRPs} lists different types of QRPs which threathen the
 validity of comparative simulation studies. They are categorized with respect to
 the stage of research at which they can occur.
 
-\begin{table}[!htbp]
+\begin{table}[!htb]
   \caption{Types of Questionable research practices (QRPs) in comparative simulation
   studies at different stages of the research process 
   (inspired by Table 1 from \citet{Wicherts2016}).}
@@ -323,7 +323,7 @@ the stage of research at which they can occur.
 		\toprule
 		\textbf{Code} & \textbf{Related} & \textbf{Type of QRP} \\
   		\midrule
-  		\multicolumn{2}{p{.15\textwidth}}{\textit{Design}} & \\ 
+    \multicolumn{2}{p{.15\textwidth}}{\textit{Design}} & \\
   		% \cmidrule{1-1}
     D1 & R2 & Not/vaguely defining objectives of simulation study \\
     D2 & E1 & Not/vaguely defining data-generating mechanism \\
@@ -459,6 +459,31 @@ imputations strategies until their favored method looks superior.
 % \end{itemize}
 
 \section{Discussion} \label{sec:discussion}
+
+\begin{table}[!htb]
+  \caption{Recommendations to improve rigour of comparative simulation studies
+    and prevent QRPs}
+  \label{table:recommendations}
+  \centering
+	\begin{longtable}[b]{p{.95\textwidth}}
+		\toprule
+    \textit{Researchers} \\
+    \midrule
+    \dots \\
+
+    \textit{Journals editors and reviewers} \\
+    \midrule
+    \dots \\
+
+
+    \textit{Funders} \\
+    \midrule
+    \dots \\
+
+
+		\bottomrule
+	\end{longtable}
+\end{table}
 
 \begin{itemize}
   \item emphasize that researchers usually engage in QRPs without malicious 
