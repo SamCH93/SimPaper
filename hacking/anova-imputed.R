@@ -46,8 +46,7 @@ adat_imp <- adat %>%
            imp_brier = case_when(
                is.na(brier) ~ worst_case_brier,
                !is.na(brier) ~ brier
-           )) %>% 
-    slice(1:20)
+           ))
 
 # ANOVA -------------------------------------------------------------------
 
