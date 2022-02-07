@@ -88,6 +88,7 @@ comparative simulation studies allow to show superiority of any method}
 \newcommand{\eg}{\textit{e.\,g.\,}} % e.g.
 \newcommand{\ie}{\textit{i.\,e.\,}} % i.e.
 \newcommand{\cf}{\textit{cf\,}} % cf
+\newcommand{\vs}{\textit{vs\,}} % cf
 %% Distributions
 \DeclareMathOperator{\Ber}{B} % Bernoulli
 \DeclareMathOperator{\Bin}{Bin} % Binomial Distribution
@@ -132,6 +133,8 @@ comparative simulation studies allow to show superiority of any method}
 \newcommand{\Ind}[2]{\mathsf{I}_{#2}(#1)} % Indicatorfunction
 \newcommand{\IdMat}{\boldsymbol{\mathrm{I}}} % Identity matrix
 %% ----------------------------------------------------------------------------
+
+\newcommand{\ainet}{\textsc{ainet}}
 
 \begin{document}
 \maketitle
@@ -459,7 +462,59 @@ researcher are unable to replicate and expand on the simulation study (R5).
 
 \section{Empirical study: The Adaptive Importance Elastic Net
   (AINET)} \label{sec:study}
-\todo{write intro and theory of ainet}
+
+To illustrate the QRPs from Table~\ref{table:QRPs}, we designed and conducted
+a simulation study evaluating the ``adaptive importance elastic net'' (\ainet).
+\ainet{} computes weights for an adaptive elastic net via random forest importance
+measures. Superficially, the proposed method seems sensible. However, in a
+linear DGP, no advantage over the classical adaptive elastic net is expected.
+For details, the reader is referred to the simulation protocol
+\citep{pawel2022protocol}.
+
+\paragraph{Altering the DGP (D2)}
+The simulation study was planned with a low- to high-dimensional linear-logistic
+DGP. In none of the scenarios we could detect a significant performance increase
+by using the elastic net over standard logistic regression or elastic net.
+\todo{Find good setting. Figure}
+
+\paragraph{Switchting the primary estimand (D4)}
+Specifying a \emph{single} or combined primary estimand is important not only
+for planning the size of the simulation study. The Brier score was chosen as the
+primary estimand in our protocol. However, we compute and report other proper
+scores, such as the log-score, and discriminatory measures, such as AUC and
+accuracy.
+\todo{Find good setting. Figure}
+
+\paragraph{Removing comparators (D3)}
+Comparing against appropriate competitors is vital to judge the benefits of the
+novel method. We compared \ainet{} against standard logistic regression, random
+forests, the standard elastic net and adaptive elastic net. However, we observed
+only minor (if any) improvements of \ainet{} over the elastic net. If there was no
+protocol, we could decide to omit the comparisons with the elastic net by
+arguing that solely the comparison among adaptive methods (AEN \vs \ainet) was
+sought.
+\todo{Find good setting. Figure}
+
+\paragraph{Altering the scope of the simulation study (D1)}
+Instead of minor tweaks to the DGP, simulation parameters or methods, the target
+of the simulation study could be altered entirely. For \ainet, we focused purely
+on predictive performance (together with calibration). However, we could just as
+easily focus on discrimination (\eg AUC) or estimation performance (\eg MSE of
+the estimated coefficients).
+\todo{Find good setting. Figure}
+
+\paragraph{Handling exceptions differently (D5)}
+In our protocol, we clearly specified how difficult it would be to judge the
+results of simulation settings in which more than 10\% of the runs failed to
+converge. We decided to omit these settings. However, without a pre-specified
+protocol, we could instead impute the missing scenarios with the ``worst-case''
+observed performance of a method. In case of differential missingness (\ie one
+method being more stable than another), this leads to biased comparisons. Thus,
+for settings in which \ainet{} was more stable than its competitors, this
+imputation scheme yields results unreasonably in favor of \ainet. Also note that
+the resulting confidence intervals ignore the imputation uncertainty and thus
+underestimate $p$-values.
+\todo{Find good setting. Figure}
 
 \section{Discussion and recommendations} \label{sec:discussion}
 We have \dots
