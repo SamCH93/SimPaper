@@ -7,6 +7,7 @@
 library(tidyverse)
 library(ggpubr)
 library(ggbeeswarm)
+library(factoextra)
 theme_set(theme_bw())
 
 tnms <- c("prelim", "final", "nonlin_fix", "nonlin", "nonlin_imp")
@@ -38,3 +39,25 @@ ggplot(pdat, aes(x = set, y = Estimate,
 	facet_wrap(~ contrast) +
 	geom_hline(yintercept = 0, lty = 2) +
 	labs(x = "Simulation setting", y = "Difference in Brier score (smaller: AINET better)")
+
+# Clustering --------------------------------------------------------------
+
+cdat <- pdat %>% 
+	filter(contrast == "GLM") %>% 
+	mutate_at(c("contrast", "n", "EPV", "prev", "rho"), factor)
+
+fm <- ~ Estimate + n + EPV + prev + rho + set - 1
+cdat <- model.matrix(fm, pdat)
+
+pca <- prcomp(cdat, scale. = TRUE)
+fviz_eig(pca)
+fviz_pca_ind(pca, col.ind = "cos2", gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"))
+fviz_pca_var(pca,
+						 col.var = "contrib", # Color by contributions to the PC
+						 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+						 repel = TRUE     # Avoid text overlapping
+)
+fviz_pca_biplot(pca,
+								col.var = "#2E9FDF", # Variables color
+								col.ind = "#696969"  # Individuals color
+)
