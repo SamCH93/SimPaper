@@ -9,7 +9,7 @@ library(ggpubr)
 library(ggbeeswarm)
 theme_set(theme_bw())
 
-tnms <- c("prelim", "final", "nonlin", "nonlin_fix", "nonlin_imp")
+tnms <- c("prelim", "final", "nonlin_fix", "nonlin", "nonlin_imp")
 
 # Read --------------------------------------------------------------------
 
@@ -36,4 +36,5 @@ ggplot(pdat, aes(x = set, y = Estimate,
 	geom_line(alpha = 0.1) +
 	geom_quasirandom(width = 0.3, alpha = 0.1) +
 	facet_wrap(~ contrast) +
-	geom_hline(yintercept = 0, lty = 2)
+	geom_hline(yintercept = 0, lty = 2) +
+	labs(x = "Simulation setting", y = "Difference in Brier score (smaller: AINET better)")
