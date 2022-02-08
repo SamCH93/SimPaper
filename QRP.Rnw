@@ -471,13 +471,13 @@ linear DGP, no advantage over the classical adaptive elastic net is expected.
 For details, the reader is referred to the simulation protocol
 \citep{pawel2022protocol}.
 
-\paragraph{Altering the DGP (D2)}
+\paragraph{Altering the DGP (E1)}
 The simulation study was planned with a low- to high-dimensional linear-logistic
 DGP. In none of the scenarios we could detect a significant performance increase
 by using the elastic net over standard logistic regression or elastic net.
 \todo{Find good setting. Figure}
 
-\paragraph{Switchting the primary estimand (D4)}
+\paragraph{Switchting the primary estimand (E4)}
 Specifying a \emph{single} or combined primary estimand is important not only
 for planning the size of the simulation study. The Brier score was chosen as the
 primary estimand in our protocol. However, we compute and report other proper
@@ -485,7 +485,7 @@ scores, such as the log-score, and discriminatory measures, such as AUC and
 accuracy.
 \todo{Find good setting. Figure}
 
-\paragraph{Removing comparators (D3)}
+\paragraph{Removing comparators (E3)}
 Comparing against appropriate competitors is vital to judge the benefits of the
 novel method. We compared \ainet{} against standard logistic regression, random
 forests, the standard elastic net and adaptive elastic net. However, we observed
@@ -495,7 +495,7 @@ arguing that solely the comparison among adaptive methods (AEN \vs \ainet) was
 sought.
 \todo{Find good setting. Figure}
 
-\paragraph{Altering the scope of the simulation study (D1)}
+\paragraph{Altering the scope of the simulation study (R2)}
 Instead of minor tweaks to the DGP, simulation parameters or methods, the target
 of the simulation study could be altered entirely. For \ainet, we focused purely
 on predictive performance (together with calibration). However, we could just as
@@ -503,7 +503,7 @@ easily focus on discrimination (\eg AUC) or estimation performance (\eg MSE of
 the estimated coefficients).
 \todo{Find good setting. Figure}
 
-\paragraph{Handling exceptions differently (D5)}
+\paragraph{Handling exceptions differently (E6)}
 In our protocol, we clearly specified how difficult it would be to judge the
 results of simulation settings in which more than 10\% of the runs failed to
 converge. We decided to omit these settings. However, without a pre-specified
@@ -514,6 +514,14 @@ for settings in which \ainet{} was more stable than its competitors, this
 imputation scheme yields results unreasonably in favor of \ainet. Also note that
 the resulting confidence intervals ignore the imputation uncertainty and thus
 underestimate $p$-values.
+\todo{Find good setting. Figure}
+
+\paragraph{Arbitrarily choosing the simulation size (E5)}
+A thorough planning of the simulation size in terms of expected precision of the
+primary estimand is crucial. An arbitrarily chosen (but often too small)
+simulation size yields more heterogeneous results, but can be executed faster.
+The danger of seeking ``a good random seed'' is large and the results may exert
+strong bias in favor of the novel method. 
 \todo{Find good setting. Figure}
 
 \section{Discussion and recommendations} \label{sec:discussion}
