@@ -11,6 +11,7 @@ library(factoextra)
 theme_set(theme_bw())
 
 tnms <- c("prelim", "final", "nonlin_fix", "nonlin", "nonlin_imp")
+tlabs <- c("preliminary", "final", "nonlinear (fixed)", "nonlinear", "nonlinear (imputed)")
 
 # Read --------------------------------------------------------------------
 
@@ -27,18 +28,19 @@ res_imp <- read_csv("hacking/simResults-nonlin-results-imputed/anova_imp_brier.c
 
 pdat <- full_join(res_prelim, res_final) %>% full_join(res_nonlin) %>% 
 	full_join(res_nonlin_fix) %>% full_join(res_imp) %>% 
-	mutate(set = factor(set, levels = tnms))
+	mutate(set = factor(set, levels = tnms, labels = tlabs))
 
 # Vis ---------------------------------------------------------------------
 
 ggplot(pdat, aes(x = set, y = Estimate, 
-								 group = paste(n, EPV, prev, rho))) +
+								 group = paste(n, EPV, prev, rho), color = factor(EPV))) +
 	geom_boxplot(aes(x = set, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
 	geom_line(alpha = 0.1) +
-	geom_quasirandom(width = 0.3, alpha = 0.1) +
+	geom_quasirandom(width = 0.3, alpha = 0.3) +
 	facet_wrap(~ contrast) +
 	geom_hline(yintercept = 0, lty = 2) +
-	labs(x = "Simulation setting", y = "Difference in Brier score (smaller: AINET better)")
+	labs(x = "Simulation setting", y = "Difference in Brier score (smaller: AINET better)",
+			 color = "EPV")
 
 # Clustering --------------------------------------------------------------
 
