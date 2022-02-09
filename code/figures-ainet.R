@@ -13,13 +13,14 @@ theme_set(theme_bw())
 # Params ------------------------------------------------------------------
 
 tsparse <- 0.3
-tnms <- c("prelim", "final", "nonlin_fix", "nonlin") #, "nonlin_imp")
-tlabs <- c("preliminary", "final", "nonlinear (fixed)", "nonlinear") # , "nonlinear (imputed)")
+tnms <- c("prelim", "final", "final (imputed)", "nonlin_fix", "nonlin") 
+tlabs <- c("preliminary", "final", "final (imputed)", "nonlinear (fixed)", "nonlinear") 
 
 which <- c("brier", "scaledBrier", "nll", "auc", "acc")
 
 folders <- c("preliminary-sim/results_anova/", 
 						 "simulation/results_anova/", 
+						 "simulation/simResults-results-imputed/",
 						 "hacking/simResults-nonlin-results/",
 						 "hacking/simResults-nonlin_fix-results/")
 

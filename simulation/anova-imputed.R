@@ -42,8 +42,13 @@ adat <- simres %>%
 ps <- 0.99 # 80th percentile imputation
 worst_cases <- adat %>% 
     group_by(fct, model) %>%
-    summarize_at(c("brier", "scaledBrier", "nll", "auc", "acc"),
-              ~ quantile(.x[!is.infinite(.x)], p = ps, na.rm = TRUE))
+    summarize(
+        brier = quantile(brier[!is.infinite(brier)], p = ps, na.rm = TRUE),
+        scaledBrier = quantile(scaledBrier[!is.infinite(scaledBrier)], p = 1 - ps, na.rm = TRUE),
+        nll = quantile(nll[!is.infinite(nll)], p = ps, na.rm = TRUE),
+        auc = quantile(auc[!is.infinite(auc)], p = 1 - ps, na.rm = TRUE),
+        acc = quantile(acc[!is.infinite(acc)], p = 1 - ps, na.rm = TRUE),
+    )
 
 jdat <- full_join(adat, worst_cases, by = c("fct", "model"), suffix = c("", "_wc")) %>% 
     mutate(
