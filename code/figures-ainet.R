@@ -49,7 +49,6 @@ ggplot(pdat, aes(x = set, y = Estimate,
 	labs(x = "Simulation setting", y = NULL, color = "EPV") +
 	theme(strip.background.y = element_blank(), strip.placement = "outside")
 
-
 # Brier only
 ggplot(pdat %>% filter(metric == "brier"), aes(x = set, y = Estimate, 
 								 group = paste(n, EPV, prev, rho), color = ordered(EPV))) +
@@ -60,6 +59,68 @@ ggplot(pdat %>% filter(metric == "brier"), aes(x = set, y = Estimate,
 	geom_hline(yintercept = 0, lty = 2) +
 	labs(x = "Simulation setting", y = "Difference in estimand",
 			 color = "EPV")
+
+# E1: Altering the DGP
+pdat %>% filter(metric == "brier", contrast == "EN", 
+								sparsity %in% c(NA, 0.9),
+								set %in% c("final", "nonlinear")) %>% 
+	ggplot(aes(x = set, y = Estimate, group = paste(n, EPV, prev, rho), color = ordered(EPV))) +
+	geom_boxplot(aes(x = set, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
+	geom_line(alpha = 0.1) +
+	geom_quasirandom(width = 0.3, alpha = 0.3) +
+	geom_hline(yintercept = 0, lty = 2) +
+	labs(x = "Simulation setting", y = "Difference in Brier score",
+			 color = "EPV", subtitle = "E1: Altering the DGP")
+
+# E4: Switching the primary estimand
+pdat %>% filter(metric %in% c("brier", "auc"), 
+								sparsity %in% c(NA, 0.9),
+								set %in% c("final")) %>% 
+	ggplot(aes(x = contrast, y = Estimate, group = paste(n, EPV, prev, rho), color = ordered(EPV))) +
+	geom_boxplot(aes(x = contrast, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
+	geom_line(alpha = 0.1) +
+	facet_wrap(~ metric, scales = "free_y") +
+	geom_quasirandom(width = 0.3, alpha = 0.3) +
+	geom_hline(yintercept = 0, lty = 2) +
+	labs(x = "Simulation setting", y = "Difference in estimand",
+			 color = "EPV", subtitle = "E4: Switching the primary estimand")
+
+# E3: Removing comparators
+pdat %>% filter(contrast %in% c("EN"),
+								metric == "brier",
+								set %in% c("final")) %>% 
+	ggplot(aes(x = set, y = Estimate, group = paste(n, EPV, prev, rho), 
+						 color = ordered(EPV))) +
+	geom_boxplot(aes(x = set, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
+	geom_quasirandom(width = 0.3, alpha = 0.3) +
+	geom_hline(yintercept = 0, lty = 2) +
+	labs(x = "Simulation setting", y = "Difference in estimand (EN vs AINET)",
+			 color = "EPV", subtitle = "E4: Removing comparators")
+
+# E?: Removing unfavourable conditions
+pdat %>% filter(sparsity %in% c(NA, 0.9),
+								EPV <= 1,
+								set %in% c("final")) %>% 
+	ggplot(aes(x = contrast, y = Estimate, group = paste(n, EPV, prev, rho), color = ordered(EPV))) +
+	geom_boxplot(aes(x = contrast, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
+	geom_line(alpha = 0.1) +
+	facet_wrap(~ metric, scales = "free") +
+	geom_quasirandom(width = 0.3, alpha = 0.3) +
+	geom_hline(yintercept = 0, lty = 2) +
+	labs(x = "Simulation setting", y = "Difference in estimand",
+			 color = "EPV", subtitle = "E?: Removing unfavorable conditions")
+
+# E6: Handling exceptions
+pdat %>% filter(metric == "brier", contrast == "EN", 
+								sparsity %in% c(NA, 0.9),
+								set %in% c("final", "final (imputed)")) %>% 
+	ggplot(aes(x = set, y = Estimate, group = paste(n, EPV, prev, rho), color = ordered(EPV))) +
+	geom_boxplot(aes(x = set, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
+	geom_line(alpha = 0.1) +
+	geom_quasirandom(width = 0.3, alpha = 0.3) +
+	geom_hline(yintercept = 0, lty = 2) +
+	labs(x = "Simulation setting", y = "Difference in Brier score",
+			 color = "EPV", subtitle = "E1: Altering the DGP")
 
 # Clustering --------------------------------------------------------------
 
