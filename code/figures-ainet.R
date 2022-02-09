@@ -40,13 +40,13 @@ ggplot(pdat, aes(x = set, y = Estimate,
 	geom_line(alpha = 0.1) +
 	geom_quasirandom(width = 0.3, alpha = 0.3) +
 	## facet_grid(metric ~ contrast, scales = "free_y") +
-    facet_grid(metric ~ contrast, scales = "free_y",
-               switch = "y", labeller = label_bquote(.(metric) ~ "difference")) +
+	facet_grid(metric ~ contrast, scales = "free_y",
+						 switch = "y", labeller = label_bquote(.(metric) ~ "difference")) +
 	geom_hline(yintercept = 0, lty = 2) +
 	## labs(x = "Simulation setting", y = "Difference in estimand",
-    ##      color = "EPV")
-    labs(x = "Simulation setting", y = NULL, color = "EPV") +
-    theme(strip.background.y = element_blank(), strip.placement = "outside")
+	##      color = "EPV")
+	labs(x = "Simulation setting", y = NULL, color = "EPV") +
+	theme(strip.background.y = element_blank(), strip.placement = "outside")
 
 
 # Brier only
@@ -67,7 +67,7 @@ cdat <- pdat %>%
 	mutate_at(c("contrast", "n", "EPV", "prev", "rho"), factor)
 
 fm <- ~ Estimate + n + EPV + prev + rho + - 1
-cdat <- model.matrix(fm, pdat)
+cdat <- model.matrix(fm, cdat)
 
 pca <- prcomp(cdat, scale. = TRUE)
 fviz_eig(pca)
