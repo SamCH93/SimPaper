@@ -163,11 +163,11 @@ vis_na <- function(pdat, rhos = unique(as.numeric(as.character(pdat$rho))),
 metrics <- c("imp_brier", "imp_scaledBrier", "imp_nll", "imp_acc", "imp_auc")
 
 sapply(metrics, function(met) {
-    mdat <- adat_imp %>% filter(is.finite(!!sym(met)))
-    nadat <- adat_imp %>% 
+    mdat <- jdat %>% filter(is.finite(!!sym(met)))
+    nadat <- jdat %>% 
         group_by(n, EPV, prev, rho, sparsity, model) %>% 
         summarize(frac_na = round(100 * mean(is.na(!!sym(met))), 1))
-    cat("\nRemoved", nrow(adat_imp) - nrow(mdat),
+    cat("\nRemoved", nrow(jdat) - nrow(mdat),
         "rows due to infinite values in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
     out <- run_anova(formula = fml, data = mdat)
