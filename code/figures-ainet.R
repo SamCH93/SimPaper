@@ -35,7 +35,7 @@ pdat <- paths %>%
 # Vis ---------------------------------------------------------------------
 
 ggplot(pdat, aes(x = set, y = Estimate, 
-								 group = paste(n, EPV, prev, rho), color = factor(EPV))) +
+								 group = paste(n, EPV, prev, rho), color = ordered(EPV))) +
 	geom_boxplot(aes(x = set, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
 	geom_line(alpha = 0.1) +
 	geom_quasirandom(width = 0.3, alpha = 0.3) +
@@ -46,7 +46,7 @@ ggplot(pdat, aes(x = set, y = Estimate,
 
 # Brier only
 ggplot(pdat %>% filter(metric == "brier"), aes(x = set, y = Estimate, 
-								 group = paste(n, EPV, prev, rho), color = factor(EPV))) +
+								 group = paste(n, EPV, prev, rho), color = ordered(EPV))) +
 	geom_boxplot(aes(x = set, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
 	geom_line(alpha = 0.1) +
 	geom_quasirandom(width = 0.3, alpha = 0.3) +
