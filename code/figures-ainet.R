@@ -44,6 +44,17 @@ ggplot(pdat, aes(x = set, y = Estimate,
 	labs(x = "Simulation setting", y = "Difference in estimand",
 			 color = "EPV")
 
+# Brier only
+ggplot(pdat %>% filter(metric == "brier"), aes(x = set, y = Estimate, 
+								 group = paste(n, EPV, prev, rho), color = factor(EPV))) +
+	geom_boxplot(aes(x = set, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
+	geom_line(alpha = 0.1) +
+	geom_quasirandom(width = 0.3, alpha = 0.3) +
+	facet_wrap(~ contrast, scales = "free_y") +
+	geom_hline(yintercept = 0, lty = 2) +
+	labs(x = "Simulation setting", y = "Difference in estimand",
+			 color = "EPV")
+
 # Clustering --------------------------------------------------------------
 
 cdat <- pdat %>% 
