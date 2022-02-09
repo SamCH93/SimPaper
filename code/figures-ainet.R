@@ -10,25 +10,27 @@ library(ggbeeswarm)
 library(factoextra)
 theme_set(theme_bw())
 
-tnms <- c("prelim", "final", "nonlin_fix", "nonlin", "nonlin_imp")
-tlabs <- c("preliminary", "final", "nonlinear (fixed)", "nonlinear", "nonlinear (imputed)")
+# Params ------------------------------------------------------------------
 
-# Read --------------------------------------------------------------------
+tsparse <- 0.3
+tnms <- c("prelim", "final", "nonlin_fix", "nonlin") #, "nonlin_imp")
+tlabs <- c("preliminary", "final", "nonlinear (fixed)", "nonlinear") # , "nonlinear (imputed)")
 
-res_prelim <- read_csv("preliminary-sim/results_anova/anova_brier.csv") %>% 
-	mutate(set = "prelim")
-res_final <- read_csv("simulation/results_anova/anova_brier.csv") %>% 
-	mutate(set = "final")
-res_nonlin <- read_csv("hacking/simResults-nonlin-results/anova_brier.csv") %>% 
-	mutate(set = "nonlin") %>% filter(sparsity == 0.9) %>% select(-sparsity)
-res_nonlin_fix <- read_csv("hacking/simResults-nonlin_fix-results/anova_brier.csv") %>% 
-	mutate(set = "nonlin_fix") %>% filter(sparsity == 0.9) %>% select(-sparsity)
-res_imp <- read_csv("hacking/simResults-nonlin-results-imputed/anova_imp_brier.csv") %>% 
-	mutate(set = "nonlin_imp") %>% filter(sparsity == 0.9) %>% select(-sparsity)
+which <- c("brier", "scaledBrier", "nll", "auc", "acc")
 
-pdat <- full_join(res_prelim, res_final) %>% full_join(res_nonlin) %>% 
-	full_join(res_nonlin_fix) %>% full_join(res_imp) %>% 
-	mutate(set = factor(set, levels = tnms, labels = tlabs))
+folders <- c("preliminary-sim/results_anova/", 
+						 "simulation/results_anova/", 
+						 "hacking/simResults-nonlin-results/",
+						 "hacking/simResults-nonlin_fix-results/")
+
+paths <- expand_grid(folder = folders, metric = which)
+paths$path <- paste0(paths$folder, paste0("anova_", paths$metric, ".csv"))
+
+pdat <- paths %>% 
+	mutate(d = map(path, ~ read_csv(.x, show_col_types = FALSE))) %>% 
+	unnest(c(d)) %>% 
+	mutate(set = factor(folder, levels = folders, labels = tlabs)) %>% 
+	select(-path, -folder)
 
 # Vis ---------------------------------------------------------------------
 
@@ -37,18 +39,18 @@ ggplot(pdat, aes(x = set, y = Estimate,
 	geom_boxplot(aes(x = set, y = Estimate), inherit.aes = FALSE, outlier.shape = NA) +
 	geom_line(alpha = 0.1) +
 	geom_quasirandom(width = 0.3, alpha = 0.3) +
-	facet_wrap(~ contrast) +
+	facet_grid(metric ~ contrast, scales = "free_y") +
 	geom_hline(yintercept = 0, lty = 2) +
-	labs(x = "Simulation setting", y = "Difference in Brier score (smaller: AINET better)",
+	labs(x = "Simulation setting", y = "Difference in estimand",
 			 color = "EPV")
 
 # Clustering --------------------------------------------------------------
 
 cdat <- pdat %>% 
-	filter(contrast == "GLM") %>% 
+	filter(contrast == "GLM", set == "final", metric == "brier", sparsity %in% c(NA, 0.9)) %>% 
 	mutate_at(c("contrast", "n", "EPV", "prev", "rho"), factor)
 
-fm <- ~ Estimate + n + EPV + prev + rho + set - 1
+fm <- ~ Estimate + n + EPV + prev + rho + - 1
 cdat <- model.matrix(fm, pdat)
 
 pca <- prcomp(cdat, scale. = TRUE)
