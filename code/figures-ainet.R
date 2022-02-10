@@ -57,7 +57,7 @@ ggplot(pdat %>% filter(metric == "brier"), aes(x = set, y = Estimate,
 	geom_quasirandom(width = 0.3, alpha = 0.3) +
 	facet_wrap(~ contrast, scales = "free_y") +
 	geom_hline(yintercept = 0, lty = 2) +
-	labs(x = "Simulation setting", y = "Difference in estimand",
+	labs(x = "Simulation setting", y = "Difference in Brier score",
 			 color = "EPV")
 
 # E1: Altering the DGP
