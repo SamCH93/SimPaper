@@ -120,7 +120,7 @@ pdat %>% filter(metric == "brier", contrast == "EN",
 	geom_quasirandom(width = 0.3, alpha = 0.3) +
 	geom_hline(yintercept = 0, lty = 2) +
 	labs(x = "Simulation setting", y = "Difference in Brier score",
-			 color = "EPV", subtitle = "E1: Altering the DGP")
+			 color = "EPV", subtitle = "E6: Handling exceptions")
 
 # Clustering --------------------------------------------------------------
 
