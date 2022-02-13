@@ -19,10 +19,10 @@ tlabs <- c("preliminary", "final", "final (imputed)", "nonlinear (fixed)", "nonl
 which <- c("brier", "scaledBrier", "nll", "auc", "acc")
 
 folders <- c("preliminary-sim/results_anova/", 
-						 "simulation/results_anova/", 
-						 "simulation/simResults-results-imputed/",
-						 "hacking/simResults-nonlin-results/",
-						 "hacking/simResults-nonlin_fix-results/")
+             "simulation/results_anova/",
+             "simulation/simResults-results-imputed/",
+             "hacking/simResults-nonlin_fix-results/",
+             "hacking/simResults-nonlin-results/")
 
 paths <- expand_grid(folder = folders, metric = which)
 paths$path <- paste0(paths$folder, paste0("anova_", paths$metric, ".csv"))
@@ -32,6 +32,38 @@ pdat <- paths %>%
 	unnest(c(d)) %>% 
 	mutate(set = factor(folder, levels = folders, labels = tlabs)) %>% 
 	select(-path, -folder)
+
+
+                                        # Figure for E1
+colnames(pdat)
+pdatE1 <- pdat %>%
+    filter(
+        rho == 0.95,
+        sparsity %in% c(NA, 0.9),
+        set %in% c("final", "nonlinear"),
+        metric == "brier",
+        n < 5000,
+        prev == 0.05
+    )
+
+ggplot(data = pdatE1, aes(y = contrast)) +
+    facet_grid(prev ~ n, scales = "free") +
+    geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
+    geom_pointrange(data = filter(pdatE1, set == "final"),
+                    aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
+                    position = position_dodge2(width = 0.5),
+                    fatten = 1.5, alpha = 0.3) +
+    geom_pointrange(data = filter(pdatE1, set == "nonlinear"),
+                    aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
+                    position = position_dodge2(width = 0.5),
+                    fatten = 1.5, alpha = 0.95)
+    ## geom_errorbarh(data = filter(pdatE1, set == "final"),
+    ##                 aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+    ##                position = position_dodge2(width = 0.5),
+    ##                height = 0.3, alpha = 0.3) +
+    ## geom_errorbarh(data = filter(pdatE1, set == "nonlinear"), height = 0.3,
+    ##                 aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+    ##                 position = position_dodge2(width = 0.5), alpha = 0.95)
 
 # Vis ---------------------------------------------------------------------
 
