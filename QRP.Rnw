@@ -310,15 +310,15 @@ improve the methodological quality of comparative simulation studies (Section
 
 
 \section{Questionable research practices in comparative simulation
-  studies} \label{sec:QRP}
-Table~\ref{table:QRPs} lists different types of QRPs which threathen the
-validity of comparative simulation studies. They are categorized with respect to
-the stage of research at which they can occur.
+  studies} \label{sec:QRP} Table~\ref{table:QRPs} lists different types of QRPs
+which threathen the validity of comparative simulation studies. They are
+categorized with respect to the stage of research at which they can occur. Th
+classification is inspired by the classification of QRPs in experimental
+research from \citet{Wicherts2016}.
 
 \begin{table}[!htb]
   \caption{Types of Questionable research practices (QRPs) in comparative simulation
-  studies at different stages of the research process 
-  (inspired by Table 1 from \citet{Wicherts2016}).}
+  studies at different stages of the research process.}
   \label{table:QRPs}
   \centering
 	\begin{longtable}[b]{p{.05\textwidth} p{.1\textwidth} p{.75\textwidth}}
@@ -376,10 +376,10 @@ recommended to write a simulation protocol \citep{Morris2019}. In contrast,
 vaguely or not defining the goals and means of a simulation study can be
 considered a QRP. This is arguably even more important than in
 non-methodological research because the multiplicity involved in simulation
-studies is far higher \citep{Hoffmann2021}. For instance, not a priori defining
-the data-generating mechanism (D2), the methods under investigation (D3), or the
-evaluation metrics (D4) leaves a high number of \emph{researcher degrees of
-  freedom} open, which increase the chance of over-optimistic conclusions.
+studies is far higher \citep{Hoffmann2021}. For instance, failing to define a
+priori the data-generating mechanism (D2), the methods under investigation (D3),
+or the evaluation metrics (D4) leaves a high number of \emph{researcher degrees
+  of freedom} open which increase the chance of over-optimistic conclusions.
 
 Another crucial part of rigorous design is a sample size calculation, see
 Section 5.3 in \citet{Morris2019} for an overview. By failing to conduct a
@@ -387,7 +387,6 @@ sample size calculation (D5), researchers are a at a higher risk of drawing the
 wrong conclusions (if their sample size is too small), or wasting computer
 resources (if their sample size is too large).
 
-\dots
 
 \subsection{Execution}
 If researchers have prespecified their simulation study, they simply have to
@@ -397,14 +396,16 @@ showing superiority of their preferred method.
 
 If under the data-generating mechanism the researcher initially had in mind,
 their favored method does not perform better than its competitors, they can
-adapt the mechanism until they find conditions where their method is
-superior (E1). For example, \dots
+adapt the mechanism until they find conditions where their method is superior
+(E1). For example, they can change noise levels, the number of predictors, or
+the effect sizes. It is usually not difficult to find reasonable justification
+for such modifications.
 
 If researchers are unable to find any data-generating mechanisms under which
 their favored method beats a competitor method, they can exclude the competitor
 from the comparison (E2). To make their favored method look better, additional
 methods which perform worse under the (adapted) data-generating mechanisms may
-also be included in the simulation study. \dots
+also be included in the simulation study.
 
 The methods under comparison may come with hyper-/tuning-parameters (for example
 \dots). Researchers can tune the parameters of their favored method to achieve
@@ -423,7 +424,7 @@ performance may be changed to comparing estimation performance when the
 researcher realizes that their favored method performs worse in prediction
 tasks.
 
-If no a priori size calculation has been conducted, researchers can choose the
+If no a priori sample size calculation was conducted, researchers can choose the
 number of simulations until they arrive at their desired conclusion (E5). If the
 number of simulations is small (relative to the noise level), the risk that a
 positive finding is a false positive increases. Similarly, when too few
@@ -434,7 +435,8 @@ find a realization where their preferred method seems superior.
 It can happen that methods fail to converge and thus not output a result in a
 particular simulation. If researchers do not prespecify how they will handle
 these situations, they can try different inclusion/exclusion or imputations
-strategies until their favored method looks superior.
+strategies until their favored method looks superior. Choosing the wrong
+strategy can introduce systematic bias and misleading conclusions.
 
 \subsection{Reporting}
 In the reporting stage, researchers are faced with the challenge of reporting
@@ -442,8 +444,8 @@ the design, results, and analyses of their simulation study in a digestible
 manner. Various QRPs can be employed to make a particular method look better.
 
 Researchers may selectively report results from simulation conditions in which
-their favored method performed best (R1). Not mentioning the conditions in which
-the method was inferior or at least not superior to competitors creates
+their favored method performed best (R1). Failing to mention conditions in which
+the method was inferior (or at least not superior) to competitors creates
 over-optimistic impressions, and may lead readers to think that the method
 uniformly outperforms competitors. Similarly, when researchers conduct
 exploratory simulation studies but present their results as if they were
@@ -452,8 +454,8 @@ hypothesized a priori (R2), this leads to over-confidence in the method.
 Failing to report Monte Carlo uncertainty (R3), \eg error bars or confidence
 intervals, is a QRP with various consequences. It confounds the research
 consumers ability to assess the quality of evidence from the simulation study.
-It also allows the research to present random differences between methods
-performance as if they were systematic.
+It also allows the researcher to present random differences in performance as if
+they were systematic.
 
 Finally, by failing to assure reproducibility of the simulation study (R4),
 coding errors with fatal consequences may go undetected. Moreover, by not
@@ -463,21 +465,29 @@ researcher are unable to replicate and expand on the simulation study (R5).
 \section{Empirical study: The Adaptive Importance Elastic Net
   (AINET)} \label{sec:study}
 
-To illustrate the QRPs from Table~\ref{table:QRPs}, we designed and conducted
-a simulation study evaluating the ``adaptive importance elastic net'' (\ainet).
-\ainet{} computes weights for an adaptive elastic net via random forest importance
-measures. Superficially, the proposed method seems sensible. However, in a
-linear DGP, no advantage over the classical adaptive elastic net is expected.
-For details, the reader is referred to the simulation protocol
-\citep{pawel2022protocol}.
+To illustrate the application of QRPs from Table~\ref{table:QRPs}, we conducted
+a simulation study. The objective of the study was to evaluate the predictive
+performance of a made-up regression method termed the ``adaptive importance
+elastic net'' (\ainet) The main idea of \ainet{} is to use the variable
+importance measure from a random forest for a weighted penalization of the
+variables in an elastic net regression model. The hope is that this ad hoc
+modification improves predictive performance in clinical prediction modeling
+where penalized regression models are frequently used. Superficially, \ainet{}
+seems sensible, however, for a linear data generating process no advantage over
+the classical adaptive elastic net is expected. For more details, we refer to
+the simulation protocol \citep{pawel2022protocol}.
 
-\paragraph{Altering the DGP (E1)}
+\subsection{Altering the data generating process (E1)}
 The simulation study was planned with a low- to high-dimensional linear-logistic
-DGP. In none of the scenarios we could detect a significant performance increase
-by using the elastic net over standard logistic regression or elastic net.
-\todo{Find good setting. Figure}
+data generating process. We could not detect a significant performance increase
+of \ainet{} over standard logistic regression or elastic net regression in any
+of the scenarios specified in the protocol. After a few modifications of the
+data generating process, we finally found that \ainet{} outmatches logistic
+regression for the combination of a only few variables being associated with the
+outcome (high sparsity), a non-linear effect, and a low number of events per
+variable (EPV). \todo{Find good setting. Figure}
 
-\paragraph{Switchting the primary estimand (E4)}
+\subsection{Switchting the primary estimand (E4)}
 Specifying a \emph{single} or combined primary estimand is important not only
 for planning the size of the simulation study. The Brier score was chosen as the
 primary estimand in our protocol. However, we compute and report other proper
@@ -485,7 +495,7 @@ scores, such as the log-score, and discriminatory measures, such as AUC and
 accuracy.
 \todo{Find good setting. Figure}
 
-\paragraph{Removing comparators (E3)}
+\subsection{Removing comparators (E3)}
 Comparing against appropriate competitors is vital to judge the benefits of the
 novel method. We compared \ainet{} against standard logistic regression, random
 forests, the standard elastic net and adaptive elastic net. However, we observed
@@ -495,7 +505,7 @@ arguing that solely the comparison among adaptive methods (AEN \vs \ainet) was
 sought.
 \todo{Find good setting. Figure}
 
-\paragraph{Altering the scope of the simulation study (R2)}
+\subsection{Altering the scope of the simulation study (R2)}
 Instead of minor tweaks to the DGP, simulation parameters or methods, the target
 of the simulation study could be altered entirely. For \ainet, we focused purely
 on predictive performance (together with calibration). However, we could just as
@@ -503,7 +513,7 @@ easily focus on discrimination (\eg AUC) or estimation performance (\eg MSE of
 the estimated coefficients).
 \todo{Find good setting. Figure}
 
-\paragraph{Handling exceptions differently (E6)}
+\subsection{Handling exceptions differently (E6)}
 In our protocol, we clearly specified how difficult it would be to judge the
 results of simulation settings in which more than 10\% of the runs failed to
 converge. We decided to omit these settings. However, without a pre-specified
@@ -516,7 +526,7 @@ the resulting confidence intervals ignore the imputation uncertainty and thus
 underestimate $p$-values.
 \todo{Find good setting. Figure}
 
-\paragraph{Arbitrarily choosing the simulation size (E5)}
+\subsection{Arbitrarily choosing the simulation size (E5)}
 A thorough planning of the simulation size in terms of expected precision of the
 primary estimand is crucial. An arbitrarily chosen (but often too small)
 simulation size yields more heterogeneous results, but can be executed faster.
