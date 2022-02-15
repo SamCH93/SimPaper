@@ -382,7 +382,10 @@ or the evaluation metrics (D4) leaves a high number of \emph{researcher degrees
   of freedom} open which increase the chance of over-optimistic conclusions.
 
 Another crucial part of rigorous design is a sample size calculation, see
-Section 5.3 in \citet{Morris2019} for an overview. By failing to conduct a
+Section 5.3 in \citet{Morris2019} for an overview. A thorough planning of the
+simulation size in terms of expected precision of the primary estimand is
+important. An arbitrarily chosen (but often too small) simulation size yields
+more heterogeneous results, but can be executed faster. By failing to conduct a
 sample size calculation (D5), researchers are a at a higher risk of drawing the
 wrong conclusions (if their sample size is too small), or wasting computer
 resources (if their sample size is too large).
@@ -468,14 +471,14 @@ researcher are unable to replicate and expand on the simulation study (R5).
 To illustrate the application of QRPs from Table~\ref{table:QRPs}, we conducted
 a simulation study. The objective of the study was to evaluate the predictive
 performance of a made-up regression method termed the ``adaptive importance
-elastic net'' (\ainet) The main idea of \ainet{} is to use the variable
+elastic net'' (\ainet). The main idea of \ainet{} is to use the variable
 importance measure from a random forest for a weighted penalization of the
 variables in an elastic net regression model. The hope is that this ad hoc
 modification improves predictive performance in clinical prediction modeling
 where penalized regression models are frequently used. Superficially, \ainet{}
 seems sensible, however, for a linear data generating process no advantage over
-the classical adaptive elastic net is expected. For more details, we refer to
-the simulation protocol \citep{pawel2022protocol}.
+the classical adaptive elastic net is expected. For more details on the wokrings
+of the method, we refer to the simulation protocol \citep{pawel2022protocol}.
 
 
 \subsection{Altering the data generating process (E1)}
@@ -484,9 +487,10 @@ data generating process. We could not detect a significant performance increase
 of \ainet{} over standard logistic regression or elastic net regression in any
 of the scenarios specified in the protocol. After a few modifications of the
 data generating process, we finally found that \ainet{} outmatches logistic
-regression for the combination of a only few variables being associated with the
+regression for the combination of only few variables being associated with the
 outcome (high sparsity), a non-linear effect, and a low number of events per
-variable (EPV). \todo{Make Figure: rho = 0.95 original -> rho 0.95, sparsity = 0.9, non-lin GLM improves}
+variable (EPV). \todo{Make Figure: rho = 0.95 original -> rho 0.95, sparsity =
+  0.9, non-lin GLM improves}
 
 
 \subsection{Switchting the primary estimand (E4)}
@@ -497,51 +501,56 @@ detect differences in the Brier score with sufficient accuracy. A range of
 secondary estimates, such as the log-score, area under the curve (AUC),
 calibration slope, and calibration in the large, and accuracy were computed.
 Since the planned simulations did not show significant improvements in Brier
-score of \ainet{} compared to the other methods, we started to look at the
-secondary outcomes.
-\todo{look at calibration metrics}
+score of \ainet{} compared to the other methods, we looked at the secondary
+outcomes and found \dots \todo{look at calibration metrics}
 
 \subsection{Removing comparators (E3)}
-Comparing against appropriate competitors is vital to judge the benefits of the
-novel method. We compared \ainet{} against standard logistic regression, random
-forests, the standard elastic net and adaptive elastic net. However, we observed
-only minor (if any) improvements of \ainet{} over the elastic net. If there was no
-protocol, we could decide to omit the comparisons with the elastic net by
-arguing that solely the comparison among adaptive methods (AEN \vs \ainet) was
-sought.
-\todo{remove EN figure}
+% Comparing against appropriate competitors is vital to judge the benefits of the
+% novel method.
+In the simulation protocol we specified standard logistic regression, random
+forest, standard elastic net and adaptive elastic net as the appropriate
+competitor methods for \ainet{}. However, we observed only minor (if any)
+improvements of \ainet{} over the elastic net. In order to make \ainet{} look
+better we could omit the comparisons with the elastic net by arguing that solely
+the comparison among adaptive methods is relevant (adaptive elastic net \vs
+\ainet). \todo{remove EN figure}
 
-\subsection{Altering the scope of the simulation study (R2)}
-Instead of minor tweaks to the DGP, simulation parameters or methods, the target
-of the simulation study could be altered entirely. For \ainet, we focused purely
-on predictive performance (together with calibration). However, we could just as
-easily focus on discrimination (\eg AUC) or estimation performance (\eg MSE of
-the estimated coefficients).
+\subsection{Altering the objective of the simulation study (R2)}
+% Instead of tweaking the data generating process, the simulation parameters or
+% the comparati
+% methods, the target of the simulation study could be altered entirely.
+The objective of the simulation study was to evaluate the overall predictive
+performance of \ainet{} as from a theoretical perspective this is the domain
+where the method could lead to improvements. We did, however, not find any
+improvements over comparator methods, so one possibility is to look for an
+entire differnet objective where \ainet{} performs better. For instance, we
+could switch the focus on discrimination (\eg area under the curve) or
+estimation performance (\eg mean squared error of the estimated coefficients).
 \todo{Find good setting. Figure}
 
 \subsection{Handling exceptions differently (E6)}
-In our protocol, we clearly specified how difficult it would be to judge the
-results of simulation settings in which more than 10\% of the runs failed to
-converge. We decided to omit these settings. However, without a pre-specified
-protocol, we could instead impute the missing scenarios with the ``worst-case''
+In our protocol, we specified that it would be difficult to judge the results of
+simulation settings in which more than 10\% of the runs fail to converge, and
+that these settings will thus be omitted. However, without a pre-specified
+handling of these situations, we could have tweaked the inclusion/exclusion
+rules to find a rule that makes \ainet{} look better compared to other methods.
+For instance, we could impute the missing scenarios with the ``worst-case''
 observed performance of a method. In case of differential missingness (\ie one
 method being more stable than another), this leads to biased comparisons. Thus,
 for settings in which \ainet{} was more stable than its competitors, this
-imputation scheme yields results unreasonably in favor of \ainet. Also note that
-the resulting confidence intervals ignore the imputation uncertainty and thus
-underestimate $p$-values.
-\todo{Find good setting. Figure}
+imputation scheme yields results unreasonably in favor of \ainet. Moreover, the
+resulting confidence intervals ignore the imputation uncertainty and thus
+underestimate $p$-values. \todo{Find good setting. Figure}
 
-\subsection{Arbitrarily choosing the simulation size (E5)}
-A thorough planning of the simulation size in terms of expected precision of the
-primary estimand is crucial. An arbitrarily chosen (but often too small)
-simulation size yields more heterogeneous results, but can be executed faster.
-The danger of seeking ``a good random seed'' is large and the results may exert
-strong bias in favor of the novel method. 
-\todo{Find good setting. Figure}
+\subsection{Tweaking the number of simulations (E5)}
 
-\section{Discussion and recommendations} \label{sec:discussion}
-We have \dots
+The number of simulations was chosen to obtain the desired precision for the
+estimated mean Brier score of \ainet{}. Since the simulation did not indicate
+any improvements in Brier, we could have reduced the number of simulations and
+repeat it for different random seeds until one seed is found for which the
+results look more favorable. \todo{Find good setting. Figure}
+
+\section{Recommendations}
 
 Table~\ref{table:recommendations} shows our recommendations for improving the
 quality of comparative simulations studies, and prevent QRPs.
@@ -627,6 +636,8 @@ quality of comparative simulations studies, and prevent QRPs.
 
 
 % \end{itemize}
+
+\section{Discussion} \label{sec:discussion}
 
 % Bibliography
 % ======================================================================
