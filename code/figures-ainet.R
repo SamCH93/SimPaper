@@ -51,7 +51,8 @@ ggplot(data = pdatE1, aes(y = contrast)) +
     geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
     geom_line(aes(x = Estimate, y = contrast, color = ordered(EPV)),
               position = ggstance::position_dodgev(height = 0.5),
-              alpha = 0.3, arrow = arrow(length = unit(0.3, "cm"), ends = "first")) +
+              alpha = 0.5, arrow = arrow(length = unit(0.4, "cm"), ends = "first"),
+              linetype = 4) +
     # geom_pointrange(data = filter(pdatE1, set == "final"),
     #                 aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
     #                 position = position_dodge2(width = 0.5),
