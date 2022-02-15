@@ -34,7 +34,7 @@ pdat <- paths %>%
 	select(-path, -folder)
 
 
-                                        # Figure for E1
+# Figure for E1
 colnames(pdat)
 pdatE1 <- pdat %>%
     filter(
@@ -47,16 +47,22 @@ pdatE1 <- pdat %>%
     )
 
 ggplot(data = pdatE1, aes(y = contrast)) +
-    facet_grid(prev ~ n, scales = "free") +
+    facet_grid(prev ~ n, scales = "free", labeller = label_both) +
     geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
-    geom_pointrange(data = filter(pdatE1, set == "final"),
-                    aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
-                    position = position_dodge2(width = 0.5),
-                    fatten = 1.5, alpha = 0.3) +
-    geom_pointrange(data = filter(pdatE1, set == "nonlinear"),
-                    aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
-                    position = position_dodge2(width = 0.5),
-                    fatten = 1.5, alpha = 0.95)
+    geom_line(aes(x = Estimate, y = contrast, color = ordered(EPV)),
+              position = ggstance::position_dodgev(height = 0.5),
+              alpha = 0.3, arrow = arrow(length = unit(0.3, "cm"), ends = "first")) +
+    # geom_pointrange(data = filter(pdatE1, set == "final"),
+    #                 aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
+    #                 position = position_dodge2(width = 0.5),
+    #                 fatten = 1.5, alpha = 0.95) +
+    geom_pointrange(aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
+                    position = position_dodge(width = 0.5),
+                    fatten = 1.5, alpha = 0.95) +
+    labs(x = "Estimate", y = element_blank(), color = "EPV") +
+    theme(panel.grid.major.y = element_blank()) +
+    geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8)
+
     ## geom_errorbarh(data = filter(pdatE1, set == "final"),
     ##                 aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
     ##                position = position_dodge2(width = 0.5),
