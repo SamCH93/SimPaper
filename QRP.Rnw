@@ -255,13 +255,13 @@ to be made, for instance: How will the data be generated? How many times will
 the simulation be repeated? Which statistical methods will be compared and how
 are their parameters specified? How will the performance of the methods be
 evaluated? The degree of flexibility, however, is much higher for simulation
-studies than for the real experiments, since they can be repeated under
-different conditions in short time at practically no cost. This is why numerous
-guidelines and best practices for design, execution, and reporting of simulation
-studies have been proposed \citep{Hoaglin1975, Holford2000, Burton2006,
-  Smith2010, OKelly2016, Monks2018, Elofsson2019, Morris2019, Boulesteix2020B},
-we recommend \citet{Morris2019} for an introduction to state-of-the-art
-simulation study methodology. %for evaluating statistical methods.
+studies than for the real experiments as they can be repeated under different
+conditions in short time at practically no cost. This is why numerous guidelines
+and best practices for design, execution, and reporting of simulation studies
+have been proposed \citep{Hoaglin1975, Holford2000, Burton2006, Smith2010,
+  OKelly2016, Monks2018, Elofsson2019, Morris2019, Boulesteix2020B}. We
+recommend \citet{Morris2019} for an introduction to state-of-the-art simulation
+study methodology. %for evaluating statistical methods.
 
 Despite the availability of these guidelines, statistics articles usually 
 provide few details about the contained simulation studies.
@@ -276,29 +276,32 @@ quality of evidence that a simulation study provides.
 % This may ultimately lead
 % to publication bias \citep{Boulesteix2015}
 
-Statistical research is both, exploratory and confirmatory, so not every
-simulation study requires a simulation protocol or other stringent measures.
-However, if the goal is to generate high-quality evidence, researchers should
-adopt rigorous simulation methodology. The aim of this paper is % not to
+Unfortunately, there are many questionable research practices (QRPs) which may
+undermine the validity of comparative simulations studies, and which can easily
+go undetected by current standards. Researchers do usually not engage QRPs with
+ill intent, but because of their subconscious biases, hopes, and expectations.
+% However, if the goal of a simulation study is to generate high-quality evidence,
+% researchers should adopt rigorous simulation methodology.
+
+% Statistical research is both, exploratory and confirmatory, so not every
+% simulation study requires a simulation protocol or other stringent measures.
+The aim of this paper is % not to
 % propose new guidelines, as they are all already available, but rather
 % but to highlight the need for their adoption by the general statistics
 % community.
-to highlight the need for the adoption of more rigorous simulation methodolgoy
-by the general statistics community. To this end, we list questionable research
-practices (QRPs) related to comparative simulation studies (Section
-\ref{sec:QRP}) which may undermine their validity but can easily go undetected
-by current standards. Researchers do usually not engage in these QRPs with ill
-intent, but because of their subconscious biases, hopes, and expectations. We
-then show with an empirical study how easy it is to present any statistical
-method as an improvement over others, if QRPs remain undisclosed (Section
-\ref{sec:study}). We also use the same example to show how over-optimism can be
-avoided if a sound methodological route is taken instead. Similar studies have
-been conducted by \citet{Niessl2021} and \citet{Jelizarow2010}, and by
-\citet{Simmons2011} in the context of $p$-hacking in psychological research, and
-were the main inspiration for this work. Finally, we provide simple and concrete
-suggestions for researchers, reviewers, and other academic stakeholders to
-improve the methodological quality of comparative simulation studies (Section
-\ref{sec:discussion}).
+to highlight the need for the adoption of higher standards in comparative
+simulations study by the general statistics community. To this end, we list QRPs
+related to comparative simulation studies (Section \ref{sec:QRP}). With an
+actual simulation study, we then show how easy it is to a present a novel,
+made-up method as an improvement over others if QRPs remain undisclosed
+(Section \ref{sec:study}). We also use the same example to show how
+over-optimism can be avoided if a sound methodological route is taken instead.
+Similar studies have been conducted by \citet{Niessl2021} and
+\citet{Jelizarow2010}, and by \citet{Simmons2011} in the context of $p$-hacking
+in psychological research, and were the main inspiration for this work. Finally,
+we provide simple and concrete suggestions for researchers, reviewers, and other
+academic stakeholders to improve the methodological quality of comparative
+simulation studies (Section \ref{sec:discussion}).
 
 % showed
 % how a statistical method can be presented as superior if one looks long enough
@@ -552,8 +555,13 @@ results look more favorable. \todo{Find good setting. Figure}
 
 \section{Recommendations}
 
-Table~\ref{table:recommendations} shows our recommendations for improving the
-quality of comparative simulations studies, and prevent QRPs.
+The previous sections painted a mostly negative picture on how undisclosed QRPs
+increase the risk of overoptimistic conclusions from simulation studies. In the
+following, we summarize what we consider to be practical recommendations for
+improving the methodological quality of simulation studies, see
+Table~\ref{table:recommendations} for an overview. Our recommendations are
+grouped with respect to which stakeholder they concern.
+
 \begin{table}[!htb]
   \caption{Recommendations to improve rigour of comparative simulation studies
     and prevent QRPs.}
@@ -587,6 +595,44 @@ quality of comparative simulations studies, and prevent QRPs.
 		\bottomrule
 	\end{longtable}
 \end{table}
+
+\subsection{Recommendations for researchers}
+Researchers rarely engage in QRPs with malicious intent but because humans
+interpret ambiguous information self-servingly, and because they are good in
+finding reasonable justifications that match with their expectations and desires
+\citep{Simmons2011}. Since it is easier to publish novel and superior methods
+\citep{Boulesteix2015}, methodological researcher will typically desire to show
+the uniform superiority of a method rather than to disclose its strength's and
+weaknesses.
+
+Arguably the most important measure that researchers can take to prevent
+themselves from engaging in QRPs is to adopt preregistration of simulation
+protocols. This enables research consumers to distinguish between confirmatory
+and exploratory findings, and it lowers the risk of flawed methods being
+promoted as improvement. This step may at first it seem as a disadvantage for an
+individual researcher as it leads to more work and lower possibility of
+publication. However, it also provides researchers a means to differentiate
+themselves and to think harder about setting up a good simulation study.
+
+Another way of improving simulation studies is to collaborate with other
+researcher groups, possibly groups with ``competing'' methods. This helps to
+design simulation studies which are more objective and whose results are more
+useful for making a decision about which method to choose. To further reduce
+subconscious biases researchers can also use blinding in the analysis of the
+simulation results \citep{Dutilh2019}. For instance, they might shuffle the
+method labels and only unblind themselves after the necessary analysis pipelines
+are set in place. This approach can also make making post hoc modifications of
+the simulation study more legitimate. Finally, it is important for researchers
+to separate exploratory from confirmatory findings in the reporting of their
+simulation studies.
+
+
+\subsection{Recommendations for editors and reviewers}
+
+
+
+\subsection{Recommendations for journals and funders}
+
 
 % \begin{itemize}
 %   \item emphasize that researchers usually engage in QRPs without malicious
