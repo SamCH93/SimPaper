@@ -280,6 +280,7 @@ Unfortunately, there are many questionable research practices (QRPs) which may
 undermine the validity of comparative simulations studies, and which can easily
 go undetected by current standards. Researchers do usually not engage QRPs with
 ill intent, but because of their subconscious biases, hopes, and expectations.
+Often there is a fine line between QRPs and legitimate research practices.
 % However, if the goal of a simulation study is to generate high-quality evidence,
 % researchers should adopt rigorous simulation methodology.
 
@@ -293,15 +294,15 @@ to highlight the need for the adoption of higher standards in comparative
 simulations study by the general statistics community. To this end, we list QRPs
 related to comparative simulation studies (Section \ref{sec:QRP}). With an
 actual simulation study, we then show how easy it is to a present a novel,
-made-up method as an improvement over others if QRPs remain undisclosed
-(Section \ref{sec:study}). We also use the same example to show how
-over-optimism can be avoided if a sound methodological route is taken instead.
-Similar studies have been conducted by \citet{Niessl2021} and
-\citet{Jelizarow2010}, and by \citet{Simmons2011} in the context of $p$-hacking
-in psychological research, and were the main inspiration for this work. Finally,
-we provide simple and concrete suggestions for researchers, reviewers, and other
-academic stakeholders to improve the methodological quality of comparative
-simulation studies (Section \ref{sec:discussion}).
+made-up method as an improvement over others if QRPs remain undisclosed (Section
+\ref{sec:study}). We also use the same example to show how over-optimism can be
+avoided if a sound methodological route is taken instead. Similar studies have
+been conducted by \citet{Niessl2021} and \citet{Jelizarow2010}, and by
+\citet{Simmons2011} in the context of $p$-hacking in psychological research, and
+were the main inspiration for this work. Finally, we provide simple and concrete
+suggestions for researchers, reviewers, and other academic stakeholders to
+improve the methodological quality of comparative simulation studies (Section
+\ref{sec:discussion}).
 
 % showed
 % how a statistical method can be presented as superior if one looks long enough
@@ -480,8 +481,8 @@ variables in an elastic net regression model. The hope is that this ad hoc
 modification improves predictive performance in clinical prediction modeling
 where penalized regression models are frequently used. Superficially, \ainet{}
 seems sensible, however, for a linear data generating process no advantage over
-the classical adaptive elastic net is expected. For more details on the wokrings
-of the method, we refer to the simulation protocol \citep{pawel2022protocol}.
+the classical adaptive elastic net is expected. For more details on the method,
+we refer to the simulation protocol \citep{pawel2022protocol}.
 
 
 \subsection{Altering the data generating process (E1)}
@@ -580,8 +581,6 @@ grouped with respect to which stakeholder they concern.
 
     \textit{Editors and reviewers} \\
     \midrule
-    Provide incentives for rigorous simulation studies (\eg badges on
-    papers) \\
     Require/demand (preregistered) simulation protocols \\
     Provide enough space for description of simulation methodology
     \\[1em]
@@ -589,7 +588,10 @@ grouped with respect to which stakeholder they concern.
 
     \textit{Journals and funders} \\
     \midrule
+    Provide incentives for rigorous simulation studies (\eg badges on
+    papers) \\
     Adopt reporting guidelines \\
+    Adopting reproducibility checks \\
     Promote/fund research and software to improve simulation study methodology  \\[1em]
 
 		\bottomrule
@@ -597,22 +599,15 @@ grouped with respect to which stakeholder they concern.
 \end{table}
 
 \subsection{Recommendations for researchers}
-Researchers rarely engage in QRPs with malicious intent but because humans
-interpret ambiguous information self-servingly, and because they are good in
-finding reasonable justifications that match with their expectations and desires
-\citep{Simmons2011}. Since it is easier to publish novel and superior methods
-\citep{Boulesteix2015}, methodological researcher will typically desire to show
-the uniform superiority of a method rather than to disclose its strength's and
-weaknesses.
-
 Arguably the most important measure that researchers can take to prevent
 themselves from engaging in QRPs is to adopt preregistration of simulation
 protocols. This enables research consumers to distinguish between confirmatory
 and exploratory findings, and it lowers the risk of flawed methods being
-promoted as improvement. This step may at first it seem as a disadvantage for an
-individual researcher as it leads to more work and lower possibility of
-publication. However, it also provides researchers a means to differentiate
-themselves and to think harder about setting up a good simulation study.
+promoted as improvement. While simulations protocols may at first seem as a
+disadvantage due to additional work and lower possibility of publication, they
+also provide researchers a means to think harder about setting up a good
+simulation study, and thus differentiate themselves from unregistered
+simulations.
 
 Another way of improving simulation studies is to collaborate with other
 researcher groups, possibly groups with ``competing'' methods. This helps to
@@ -621,17 +616,44 @@ useful for making a decision about which method to choose. To further reduce
 subconscious biases researchers can also use blinding in the analysis of the
 simulation results \citep{Dutilh2019}. For instance, they might shuffle the
 method labels and only unblind themselves after the necessary analysis pipelines
-are set in place. This approach can also make making post hoc modifications of
-the simulation study more legitimate. Finally, it is important for researchers
-to separate exploratory from confirmatory findings in the reporting of their
-simulation studies.
+are set in place. This approach also helps making post hoc modifications of the
+simulation study more legitimate. Finally, it is important for researchers to
+separate exploratory from confirmatory findings in the reporting of their
+simulation studies. By clearly indicating exploratory findings, overoptimism can
+be avoided and lead to a more realistic picture.
 
 
 \subsection{Recommendations for editors and reviewers}
 
+By requiring higher methodological standards from simulation studies, reviewers
+and editors help to improve the quality of the published literature. For
+instance, they may demand from authors to make simulations protocols and
+computer code available alongside the manuscript. Moreover, by providing enough
+space and encouraging authors to provide detailed descriptions of their
+simulation studies, replicability of the simulations studies can be improved.
+Finally, reviewers should not be satisfied with manuscript that show that a
+method is uniformly superior, but they should also urge authors to find cases
+where their method fails.
 
 
 \subsection{Recommendations for journals and funders}
+Journals and funders can improve on the status quo by either demanding stricter
+requirements or by providing incentives for more rigorous simulation study
+methodology. For example, journals can make simulation protocols mandatory for
+all articles featuring a simulations study. A less extreme measure would be to
+indicate with a badge whether an article contains a preregistered simulation
+study. Such an approach rewards researchers who take the extra effort. Similar
+initiatives have led to a large increase in the adoption of preregistered study
+protocols in the field of psychology \citep{Kidwell2016}. Another measure could
+to require standardized reporting of simulation study, \eg the ``ADEMP''
+reporting guideline from \citet{Morris2019}. Journals may also employ dedicated
+staff for reproducibility checks to ensure computational reproducibility of the
+published simulation studies. Finally, journals and funders can promote or fund
+research and software to improve simulation study methodology. For instance, a
+journal might have special calls for papers on simulation methodology.
+Similarly, a funder could have special grants dedicated to software development
+that facilitates sound design, execution, and reporting of simulation studies
+\citep[as, for example,][]{White2010, Gasparini2018, Chalmers2020}.
 
 
 % \begin{itemize}
@@ -684,6 +706,16 @@ simulation studies.
 % \end{itemize}
 
 \section{Discussion} \label{sec:discussion}
+
+Researchers rarely engage in QRPs with malicious intent but because humans
+interpret ambiguous information self-servingly, and because they are good in
+finding reasonable justifications that match with their expectations and desires
+\citep{Simmons2011}. Since it is easier to publish novel and superior methods
+\citep{Boulesteix2015}, methodological researcher will typically desire to show
+the uniform superiority of a method rather than to disclose its strength's and
+weaknesses.
+
+
 
 % Bibliography
 % ======================================================================
