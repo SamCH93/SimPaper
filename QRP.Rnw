@@ -510,6 +510,24 @@ outcome (high sparsity), a non-linear effect, and a low number of events per
 variable (EPV). \todo{Make Figure: rho = 0.95 original -> rho 0.95, sparsity =
   0.9, non-lin GLM improves}
 
+\begin{figure}[!htb]
+  \includegraphics[width = \textwidth]{code/p1.pdf}
+  \caption{Shown are differences in Brier score betwen \ainet{} and random
+    forest (RF), logistic regression (GLM), elastic net (EN), and adaptive
+    elastic net (AEN). Arrows point from pre-registered simulation result to
+    result from simulation where a specifically tweaked type of non-linear
+    effect was added to the data generating process.}
+\end{figure}
+
+
+\subsection{Removing comparators (E3)}
+In the simulation protocol we specified standard logistic regression, random
+forest, standard elastic net and adaptive elastic net as the appropriate
+competitor methods for \ainet{}. However, we observed only minor (if any)
+improvements of \ainet{} over the elastic net. In order to make \ainet{} look
+better we could omit the comparisons with the elastic net by arguing that solely
+the comparison among adaptive methods is relevant (adaptive elastic net \vs
+\ainet). \todo{remove EN figure}
 
 \subsection{Switchting the primary estimand (E4)}
 The objective of the simulation study was to evaluate overall predictive
@@ -521,15 +539,6 @@ calibration slope, and calibration in the large, and accuracy were computed.
 Since the planned simulations did not show significant improvements in Brier
 score of \ainet{} compared to the other methods, we looked at the secondary
 outcomes and found \dots \todo{look at calibration metrics}
-
-\subsection{Removing comparators (E3)}
-In the simulation protocol we specified standard logistic regression, random
-forest, standard elastic net and adaptive elastic net as the appropriate
-competitor methods for \ainet{}. However, we observed only minor (if any)
-improvements of \ainet{} over the elastic net. In order to make \ainet{} look
-better we could omit the comparisons with the elastic net by arguing that solely
-the comparison among adaptive methods is relevant (adaptive elastic net \vs
-\ainet). \todo{remove EN figure}
 
 \subsection{Altering the objective of the simulation study (R2)}
 The objective of the simulation study was to evaluate the overall predictive

@@ -45,32 +45,44 @@ pdatE1 <- pdat %>%
         n < 5000,
         prev == 0.05
     )
+pdatE1wide <- pdatE1 %>%
+    mutate(sparsity = 0.9) %>%
+    select(contrast, n, EPV, prev, rho, sparsity, Estimate, set) %>%
+    spread(key = set, value = Estimate) %>%
+    mutate(better = ifelse(nonlinear < final, "better", "worse"))
 
-ggplot(data = pdatE1, aes(y = contrast)) +
-    facet_grid(prev ~ n, scales = "free", labeller = label_both) +
+p1 <- ggplot(data = pdatE1, aes(y = contrast)) +
+    facet_grid(. ~ n, scales = "free",
+               labeller = label_bquote(cols = italic(n) == .(n))) +
     geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
-    geom_line(aes(x = Estimate, y = contrast, color = ordered(EPV)),
-              position = ggstance::position_dodgev(height = 0.5),
-              alpha = 0.5, arrow = arrow(length = unit(0.4, "cm"), ends = "first"),
-              linetype = 4) +
-    # geom_pointrange(data = filter(pdatE1, set == "final"),
-    #                 aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
-    #                 position = position_dodge2(width = 0.5),
-    #                 fatten = 1.5, alpha = 0.95) +
-    geom_pointrange(aes(xmin = lwr, xmax = upr, x = Estimate, col = ordered(EPV)),
-                    position = position_dodge(width = 0.5),
-                    fatten = 1.5, alpha = 0.95) +
-    labs(x = "Estimate", y = element_blank(), color = "EPV") +
-    theme(panel.grid.major.y = element_blank()) +
+    geom_linerange(data = pdatE1wide,
+                   aes(xmin = final, xmax = nonlinear, y = contrast,
+                       col = ordered(EPV)),
+                   position = position_dodge(width = 0.5),
+                   show.legend = FALSE) +
+    geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+                   position = position_dodge(width = 0.5), alpha = 0.3,
+                   height = 0.25, show.legend = FALSE) +
+    ## geom_point(aes(x = Estimate, col = ordered(EPV)), size = 0.8,
+    ##            position = position_dodge(width = 0.5), alpha = 0.5) +
+    geom_point(data = pdatE1wide,
+               aes(x = final, col = ordered(EPV)), size = 0.8,
+               position = position_dodge(width = 0.5), alpha = 0.5) +
+    geom_point(data = pdatE1wide,
+               aes(x = nonlinear, col = ordered(EPV)), size = 0.8,
+               position = position_dodge(width = 0.5), alpha = 0.5) +
+    geom_point(data = pdatE1wide,
+               aes(x = nonlinear, col = ordered(EPV), shape = better), size = 6,
+               position = position_dodge(width = 0.5), alpha = 1,
+               show.legend = FALSE) +
+    scale_shape_manual(values = c("better" = 60, "worse" = 62)) +
+    labs(x = "Difference in Brier score (negative: AINET better)",
+         y = element_blank(), color = "EPV") +
+    theme(panel.grid.major.y = element_blank(),
+          panel.grid.minor.x = element_blank()) +
     geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8)
+ggsave(p1, filename = "p1.pdf", height = 4.5)
 
-    ## geom_errorbarh(data = filter(pdatE1, set == "final"),
-    ##                 aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
-    ##                position = position_dodge2(width = 0.5),
-    ##                height = 0.3, alpha = 0.3) +
-    ## geom_errorbarh(data = filter(pdatE1, set == "nonlinear"), height = 0.3,
-    ##                 aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
-    ##                 position = position_dodge2(width = 0.5), alpha = 0.95)
 
 # Vis ---------------------------------------------------------------------
 
