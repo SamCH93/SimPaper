@@ -656,54 +656,6 @@ that facilitates sound design, execution, and reporting of simulation studies
 \citep[as, for example,][]{White2010, Gasparini2018, Chalmers2020}.
 
 
-% \begin{itemize}
-%   \item emphasize that researchers usually engage in QRPs without malicious
-%   intent but because: ``people are self-serving in their interpretation
-%   of ambiguous information and remarkably adept at reaching justifiable
-%   conclusions that mesh with their desires'' \citep{Simmons2011} and also
-%   because ``superior'' methods are easier published (publication bias in
-%   methods research \citep{Boulesteix2015}?)
-
-%   \item different stages of methodological research warrant different
-%   levels of stringency $\rightarrow$ draw comparison to clinical research
-
-%   \item separate exploratory from confirmatory research also in methodology
-
-%   \item Some suggestions for researchers:
-%     \begin{itemize}
-%       \item use simulation protocols, follow the ``ADEMP'' approach from
-%       \citet{Morris2019}
-%       \item collaboration between different research groups (with possibly
-%       ``competing'' methods)
-%       \item blind yourself when analyzing simulation results (\eg shuffle the
-%       method labels as proposed by \citet{Dutilh2019})
-%     \end{itemize}
-
-%   \item Some suggestions for reviewers, editors:
-%     \begin{itemize}
-%       \item need to shift focus from ``showing superiority of method'' to
-%   ``showing where method works and where it fails''
-%     \item two ways to increase use of simulation protocols :
-%     \begin{itemize}
-%       \item[+] positive reinforcement: provide incentives for researchers,
-%       \eg badges on papers that indicate that simulation has a protocol
-%       (very successful in psychology \citep{Kidwell2016})
-%       \item[-] negative reinforcement: require simulation protocol for
-%       publication of comparison study (\eg similar to Cochrane systematic
-%       reviews)
-%     \end{itemize}
-%     \item provide enough space for description of methodology, require
-%     supplementary materials, etc.
-%     \end{itemize}
-
-
-
-%   \item more software needs to be developed that facilitates sound design,
-%   execution, and reporting of simulation studies
-%   \citep{White2010, Gasparini2018, Chalmers2020}
-
-
-% \end{itemize}
 
 \section{Discussion} \label{sec:discussion}
 
@@ -715,6 +667,10 @@ finding reasonable justifications that match with their expectations and desires
 the uniform superiority of a method rather than to disclose its strength's and
 weaknesses.
 
+By using a wide range of simulation study QRPs we were able to present a flawed
+method as an improvement over comparators. We hope that our illustration will
+increase the awareness about the fragility of findings from simulation studies,
+and the need for higher standards.
 
 
 % Bibliography
