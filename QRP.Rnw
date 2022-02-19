@@ -135,6 +135,7 @@ comparative simulation studies allow to show superiority of any method}
 %% ----------------------------------------------------------------------------
 
 \newcommand{\ainet}{\textsc{ainet}}
+\newcommand{\Lucas}[1]{\textcolor{blue!80}{Lucas: #1}}
 
 \begin{document}
 \maketitle
@@ -316,7 +317,7 @@ improve the methodological quality of comparative simulation studies (Section
 \section{Questionable research practices in comparative simulation
   studies} \label{sec:QRP} Table~\ref{table:QRPs} lists different types of QRPs
 which threathen the validity of comparative simulation studies. They are
-categorized with respect to the stage of research at which they can occur. Th
+categorized with respect to the stage of research at which they can occur. The
 classification is inspired by the classification of QRPs in experimental
 research from \citet{Wicherts2016}.
 
@@ -370,6 +371,10 @@ research from \citet{Wicherts2016}.
 \subsection{Design}
 The \emph{a priori} specification of research hypotheses, study design, and
 analytic choices is what separates \emph{confirmatory} from \emph{exploratory}
+\Lucas{Often, large comparative simulation studies follow after a new
+method has been proposed (either theoretically or with a smaller simulation
+study). For instance, https://doi.org/10.1002/sim.9348. We could mention some
+as positive examples of confirmatory research, if they have a protocol.}
 research. To prevent over-optimistic study conclusions and allow research
 consumers to distinguish between confirmatory and exploratory research, many
 non-methodological journals require preregistration of study design and analysis
@@ -390,6 +395,8 @@ Section 5.3 in \citet{Morris2019} for an overview. A thorough planning of the
 simulation size in terms of expected precision of the primary estimand is
 important. An arbitrarily chosen (but often too small) simulation size yields
 more heterogeneous results, but can be executed faster. By failing to conduct a
+\Lucas{Rather ``simulation size''? Could be confused with the actual sample
+size}
 sample size calculation (D5), researchers are a at a higher risk of drawing the
 wrong conclusions (if their sample size is too small), or wasting computer
 resources (if their sample size is too large).
@@ -397,9 +404,13 @@ resources (if their sample size is too large).
 
 \subsection{Execution}
 If researchers have prespecified their simulation study, they simply have to
-follow their protocol in the execution phase. However, if no protocol is in
-place, they can engage in various QRPs in order to increase the chance for
-showing superiority of their preferred method.
+follow their protocol in the execution phase. \Lucas{``simply'' is maybe a bit
+strong. While planning the simulation study, it is virtually impossible to think
+of all potential weaknesses or problems that may come up when actually
+the study. However, conducting a preliminary simulation and code review can
+obviate most of these problems. We should mention this somewhere.}
+However, if no protocol is in place, they can engage in various QRPs in order to
+increase the chance for showing superiority of their preferred method.
 
 If under the data-generating mechanism the researcher initially had in mind,
 their favored method does not perform better than its competitors, they can
@@ -409,7 +420,7 @@ the effect sizes. It is usually not difficult to find reasonable justification
 for such modifications.
 
 If researchers are unable to find any data-generating mechanisms under which
-their favored method beats a competitor method, they can exclude the competitor
+their favored method beats a competing method, they can exclude the competitor
 from the comparison (E2). To make their favored method look better, additional
 methods which perform worse under the (adapted) data-generating mechanisms may
 also be included in the simulation study.
@@ -438,12 +449,14 @@ positive finding is a false positive increases. Similarly, when too few
 simulations are conducted, researchers can ``tune'' the random numbers by
 changing the initialization seed of their random number generator until they
 find a realization where their preferred method seems superior.
+\Lucas{Random number sharing to reduce Monte Carlo error in favor of a method is
+discussed in \citet{Morris2019}.}
 
 It can happen that methods fail to converge and thus not output a result in a
 particular simulation. If researchers do not prespecify how they will handle
 these situations, they can try different inclusion/exclusion or imputations
-strategies until their favored method looks superior. Choosing the wrong
-strategy can introduce systematic bias and misleading conclusions.
+strategies until their favored method appears superior. Choosing an inadequate
+strategy can result in systematic bias and misleading conclusions.
 
 \subsection{Reporting}
 In the reporting stage, researchers are faced with the challenge of reporting
@@ -456,13 +469,13 @@ the method was inferior (or at least not superior) to competitors creates
 over-optimistic impressions, and may lead readers to think that the method
 uniformly outperforms competitors. Similarly, when researchers conduct
 exploratory simulation studies but present their results as if they were
-hypothesized a priori (R2), this leads to over-confidence in the method.
+hypothesized \emph{a priori} (R2), this leads to over-confidence in the method.
 
 Failing to report Monte Carlo uncertainty (R3), \eg error bars or confidence
-intervals, is a QRP with various consequences. It confounds the research
-consumers ability to assess the quality of evidence from the simulation study.
-It also allows the researcher to present random differences in performance as if
-they were systematic.
+intervals, is a QRP with various consequences \citep{van2019communicating}. It
+confounds the research consumers ability to assess the quality of evidence from
+the simulation study. It also allows the researcher to present random
+differences in performance as if they were systematic.
 
 Finally, by failing to assure reproducibility of the simulation study (R4),
 coding errors with fatal consequences may go undetected. Moreover, by not
@@ -509,8 +522,6 @@ score of \ainet{} compared to the other methods, we looked at the secondary
 outcomes and found \dots \todo{look at calibration metrics}
 
 \subsection{Removing comparators (E3)}
-% Comparing against appropriate competitors is vital to judge the benefits of the
-% novel method.
 In the simulation protocol we specified standard logistic regression, random
 forest, standard elastic net and adaptive elastic net as the appropriate
 competitor methods for \ainet{}. However, we observed only minor (if any)
@@ -520,23 +531,21 @@ the comparison among adaptive methods is relevant (adaptive elastic net \vs
 \ainet). \todo{remove EN figure}
 
 \subsection{Altering the objective of the simulation study (R2)}
-% Instead of tweaking the data generating process, the simulation parameters or
-% the comparati
-% methods, the target of the simulation study could be altered entirely.
 The objective of the simulation study was to evaluate the overall predictive
-performance of \ainet{} as from a theoretical perspective this is the domain
-where the method could lead to improvements. We did, however, not find any
-improvements over comparator methods, so one possibility is to look for an
-entire differnet objective where \ainet{} performs better. For instance, we
-could switch the focus on discrimination (\eg area under the curve) or
-estimation performance (\eg mean squared error of the estimated coefficients).
+performance of \ainet{}, since among estimation, prediction, and attribution,
+this is where the method could potentially lead to improvements. We did,
+however, not find any improvements over comparator methods, so one possibility
+is to look for an entire differnet objective where \ainet{} performs better. For
+instance, we could switch the focus on discrimination (\eg area under the curve)
+or estimation performance (\eg mean squared error of the estimated
+coefficients).
 \todo{Find good setting. Figure}
 
 \subsection{Handling exceptions differently (E6)}
 In our protocol, we specified that it would be difficult to judge the results of
 simulation settings in which more than 10\% of the runs fail to converge, and
-that these settings will thus be omitted. However, without a pre-specified
-handling of these situations, we could have tweaked the inclusion/exclusion
+that these settings will thus be omitted. However, without pre-specifying how
+these situations should be handled, we could have tweaked the inclusion/exclusion
 rules to find a rule that makes \ainet{} look better compared to other methods.
 For instance, we could impute the missing scenarios with the ``worst-case''
 observed performance of a method. In case of differential missingness (\ie one
@@ -556,12 +565,12 @@ results look more favorable. \todo{Find good setting. Figure}
 
 \section{Recommendations}
 
-The previous sections painted a mostly negative picture on how undisclosed QRPs
+The previous sections painted a rather negative picture on how undisclosed QRPs
 increase the risk of overoptimistic conclusions from simulation studies. In the
 following, we summarize what we consider to be practical recommendations for
-improving the methodological quality of simulation studies, see
+improving the methodological quality of simulation studies; see
 Table~\ref{table:recommendations} for an overview. Our recommendations are
-grouped with respect to which stakeholder they concern.
+grouped with regards to which stakeholder they concern.
 
 \begin{table}[!htb]
   \caption{Recommendations to improve rigour of comparative simulation studies
@@ -602,11 +611,11 @@ grouped with respect to which stakeholder they concern.
 Arguably the most important measure that researchers can take to prevent
 themselves from engaging in QRPs is to adopt preregistration of simulation
 protocols. This enables research consumers to distinguish between confirmatory
-and exploratory findings, and it lowers the risk of flawed methods being
-promoted as improvement. While simulations protocols may at first seem as a
-disadvantage due to additional work and lower possibility of publication, they
-also provide researchers a means to think harder about setting up a good
-simulation study, and thus differentiate themselves from unregistered
+and exploratory findings, and it lowers the risk of potentially flawed methods
+being promoted as improvement. While simulations protocols may at first seem 
+a disadvantage due to additional work and possibly lower chance of publication,
+they also provide researchers with a mean to think harder about setting up a
+good simulation study, and thus differentiate themselves from unregistered
 simulations.
 
 Another way of improving simulation studies is to collaborate with other
@@ -616,11 +625,11 @@ useful for making a decision about which method to choose. To further reduce
 subconscious biases researchers can also use blinding in the analysis of the
 simulation results \citep{Dutilh2019}. For instance, they might shuffle the
 method labels and only unblind themselves after the necessary analysis pipelines
-are set in place. This approach also helps making post hoc modifications of the
-simulation study more legitimate. Finally, it is important for researchers to
-separate exploratory from confirmatory findings in the reporting of their
-simulation studies. By clearly indicating exploratory findings, overoptimism can
-be avoided and lead to a more realistic picture.
+are set in place. This approach also helps making \emph{post hoc} modifications
+of the simulation study more legitimate. Finally, it is important for
+researchers to separate exploratory from confirmatory findings in the reporting
+of their simulation studies. By clearly indicating exploratory findings,
+overoptimism can be avoided and lead to a more realistic picture.
 
 
 \subsection{Recommendations for editors and reviewers}
@@ -633,7 +642,7 @@ space and encouraging authors to provide detailed descriptions of their
 simulation studies, replicability of the simulations studies can be improved.
 Finally, reviewers should not be satisfied with manuscript that show that a
 method is uniformly superior, but they should also urge authors to find cases
-where their method fails.
+where their method is inferior or edge cases where it breaks down entirely.
 
 
 \subsection{Recommendations for journals and funders}
