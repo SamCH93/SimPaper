@@ -17,6 +17,7 @@ nadat <- res \%>\%
    group_by(n, EPV, prev, rho, sparsity, model) \%>\%
    summarise(frac_na = round(100 * mean(is.na(brier)), 1))
 vis_na(nadat, save = FALSE)
+vis_calibration(res, save = FALSE)
 
 res <- read_results("inst/simResults-test/", "coefs")
 cres <- filter_coef(res, "X.0")

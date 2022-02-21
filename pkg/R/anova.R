@@ -9,6 +9,7 @@
 #'    group_by(n, EPV, prev, rho, sparsity, model) %>%
 #'    summarise(frac_na = round(100 * mean(is.na(brier)), 1))
 #' vis_na(nadat, save = FALSE)
+#' vis_calibration(res, save = FALSE)
 #'
 #' res <- read_results("inst/simResults-test/", "coefs")
 #' cres <- filter_coef(res, "X.0")
@@ -285,4 +286,66 @@ vis_coefs_na <- function(pdat, rhos = unique(as.numeric(as.character(pdat$rho)))
         }
         pf
     })
+}
+
+# Calibration -------------------------------------------------------------
+
+#' Viz calibration from simulation results
+#'
+#' @export
+#'
+vis_calibration <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
+                            lim = c(-100, 100), only_one = FALSE) {
+
+	metric <- match.arg(metric)
+	yint <- switch(metric, "cslope" = 1, "clarge" = 0)
+	xxlab <- switch(metric, "cslope" = "calibration slope",
+									"clarge" = "calibration in the large")
+
+	out2 <- pdat %>%
+		bind_rows() %>%
+		mutate_at(c("n", "EPV", "prev", "rho", "sparsity"),
+							~ factor(.x, levels = sort(unique(as.numeric(as.character(.x))))))
+
+	nadat <- out2 %>%
+		group_by(n, EPV, prev, rho, sparsity, model) %>%
+		summarise(frac_na = round(100 * mean(is.na(!!sym(metric))), 1),
+							frac_na = paste0(frac_na, "%"))
+
+	rho_plot <- function(trho, tsparse) {
+		ggplot(out2 %>% filter(rho == trho, sparsity == tsparse),
+					 aes(x = model, y = !!sym(metric), color = ordered(EPV))) +
+			geom_hline(yintercept = yint, linetype = 2, alpha = 0.5) +
+			geom_boxplot(position = position_dodge(width = 0.7), outlier.size = 0.1) +
+			stat_mean(shape = 4, position = position_dodge(width = 0.7)) +
+			facet_grid(prev ~ n, labeller = label_both) +
+			geom_text(aes(y = lim[1] * 0.9, label = frac_na),
+			          data = nadat %>% filter(rho == trho, sparsity == tsparse),
+								position = position_dodge(width = 0.7)) +
+			theme_bw() +
+			theme(legend.position = "top", panel.grid.major.y = element_blank(),
+						axis.text.x = element_text(size = 7)) +
+			labs(y = xxlab, x = element_blank(),
+					 subtitle = bquote(rho==~.(trho)~sparsity==~.(tsparse)), color = "EPV") +
+			coord_flip(ylim = lim)
+	}
+
+	if (only_one)
+		return(rho_plot(0.95, 0.9))
+
+	lapply(unique(as.numeric(as.character(out2$rho))), function(rho) {
+
+		ps <- lapply(unique(as.numeric(as.character(out2$sparsity))), function(sparse) {
+			rho_plot(rho, sparse)
+		})
+		pf <- ggarrange(plotlist = ps, common.legend = TRUE, ncol = 2, nrow = 2)
+
+		if (save) {
+			pnm <- file.path(outdir, paste0("calibration-", metric, "_rho", rho, ".pdf"))
+			ggsave(pnm, plot = pf, height = 1.5 * 8.3, width = 1.5 * 11.7)
+		}
+
+		pf
+	})
+
 }
