@@ -21,12 +21,14 @@ simGrid$p <- with(simGrid, ceiling(n * prev / EPV))
 simGrid <- simGrid[simGrid$p != 1,]
 simGrid <- simGrid[simGrid$p <= 100,]
 simGrid <- simGrid[order(simGrid$p),]
+simGrid$sparsity <- 0
+simGrid$nonlin <- FALSE
 nScenarios <- nrow(simGrid)
 
 # Write conditions --------------------------------------------------------
 
-write.csv(simGrid, "simulation-conditions.csv", row.names = FALSE, quote =
-	  FALSE)
+write.csv(simGrid, "simulation-conditions.csv", row.names = FALSE, 
+          quote = FALSE)
 
 # Simulation --------------------------------------------------------------
 
