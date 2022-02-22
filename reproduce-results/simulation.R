@@ -54,12 +54,11 @@ prev <- c(0.01, 0.05, 0.1)
 sigma2 <- c(1)
 rho <- c(0, 0.3, 0.6, 0.95)
 simGrid <- createDesign(n = n, EPV = EPV, prev = prev, sigma2 = sigma2,
-                        rho = rho, stringsAsFactors = FALSE)
+                        rho = rho, sparsity = tsparse, stringsAsFactors = FALSE)
 simGrid$p <- with(simGrid, ceiling(n * prev / EPV))
 simGrid <- simGrid[simGrid$p != 1,]
 simGrid <- simGrid[simGrid$p <= 100,]
 simGrid <- simGrid[order(simGrid$p),]
-simGrid$sparsity <- tsparse
 simGrid$nonlin <- tnonlin
 simGrid$fixed <- tfixed
 nScenarios <- nrow(simGrid)
