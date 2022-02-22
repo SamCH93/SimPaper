@@ -3,7 +3,7 @@
 
 1. Install the `ainet` package by running
 ```r
-remote::install_github("SamCH93/SimPaper/pkg")
+remotes::install_github("SamCH93/SimPaper/pkg")
 ```
 or via
 ```
