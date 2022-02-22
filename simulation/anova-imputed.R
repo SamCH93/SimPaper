@@ -26,7 +26,7 @@ adat <- read_results(inp)
 ps <- 0.99 # percentile imputation
 worst_cases <- adat %>% 
     group_by(fct, model) %>%
-    summarize(
+    summarise(
         brier = quantile(brier[!is.infinite(brier)], p = ps, na.rm = TRUE),
         scaledBrier = quantile(scaledBrier[!is.infinite(scaledBrier)], p = 1 - ps, na.rm = TRUE),
         nll = quantile(nll[!is.infinite(nll)], p = ps, na.rm = TRUE),
@@ -51,7 +51,7 @@ sapply(metrics, function(met) {
     mdat <- jdat %>% filter(is.finite(!!sym(met)))
     nadat <- jdat %>% 
         group_by(n, EPV, prev, rho, model) %>% 
-        summarize(frac_na = round(100 * mean(is.na(!!sym(met))), 1))
+        summarise(frac_na = round(100 * mean(is.na(!!sym(met))), 1))
     cat("\nRemoved", nrow(jdat) - nrow(mdat),
         "rows due to infinite values in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))

@@ -8,6 +8,7 @@ library(SimDesign)
 library(tidyverse)
 library(multcomp)
 library(ggpubr)
+library(ainet)
 
 inp <- "simResults"
 outdir <- "figures"

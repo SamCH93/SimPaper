@@ -29,7 +29,7 @@ sapply(metrics, function(met) {
     mdat <- adat %>% filter(is.finite(!!sym(met)))
     nadat <- adat %>% 
         group_by(n, EPV, prev, rho, sparsity, model) %>% 
-        summarize(frac_na = round(100 * mean(is.na(!!sym(met))), 1))
+        summarise(frac_na = round(100 * mean(is.na(!!sym(met))), 1))
     cat("\nRemoved", nrow(adat) - nrow(mdat),
         "rows due to infinite values / missingness in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))

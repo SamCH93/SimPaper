@@ -27,7 +27,7 @@ sapply(cfs, function(tcf) {
     adat <- filter_coef(simres, tcf)
     nadat <- adat %>% 
         group_by(n, EPV, prev, rho, sparsity, method, coef) %>% 
-        summarize(frac_na = round(100 * mean(is.na(estimate)), 1))
+        summarise(frac_na = round(100 * mean(is.na(estimate)), 1))
     try(vis_coefs(adat, cf = tcf, lim = c(-10, 10)))
     try(vis_coefs_na(pdat = nadat, cf = tcf))
 })
