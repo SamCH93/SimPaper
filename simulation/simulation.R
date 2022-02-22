@@ -23,6 +23,7 @@ simGrid <- simGrid[simGrid$p <= 100,]
 simGrid <- simGrid[order(simGrid$p),]
 simGrid$sparsity <- 0
 simGrid$nonlin <- FALSE
+simGrid$fixed <- FALSE
 nScenarios <- nrow(simGrid)
 
 # Write conditions --------------------------------------------------------
@@ -45,7 +46,7 @@ res <- runSimulation(
                         save_results_dirname = "simResults",
                         save_seeds_dirname = "simSeeds"),
     parallel = TRUE,
-    ncores = 60, 
+    ncores = 60,
     fixed_objects = list(ntest = 1e4),
     packages = c("ainet")
 )
