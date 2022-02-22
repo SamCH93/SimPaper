@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
 args <- commandArgs(trailingOnly = TRUE)
 
+TEST <- TRUE
+
 # Simulations
 # SP, LK, KR
 # Oct 2021
@@ -15,26 +17,31 @@ library(ainet)
 
 setting <- args[1]
 tn <- c(100, 500, 1000, 5000)
+ncores <- 2 # 60
 
 if (setting == "full") {
     tsparse <- 0
     tnonlin <- FALSE
     tfixed <- FALSE
+    nsim <- 2000
 } else if (setting == "nonlin") {
     tsparse <- c(0, 0.3, 0.6, 0.9)
     tnonlin <- TRUE
     tfixed <- FALSE
     tn <- tn[-length(tn)]
+    nsim <- 1000
 } else if (setting == "nonlin-fixed") {
     tsparse <- c(0, 0.3, 0.6, 0.9)
     tnonlin <- TRUE
     tfixed <- TRUE
     tn <- tn[-length(tn)]
+    nsim <- 1000
 } else if (setting == "sparse") {
     tsparse <- c(0, 0.3, 0.6, 0.9)
     tnonlin <- FALSE
     tfixed <- FALSE
     tn <- tn[-length(tn)]
+    nsim <- 1000
 } else if (setting == "trunc") {
     # TODO: Pass trunc through fixed_objects in runSimulation
     warning("trunc setting not implemented yet.")
@@ -42,6 +49,7 @@ if (setting == "full") {
     tnonlin <- FALSE
     tfixed <- FALSE
     tn <- tn[-length(tn)]
+    nsim <- 1000
 }
 
 message("Running setting: ", setting)
@@ -63,7 +71,10 @@ simGrid$nonlin <- tnonlin
 simGrid$fixed <- tfixed
 nScenarios <- nrow(simGrid)
 
-simGrid <- simGrid[1:5, ]
+if (TEST) {
+    simGrid <- simGrid[1:5, ]
+    nsim <- 2
+}
 
 # Write conditions --------------------------------------------------------
 
@@ -74,7 +85,7 @@ write.csv(simGrid, "simulation-conditions.csv", row.names = FALSE,
 
 res <- runSimulation(
     design = simGrid,
-    replications = 2,
+    replications = nsim,
     generate = generate,
     analyse = analyze,
     summarise = summarize,
@@ -85,7 +96,7 @@ res <- runSimulation(
                         save_results_dirname = "simResults",
                         save_seeds_dirname = "simSeeds"),
     parallel = TRUE,
-    ncores = 2,
+    ncores = ncores,
     fixed_objects = list(ntest = 1e4),
     packages = c("ainet")
 )
