@@ -1,7 +1,17 @@
 
 # Reproduce all simulation studies from the paper
 
-All settings can be reproduced by running
+1. Install the `ainet` package by running
+```r
+remote::install_github("SamCH93/SimPaper/pkg")
+```
+or via
+```
+make pkgall
+```
+in the home directory of this project.
+
+2. All settings can be reproduced by running
 ```
 make all SETTING="<setting>"
 ```
