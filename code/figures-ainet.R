@@ -72,7 +72,7 @@ p1 <- ggplot(data = pdatE1, aes(y = contrast)) +
                aes(x = nonlinear, col = ordered(EPV)), size = 0.8,
                position = position_dodge(width = 0.5), alpha = 0.5) +
     geom_point(data = pdatE1wide,
-               aes(x = nonlinear, col = ordered(EPV), shape = better), size = 6,
+               aes(x = nonlinear, col = ordered(EPV), shape = better), size = 4,
                position = position_dodge(width = 0.5), alpha = 1,
                show.legend = FALSE) +
     scale_shape_manual(values = c("better" = 60, "worse" = 62)) +
