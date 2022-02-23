@@ -81,7 +81,29 @@ p1 <- ggplot(data = pdatE1, aes(y = contrast)) +
     theme(panel.grid.major.y = element_blank(),
           panel.grid.minor.x = element_blank()) +
     geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8)
-ggsave(p1, filename = "p1.pdf", height = 4.5)
+ggsave(p1, filename = "code/E1.pdf", height = 4.5)
+
+pdatE3 <- pdat %>% 
+    filter(set == "final", rho == 0.95,
+           metric == "brier", prev == 0.05)
+
+p2 <- ggplot(data = pdatE3, aes(y = contrast, alpha = ifelse(contrast != "EN", 0.7, 0.3))) +
+    facet_grid(. ~ n, scales = "free",
+               labeller = label_bquote(cols = italic(n) == .(n))) +
+    geom_vline(xintercept = 0, lty = 2) +
+    geom_point(aes(x = Estimate, col = ordered(EPV)),
+               position = position_dodge(width = 0.5),
+               show.legend = FALSE) +
+    geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+                   position = position_dodge(width = 0.5),
+                   height = 0.25, show.legend = FALSE) +
+    labs(x = "Difference in Brier score (negative: AINET better)",
+         y = element_blank(), color = "EPV") +
+    theme(panel.grid.major.y = element_blank(),
+          panel.grid.minor.x = element_blank()) +
+    geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8)
+p2
+ggsave(p2, filename = "code/E3.pdf", height = 4.5)
 
 
 # Vis ---------------------------------------------------------------------

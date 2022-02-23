@@ -507,17 +507,20 @@ of the scenarios specified in the protocol. After a few modifications of the
 data generating process, we finally found that \ainet{} outmatches logistic
 regression for the combination of only few variables being associated with the
 outcome (high sparsity), a non-linear effect, and a low number of events per
-variable (EPV). \todo{Make Figure: rho = 0.95 original -> rho 0.95, sparsity =
-  0.9, non-lin GLM improves}
+variable (EPV). 
+% \todo{Make Figure: rho = 0.95 original -> rho 0.95, sparsity =
+% 0.9, non-lin GLM improves}
 
+%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--
 \begin{figure}[!htb]
-  \includegraphics[width = \textwidth]{code/p1.pdf}
+  \includegraphics[width = \textwidth]{code/E1.pdf}
   \caption{Shown are differences in Brier score betwen \ainet{} and random
     forest (RF), logistic regression (GLM), elastic net (EN), and adaptive
     elastic net (AEN). Arrows point from pre-registered simulation result to
     result from simulation where a specifically tweaked type of non-linear
-    effect was added to the data generating process.}
+    effect was added to the data generating process.} \label{fig:E1}
 \end{figure}
+%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--
 
 
 \subsection{Removing comparators (E3)}
@@ -527,7 +530,18 @@ competitor methods for \ainet{}. However, we observed only minor (if any)
 improvements of \ainet{} over the elastic net. In order to make \ainet{} look
 better we could omit the comparisons with the elastic net by arguing that solely
 the comparison among adaptive methods is relevant (adaptive elastic net \vs
-\ainet). \todo{remove EN figure}
+\ainet).
+
+%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--
+\begin{figure}[!htb]
+  \includegraphics[width = \textwidth]{code/E3.pdf}
+  \caption{Differences in Brier score betwen \ainet{} and random forest (RF), 
+    logistic regression (GLM), elastic net (EN), and adaptive elastic net (AEN).
+    EN is shown more transparently to emphasize the results of the remaining 
+    contrasts. A subset of the simulation results with $\rho = 0.95$ and
+    $\operatorname{prev} = 0.05$ is shown.} \label{fig:E3}
+\end{figure}
+%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--
 
 \subsection{Switchting the primary estimand (E4)}
 The objective of the simulation study was to evaluate overall predictive
