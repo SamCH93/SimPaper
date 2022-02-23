@@ -85,7 +85,8 @@ ggsave(p1, filename = "code/E1.pdf", height = 4.5)
 
 pdatE3 <- pdat %>% 
     filter(set == "final", rho == 0.95,
-           metric == "brier", prev == 0.05)
+           metric == "brier", prev == 0.05,
+           n < 5000)
 
 p2 <- ggplot(data = pdatE3, aes(y = contrast, alpha = ifelse(contrast != "EN", 0.7, 0.3))) +
     facet_grid(. ~ n, scales = "free",
