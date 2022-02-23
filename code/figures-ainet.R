@@ -93,7 +93,7 @@ p2 <- ggplot(data = pdatE3, aes(y = contrast, alpha = ifelse(contrast != "EN", 0
     geom_vline(xintercept = 0, lty = 2) +
     geom_point(aes(x = Estimate, col = ordered(EPV)),
                position = position_dodge(width = 0.5),
-               show.legend = FALSE) +
+               show.legend = TRUE) +
     geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
                    position = position_dodge(width = 0.5),
                    height = 0.25, show.legend = FALSE) +
@@ -101,7 +101,8 @@ p2 <- ggplot(data = pdatE3, aes(y = contrast, alpha = ifelse(contrast != "EN", 0
          y = element_blank(), color = "EPV") +
     theme(panel.grid.major.y = element_blank(),
           panel.grid.minor.x = element_blank()) +
-    geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8)
+    geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8) +
+    guides(alpha = "none")
 p2
 ggsave(p2, filename = "code/E3.pdf", height = 4.5)
 
