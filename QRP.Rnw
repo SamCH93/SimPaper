@@ -292,7 +292,8 @@ The aim of this paper is % not to
 % but to highlight the need for their adoption by the general statistics
 % community.
 to highlight the need for the adoption of higher standards in comparative
-simulations study by the general statistics community. To this end, we list QRPs
+simulations study. % by the general statistics community.
+To this end, we list QRPs
 related to comparative simulation studies (Section \ref{sec:QRP}). With an
 actual simulation study, we then show how easy it is to a present a novel,
 made-up method as an improvement over others if QRPs remain undisclosed (Section
@@ -493,10 +494,10 @@ elastic net'' (\ainet). The main idea of \ainet{} is to use the variable
 importance measure from a random forest for a weighted penalization of the
 variables in an elastic net regression model. The hope is that this ad hoc
 modification improves predictive performance in clinical prediction modeling
-where penalized regression models are frequently used. Superficially, \ainet{}
-seems sensible, however, for a linear data generating process no advantage over
-the classical adaptive elastic net is expected. For more details on the method,
-we refer to the simulation protocol \citep{pawel2022protocol}.
+settings where penalized regression models are frequently used. Superficially,
+\ainet{} seems sensible, however, for a linear data generating process no
+advantage over the classical adaptive elastic net is expected. For more details
+on the method, we refer to the simulation protocol \citep{pawel2022protocol}.
 
 
 \subsection{Altering the data generating process (E1)}
@@ -507,7 +508,15 @@ of the scenarios specified in the protocol. After a few modifications of the
 data generating process, we finally found that \ainet{} outmatches logistic
 regression for the combination of only few variables being associated with the
 outcome (high sparsity), a non-linear effect, and a low number of events per
-variable (EPV). 
+variable (EPV). Figure~\ref{fig:E1} shows the changes in Brier score difference
+between the pre-registered and the tweaked simulation. As can be seen, the
+tweaked data generating process did not reduce the performance of \ainet{} in a
+way that the method would be deemed inferior to comparators in other conditions.
+Hence, researchers who want to show superiority of \ainet{} could only report
+the simulation result based on the adapted data generating process to create the
+impression that \ainet{} only leads to equal or improved performance compared to
+comparators.
+
 % \todo{Make Figure: rho = 0.95 original -> rho 0.95, sparsity =
 % 0.9, non-lin GLM improves}
 
@@ -516,9 +525,12 @@ variable (EPV).
   \includegraphics[width = \textwidth]{code/E1.pdf}
   \caption{Shown are differences in Brier score betwen \ainet{} and random
     forest (RF), logistic regression (GLM), elastic net (EN), and adaptive
-    elastic net (AEN). Arrows point from pre-registered simulation result to
+    elastic net (AEN) in simulation conditions representative for the whole
+    simulation study. Arrows point from pre-registered simulation result to
     result from simulation where a specifically tweaked type of non-linear
-    effect was added to the data generating process.} \label{fig:E1}
+    effect was added to the data generating process while. To reduce computation
+    time, only the original simulation featured conditions wiht $n = 1000$ and
+    $\mbox{EPV} = 0.5$.} \label{fig:E1}
 \end{figure}
 %--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--
 
@@ -596,6 +608,7 @@ improving the methodological quality of simulation studies; see
 Table~\ref{table:recommendations} for an overview. Our recommendations are
 grouped with regards to which stakeholder they concern.
 
+\newpage
 \begin{table}[!htb]
   \caption{Recommendations to improve rigour of comparative simulation studies
     and prevent QRPs.}
