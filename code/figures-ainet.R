@@ -8,13 +8,28 @@ library(tidyverse)
 library(ggpubr)
 library(ggbeeswarm)
 library(factoextra)
+library(patchwork)
 theme_set(theme_bw())
 
 # Params ------------------------------------------------------------------
 
 tsparse <- 0.3
-tnms <- c("prelim", "final", "final (imputed)", "nonlin_fix", "nonlin") 
-tlabs <- c("preliminary", "final", "final (imputed)", "nonlinear (fixed)", "nonlinear") 
+tnms <- c(
+	"prelim",
+	"final",
+	"final (imputed)",
+	"nonlin_fix",
+	"nonlin_fix (imputed)",
+	"nonlin"
+)
+tlabs <- c(
+	"preliminary",
+	"final",
+	"final (imputed)",
+	"nonlinear (fixed)",
+	"nonlinear (fixed+imputed)",
+	"nonlinear"
+) 
 
 which <- c("brier", "scaledBrier", "nll", "auc", "acc")
 
@@ -22,6 +37,7 @@ folders <- c("preliminary-sim/results_anova/",
              "simulation/results_anova/",
              "simulation/simResults-results-imputed/",
              "hacking/simResults-nonlin_fix-results/",
+             "hacking/simResults-nonlin_fix-results-imputed/",
              "hacking/simResults-nonlin-results/")
 
 paths <- expand_grid(folder = folders, metric = which)
@@ -34,7 +50,7 @@ pdat <- paths %>%
 	select(-path, -folder)
 
 
-# Figure for E1
+## E1
 colnames(pdat)
 pdatE1 <- pdat %>%
     filter(
@@ -81,8 +97,97 @@ p1 <- ggplot(data = pdatE1, aes(y = contrast)) +
     theme(panel.grid.major.y = element_blank(),
           panel.grid.minor.x = element_blank()) +
     geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8)
-ggsave(p1, filename = "code/E1.pdf", height = 4.5)
+# ggsave(p1, filename = "code/E1.pdf", height = 4.5)
 
+## E1 + E3
+pdatE46 <- pdat %>%
+    filter(
+        rho == 0.95,
+        sparsity %in% c(0, NA),
+        set %in% c("nonlinear (fixed)", "final"),
+        metric == "nll",
+        n < 5000,
+        prev == 0.05
+    )
+pdatE46wide <- pdatE46 %>%
+    mutate(sparsity = 0.9) %>%
+    select(contrast, n, EPV, prev, rho, sparsity, Estimate, set) %>%
+    spread(key = set, value = Estimate) %>%
+    mutate(better = ifelse(`nonlinear (fixed)` < final, "better", "worse"))
+
+p2 <- ggplot(data = pdatE46, aes(y = contrast)) +
+    facet_grid(. ~ n, scales = "free",
+               labeller = label_bquote(cols = italic(n) == .(n))) +
+    geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
+    geom_linerange(data = pdatE46wide,
+                   aes(xmin = final, xmax = `nonlinear (fixed)`, y = contrast,
+                       col = ordered(EPV)),
+                   position = position_dodge(width = 0.5),
+                   show.legend = FALSE) +
+    geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+                   position = position_dodge(width = 0.5), alpha = 0.3,
+                   height = 0.25, show.legend = FALSE) +
+    ## geom_point(aes(x = Estimate, col = ordered(EPV)), size = 0.8,
+    ##            position = position_dodge(width = 0.5), alpha = 0.5) +
+    geom_point(data = pdatE46wide,
+               aes(x = final, col = ordered(EPV)), size = 0.8,
+               position = position_dodge(width = 0.5), alpha = 0.5) +
+    geom_point(data = pdatE46wide,
+               aes(x = `nonlinear (fixed)`, col = ordered(EPV)), size = 0.8,
+               position = position_dodge(width = 0.5), alpha = 0.5) +
+    geom_point(data = pdatE46wide,
+               aes(x = `nonlinear (fixed)`, col = ordered(EPV), shape = better), size = 4,
+               position = position_dodge(width = 0.5), alpha = 1,
+               show.legend = FALSE) +
+    scale_shape_manual(values = c("better" = 60, "worse" = 62)) +
+    labs(x = "Difference in log-score (negative: AINET better)",
+         y = element_blank(), color = "EPV") +
+    theme(panel.grid.major.y = element_blank(),
+          panel.grid.minor.x = element_blank()) +
+    geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8)
+
+## E1 + E3 + E6
+pdatE46 <- pdat %>%
+    filter(
+        rho == 0.95,
+        sparsity %in% c(0, NA),
+        set %in% c("nonlinear (fixed)"), # , "final"),
+        # contrast != "EN",
+        metric == "nll",
+        n < 5000,
+        prev == 0.05,
+        # EPV < 10
+    ) %>% 
+	mutate(alp = contrast != "EN" & EPV < 10)
+
+p3 <- ggplot(data = pdatE46, aes(y = contrast, alpha = alp)) +
+	facet_grid(. ~ n, scales = "free",
+						 labeller = label_bquote(cols = italic(n) == .(n))) +
+	geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
+	geom_point(aes(x = Estimate, col = ordered(EPV), alpha = alp),
+						 position = position_dodge(width = 0.5), size = 0.8) +
+	geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+								 position = position_dodge(width = 0.5),
+								 height = 0.25, show.legend = FALSE) +
+	labs(x = "Difference in log-score (negative: AINET better)",
+			 y = element_blank(), color = "EPV") +
+	theme(panel.grid.major.y = element_blank(),
+				panel.grid.minor.x = element_blank()) +
+	geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8) +
+	scale_alpha_manual(values = c(0.1, 1)) +
+	theme(axis.text.y.left = element_text(color = c("gray30", "gray80", "gray30", "gray30")))
+
+ggarrange(
+	p1 + labs(subtitle = "QRP: E1"),
+	p2 + labs(subtitle = "QRP: E1 + E4"),
+	p3 + labs(subtitle = "QRP: E1 + E2 + E4 + R1 (reported result)"),
+	common.legend = TRUE, ncol = 1
+)
+
+ggsave("ainet-results.pdf", height = 10, width = 8)
+
+
+## (E3) old
 pdatE3 <- pdat %>% 
     filter(set == "final", rho == 0.95,
            metric == "brier", prev == 0.05,
