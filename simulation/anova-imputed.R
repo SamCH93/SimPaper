@@ -8,6 +8,7 @@ library(SimDesign)
 library(tidyverse)
 library(multcomp)
 library(ggpubr)
+library(ainet)
 
 inp <- "simResults"
 
@@ -38,14 +39,14 @@ jdat <- full_join(adat, worst_cases, by = c("fct", "model"), suffix = c("", "_wc
     mutate(
         imp_brier = case_when(is.na(brier) ~ brier_wc, TRUE ~ brier),
         imp_scaledBrier = case_when(is.na(scaledBrier) ~ scaledBrier_wc, TRUE ~ scaledBrier),
-        imp_nll = case_when(is.na(nll) | is.infinite(nll) ~ nll_wc, TRUE ~ nll),
+        imp_nll = case_when(is.na(nll) ~ nll_wc, TRUE ~ nll),
         imp_auc = case_when(is.na(auc) ~ auc_wc, TRUE ~ auc),
         imp_acc = case_when(is.na(acc) ~ acc_wc, TRUE ~ acc),
     )
 
 # Run ---------------------------------------------------------------------
 
-metrics <- c("imp_brier", "imp_scaledBrier", "imp_nll", "imp_acc", "imp_auc")
+metrics <- "imp_nll" # c("imp_brier", "imp_scaledBrier", "imp_nll", "imp_acc", "imp_auc")
 
 sapply(metrics, function(met) {
     mdat <- jdat %>% filter(is.finite(!!sym(met)))

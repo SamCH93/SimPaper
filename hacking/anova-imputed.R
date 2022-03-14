@@ -10,7 +10,7 @@ library(multcomp)
 library(ggpubr)
 library(ainet)
 
-inp <- "simResults-nonlin"
+inp <- "simResults-nonlin_fix"
 
 outdir <- paste0(inp, "-results-imputed")
 if (!dir.exists(outdir)) {
@@ -24,29 +24,39 @@ adat <- read_results(inp)
 
 # Impute ------------------------------------------------------------------
 
-ps <- 0.8 # 80th percentile imputation
-adat_imp <- adat %>% 
+ps <- 0.99 # percentile imputation
+worst_cases <- adat %>% 
     group_by(fct, model) %>%
-    mutate(worst_case_brier = quantile(brier, p = ps, na.rm = TRUE),
-           imp_brier = case_when(
-               is.na(brier) ~ worst_case_brier,
-               !is.na(brier) ~ brier
-           ))
+    summarise(
+        brier = quantile(brier[!is.infinite(brier)], p = ps, na.rm = TRUE),
+        scaledBrier = quantile(scaledBrier[!is.infinite(scaledBrier)], p = 1 - ps, na.rm = TRUE),
+        nll = quantile(nll[!is.infinite(nll)], p = ps, na.rm = TRUE),
+        auc = quantile(auc[!is.infinite(auc)], p = 1 - ps, na.rm = TRUE),
+        acc = quantile(acc[!is.infinite(acc)], p = 1 - ps, na.rm = TRUE),
+    )
+
+jdat <- full_join(adat, worst_cases, by = c("fct", "model"), suffix = c("", "_wc")) %>% 
+    mutate(
+        imp_brier = case_when(is.na(brier) ~ brier_wc, TRUE ~ brier),
+        imp_scaledBrier = case_when(is.na(scaledBrier) ~ scaledBrier_wc, TRUE ~ scaledBrier),
+        imp_nll = case_when(is.na(nll) ~ nll_wc, TRUE ~ nll),
+        imp_auc = case_when(is.na(auc) ~ auc_wc, TRUE ~ auc),
+        imp_acc = case_when(is.na(acc) ~ acc_wc, TRUE ~ acc),
+    )
 
 # Run ---------------------------------------------------------------------
 
-metrics <- c("imp_brier") # , "scaledBrier", "nll", "acc", "auc")
+metrics <- c("imp_brier", "imp_scaledBrier", "imp_nll", "imp_acc", "imp_auc")
 
 sapply(metrics, function(met) {
-    mdat <- adat_imp %>% filter(is.finite(!!sym(met)))
-    nadat <- adat_imp %>% 
-        group_by(n, EPV, prev, rho, sparsity, model) %>% 
+    mdat <- jdat %>% filter(is.finite(!!sym(met)))
+    nadat <- jdat %>% 
+        group_by(n, EPV, prev, rho, model) %>% 
         summarise(frac_na = round(100 * mean(is.na(!!sym(met))), 1))
-    cat("\nRemoved", nrow(adat_imp) - nrow(mdat),
+    cat("\nRemoved", nrow(jdat) - nrow(mdat),
         "rows due to infinite values in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
     out <- run_anova(formula = fml, data = mdat)
     # out <- read.csv(file.path(outdir, paste0("anova_", met, ".csv")))
     try(vis_results(out, xlab = met))
-    try(vis_na(pdat = nadat, xlab = met))
 })
