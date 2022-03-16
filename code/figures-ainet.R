@@ -64,11 +64,11 @@ pdatE46 <- pdat %>%
 	)
 
 palpha <- 0.9
-aalpha <- 0.5
+aalpha <- 0.7
 ny <- 0
 
 p0 <- ggplot(data = pdatE46, aes(y = contrast)) +
-	facet_grid(. ~ n, scales = "free",
+	facet_grid(. ~ n, # scales = "free",
 						 labeller = label_bquote(cols = italic(n) == .(n))) +
 	geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
 	geom_point(aes(x = Estimate, col = ordered(EPV)),
@@ -154,7 +154,7 @@ pdatE46wide <- pdatE46 %>%
 p2 <- ggplot(data = pdatE46, aes(y = contrast)) +
 	facet_grid(. ~ n, # scales = "free",
 						 labeller = label_bquote(cols = italic(n) == .(n))) +
-	geom_vline(xintercept = 0, lty = 2) + # , alpha = 0.3) +
+	geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
 	geom_linerange(data = pdatE46wide, # alpha = aalpha,
 								 aes(xmin = final, xmax = `nonlinear`, y = contrast, alpha = alp,
 								 		color = ordered(EPV)),
@@ -220,11 +220,11 @@ ggarrange(
 	p0 + labs(subtitle = "Per-protocol"),
 	p1 + labs(subtitle = "QRP: E1"),
 	p2 + labs(subtitle = "QRP: E1 + E2"),
-	p3 + labs(subtitle = "QRP: E1 + E2 + R1 (reported result)"),
-	common.legend = TRUE, ncol = 1
+	p3 + labs(subtitle = "QRP: E1 + E2 + R1 (reported)"),
+	common.legend = TRUE, ncol = 1, legend = "right"
 )
 
-ggsave("ainet-results.pdf", height = 12, width = 8)
+ggsave("ainet-results.pdf", height = 13 * 0.9, width = 10 * 0.9)
 
 
 # ## (E3) old
