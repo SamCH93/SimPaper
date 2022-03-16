@@ -213,7 +213,8 @@ p3 <- ggplot(data = pdatE46, aes(y = contrast, alpha = alp)) +
 				panel.grid.minor.x = element_blank()) +
 	geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8) +
 	scale_alpha_manual(values = c(0.1, 1)) +
-	theme(axis.text.y.left = element_text(color = c("gray30", "gray80", "gray30", "gray30")))
+	theme(axis.text.y.left = element_text(color = c("gray30", "gray80", "gray30", "gray30"))) +
+	xlim(min(p1$data$Estimate) * 1.05, max(p1$data$Estimate) * 1.13)
 
 ggarrange(
 	p0 + labs(subtitle = "Per-protocol"),
