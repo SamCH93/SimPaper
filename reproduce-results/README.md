@@ -32,3 +32,5 @@ of sparsity in the coefficients.
 `trunc` alters the way `ainet` computes adaptive weights from random forest
 variable importance.
 
+
+last tested on Ubuntu 20.04.3 LTS with R version 4.1.2
