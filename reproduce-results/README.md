@@ -33,4 +33,4 @@ of sparsity in the coefficients.
 variable importance.
 
 
-last tested on Ubuntu 20.04.3 LTS with R version 4.1.2
+last tested on Ubuntu 20.04.3 LTS with R version 4.1.1
