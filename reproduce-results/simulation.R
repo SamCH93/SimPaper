@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 args <- commandArgs(trailingOnly = TRUE)
 
-TEST <- TRUE
+TEST <- FALSE
 
 # Simulations
 # SP, LK, KR
