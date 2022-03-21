@@ -13,9 +13,9 @@ in the home directory of this project.
 
 2. All settings can be reproduced by running
 ```
-make all SETTING="<setting>"
+make all SETTING=<setting>
 ```
-with `SETTING` being one of
+with `<setting>` being one of
 ```
 ["full" "nonlin" "nonlin-fixed" "sparse" "trunc"]
 ```
