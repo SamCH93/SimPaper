@@ -1,8 +1,13 @@
 
-# Tweaked results
+# Per-protocol results
 
-To reproduce the results from the tweaked simulations, run the following `make`
-commands in this directory.
+To reproduce the per-protocol results, run the following `make` commands in this
+directory.
+
+Full simulation:
+```
+make simulation
+```
 
 ANOVA:
 ```
