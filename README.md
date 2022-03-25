@@ -1,6 +1,7 @@
 # Pitfalls and Potentials in Simulation Studies
 
-This GitHub repository accompanies the arXiv preprint [arXiv:<number>](link).
+This GitHub repository accompanies the arXiv preprint
+[arXiv:2203.13076](https://arxiv.org/abs/2203.13076).
 
 ## Reproducing the results
 
@@ -22,6 +23,3 @@ reproducible in three steps.
    in step 2. Figure 1 can be reproduced by sourcing `./code/figures-ainet.R`.
    Figures for the simulations can be reproduced by following the instruction in
    the respective folders, as described in 1. and 2.
-
-
-
