@@ -10,6 +10,8 @@ library(multcomp)
 library(ggpubr)
 library(ainet)
 
+inp <- "simResults"
+
 outdir <- "results_anova"
 if (!dir.exists(outdir)) {
     dir.create(outdir)
@@ -29,6 +31,6 @@ sapply(metrics, function(met) {
         "rows due to infinite values / missingness in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
     out <- run_anova(formula = fml, data = mdat)
-    out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
+    # out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
     vis_results(out, xlab = met)
 })
