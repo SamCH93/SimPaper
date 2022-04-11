@@ -5,11 +5,6 @@
 ```r
 remotes::install_github("LucasKook/ainet")
 ```
-or via
-```
-make pkgall
-```
-in the [`ainet` repository](https://github.com/LucasKook/ainet).
 
 2. All settings can be reproduced by running
 ```
