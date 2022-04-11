@@ -319,7 +319,7 @@ vis_calibration <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
 			geom_boxplot(position = position_dodge(width = 0.7), outlier.size = 0.1) +
 			stat_mean(shape = 4, position = position_dodge(width = 0.7)) +
 			facet_grid(prev ~ n, labeller = label_both) +
-			geom_text(aes(y = lim[1] * 0.9, label = frac_na),
+			geom_text(aes(y = lim[1] * 0.8, label = frac_na),
 			          data = nadat %>% filter(rho == trho, sparsity == tsparse),
 								position = position_dodge(width = 0.7)) +
 			theme_bw() +
