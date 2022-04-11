@@ -156,8 +156,8 @@ vis_na <- function(
   sparsities = unique(as.numeric(as.character(pdat$sparsity))),
   xlab = "brier", save = TRUE
 ) {
-  lapply(rhos, function(trho) {
-    lop <- lapply(sparsities, function(tsparse) {
+  lapply(sparsities, function(tsparse) {
+    lop <- lapply(rhos, function(trho) {
       pdat %>%
         filter(rho == trho, sparsity == tsparse) %>%
         ggplot(aes(x = model, y = EPV, fill = frac_na)) +
@@ -175,7 +175,7 @@ vis_na <- function(
     })
     pf <- ggarrange(plotlist = lop, common.legend = TRUE, ncol = 2, nrow = 2)
     if (save) {
-      pnm <- file.path(outdir, paste0("missing_", xlab, "_rho", trho, ".pdf"))
+      pnm <- file.path(outdir, paste0("missing_", xlab, "_sparsity", tsparse, ".pdf"))
       ggsave(pnm, plot = pf, height = 1.5 * 8.3, width = 1.5 * 11.7)
     }
     pf
@@ -238,15 +238,15 @@ vis_coefs <- function(pdat, cf = "X.0", save = TRUE,
             coord_flip(ylim = lim)
     }
 
-    lapply(unique(as.numeric(as.character(out$rho))), function(rho) {
-        ps <- lapply(unique(as.numeric(as.character(out$sparsity))), function(sparse) {
+    lapply(unique(as.numeric(as.character(out$sparsity))), function(sparse) {
+      ps <- lapply(unique(as.numeric(as.character(out$rho))), function(rho) {
             rho_plot(trho = rho, tsparse = sparse)
         })
 
         pf <- ggarrange(plotlist = ps, common.legend = TRUE, ncol = 2, nrow = 2)
 
         if (save) {
-            pnm <- file.path(outdir, paste0("coef", cf, "_rho", rho, ".pdf"))
+            pnm <- file.path(outdir, paste0("coef", cf, "_sparsity", sparse, ".pdf"))
             ggsave(pnm, plot = pf, height = 1.5 * 8.3, width = 1.5 * 11.7)
         }
 
@@ -262,8 +262,8 @@ vis_coefs <- function(pdat, cf = "X.0", save = TRUE,
 vis_coefs_na <- function(pdat, rhos = unique(as.numeric(as.character(pdat$rho))),
                    sparsities = unique(as.numeric(as.character(pdat$sparsity))),
                    cf = "X.0", save = TRUE) {
-    lapply(rhos, function(trho) {
-        lop <- lapply(sparsities, function(tsparse) {
+  lapply(sparsities, function(tsparse) {
+    lop <- lapply(rhos, function(trho) {
             pdat %>%
                 filter(rho == trho, sparsity == tsparse) %>%
                 ggplot(aes(x = method, y = ordered(EPV), fill = frac_na)) +
@@ -281,7 +281,7 @@ vis_coefs_na <- function(pdat, rhos = unique(as.numeric(as.character(pdat$rho)))
         })
         pf <- ggarrange(plotlist = lop, common.legend = TRUE, ncol = 2, nrow = 2)
         if (save) {
-          pnm <- file.path(outdir, paste0("coef-missing_", cf, "_rho", trho, ".pdf"))
+          pnm <- file.path(outdir, paste0("coef-missing_", cf, "_sparisty", tsparse, ".pdf"))
           ggsave(pnm, plot = pf, height = 1.5 * 8.3, width = 1.5 * 11.7)
         }
         pf
@@ -333,15 +333,15 @@ vis_calibration <- function(pdat, metric = c("cslope", "clarge"), save = TRUE,
 	if (only_one)
 		return(rho_plot(0.95, 0.9))
 
-	lapply(unique(as.numeric(as.character(out2$rho))), function(rho) {
 
-		ps <- lapply(unique(as.numeric(as.character(out2$sparsity))), function(sparse) {
+	lapply(unique(as.numeric(as.character(out2$sparsity))), function(sparse) {
+	  ps <- lapply(unique(as.numeric(as.character(out2$rho))), function(rho) {
 			rho_plot(rho, sparse)
 		})
 		pf <- ggarrange(plotlist = ps, common.legend = TRUE, ncol = 2, nrow = 2)
 
 		if (save) {
-			pnm <- file.path(outdir, paste0("calibration-", metric, "_rho", rho, ".pdf"))
+			pnm <- file.path(outdir, paste0("calibration-", metric, "_sparsity", sparse, ".pdf"))
 			ggsave(pnm, plot = pf, height = 1.5 * 8.3, width = 1.5 * 11.7)
 		}
 
