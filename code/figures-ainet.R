@@ -88,7 +88,7 @@ colnames(pdat)
 pdatE1 <- pdat %>%
 	filter(
 		rho == 0.95,
-		sparsity %in% c(NA, 0.9),
+		sparsity %in% c(0, 0.9),
 		set %in% c("final", "nonlinear"),
 		metric == "brier",
 		n < 5000,
