@@ -136,7 +136,7 @@ vis_results <- function(
     pfs <- ggarrange(plotlist = ps, common.legend = TRUE, ncol = 2, nrow = 2)
 
     if (save) {
-      pnm <- file.path(outdir, paste0("tie-fighter_", xlab, "_sparisty", sparse, ".pdf"))
+      pnm <- file.path(outdir, paste0("tie-fighter_", xlab, "_sparsity", sparse, ".pdf"))
       ggsave(pnm, plot = pfs, height = 1.5 * 8.3, width = 1.5 * 11.7)
       write.csv(out2, file.path(outdir, paste0("anova_", xlab, ".csv")),
                 row.names = FALSE, quote = FALSE)
