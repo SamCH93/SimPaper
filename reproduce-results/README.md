@@ -3,13 +3,13 @@
 
 1. Install the `ainet` package by running
 ```r
-remotes::install_github("SamCH93/SimPaper/pkg")
+remotes::install_github("LucasKook/ainet")
 ```
 or via
 ```
 make pkgall
 ```
-in the home directory of this project.
+in the [`ainet` repository](https://github.com/LucasKook/ainet).
 
 2. All settings can be reproduced by running
 ```
