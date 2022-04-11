@@ -19,18 +19,18 @@ if (!dir.exists(outdir)) {
 
 # Load --------------------------------------------------------------------
 
-adat <- read_results(inp)
+# adat <- read_results(inp)
 
 # Run ---------------------------------------------------------------------
 
 metrics <- c("brier", "scaledBrier", "nll", "acc", "auc")
 
 sapply(metrics, function(met) {
-    mdat <- adat %>% filter(is.finite(!!sym(met)))
-    cat("\nRemoved", nrow(adat) - nrow(mdat),
-        "rows due to infinite values / missingness in", met, "\n")
-    fml <- as.formula(paste(met, "~ 0 + fct"))
-    out <- run_anova(formula = fml, data = mdat)
-    # out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
+    # mdat <- adat %>% filter(is.finite(!!sym(met)))
+    # cat("\nRemoved", nrow(adat) - nrow(mdat),
+        # "rows due to infinite values / missingness in", met, "\n")
+    # fml <- as.formula(paste(met, "~ 0 + fct"))
+    # out <- run_anova(formula = fml, data = mdat)
+    out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
     vis_results(out, xlab = met)
 })
