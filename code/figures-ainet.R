@@ -34,6 +34,8 @@ tlabs <- c(
 
 which <- c("brier", "scaledBrier", "nll", "auc", "acc")
 
+tcol <- "gray60"
+
 folders <- c("preliminary-sim/results_anova/", 
 						 "simulation/results_anova/",
 						 "simulation/simResults-results-imputed/",
@@ -71,9 +73,9 @@ p0 <- ggplot(data = pdatE46, aes(y = contrast)) +
 	facet_grid(. ~ n, # scales = "free",
 						 labeller = label_bquote(cols = italic(n) == .(n))) +
 	geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
-	geom_point(aes(x = Estimate, col = ordered(EPV)),
+	geom_point(aes(x = Estimate, color = ordered(EPV)),
 						 position = position_dodge(width = 0.5), size = 0.8) +
-	geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+	geom_errorbarh(aes(xmin = lwr, xmax = upr, color = ordered(EPV)),
 								 position = position_dodge(width = 0.5),
 								 height = 0.25, show.legend = FALSE) +
 	labs(x = "Difference in Brier score (negative: AINET better)",
@@ -100,30 +102,33 @@ pdatE1wide <- pdatE1 %>%
 	spread(key = set, value = Estimate) %>%
 	mutate(better = ifelse(nonlinear < final, "better", "worse"))
 
+# pdatE1 %>% filter(n == 1000, contrast == "RF")
+# pdatE1wide %>% filter(n == 1000, contrast == "RF")
+
 p1 <- ggplot(data = pdatE1, aes(y = contrast)) +
 	facet_grid(. ~ n, # scales = "free",
 						 labeller = label_bquote(cols = italic(n) == .(n))) +
 	geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
 	geom_linerange(data = pdatE1wide, alpha = aalpha,
 								 aes(xmin = final, xmax = nonlinear, y = contrast,
-								 		col = ordered(EPV)),
+								 		color = NULL), color = tcol, # ordered(EPV)),
 								 position = position_dodgenudge(0.5, y = ny),
 								 show.legend = FALSE) +
-	geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+	geom_point(data = pdatE1wide,
+						 aes(x = `nonlinear`, group = ordered(EPV), shape = better),
+						 size = 4, position = position_dodgenudge(width = 0.5, y = ny),
+						 alpha = aalpha, show.legend = FALSE, color = tcol) +
+	geom_errorbarh(aes(xmin = lwr, xmax = upr, color = ordered(EPV)),
 								 position = position_dodge(width = 0.5), alpha = palpha,
 								 height = 0.25, show.legend = FALSE) +
-	## geom_point(aes(x = Estimate, col = ordered(EPV)), size = 0.8,
+	## geom_point(aes(x = Estimate, color = ordered(EPV)), size = 0.8,
 	##            position = position_dodge(width = 0.5), alpha = 0.5) +
 	geom_point(data = pdatE1wide,
-						 aes(x = final, col = ordered(EPV)), size = 0.8,
+						 aes(x = final, color = ordered(EPV)), size = 0.8,
 						 position = position_dodge(width = 0.5), alpha = palpha) +
 	geom_point(data = pdatE1wide,
-						 aes(x = nonlinear, col = ordered(EPV)), size = 0.8,
+						 aes(x = nonlinear, color = ordered(EPV)), size = 0.8,
 						 position = position_dodge(width = 0.5), alpha = palpha) +
-	geom_point(data = pdatE1wide,
-						 aes(x = nonlinear, col = ordered(EPV), shape = better), size = 4,
-						 position = position_dodgenudge(width = 0.5, y = ny), alpha = aalpha,
-						 show.legend = FALSE) +
 	scale_shape_manual(values = c("better" = 60, "worse" = 62)) +
 	labs(x = "Difference in Brier score (negative: AINET better)",
 			 y = element_blank(), color = "EPV") +
@@ -157,24 +162,24 @@ p2 <- ggplot(data = pdatE46, aes(y = contrast)) +
 	geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
 	geom_linerange(data = pdatE46wide, # alpha = aalpha,
 								 aes(xmin = final, xmax = `nonlinear`, y = contrast, alpha = alp,
-								 		color = ordered(EPV)),
+								 		color = NULL), color = tcol,
 								 position = position_dodgenudge(0.5, y = ny),
 								 show.legend = FALSE) +
-	geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV), alpha = alp1),
+	geom_point(data = pdatE46wide,
+						 aes(x = `nonlinear`, color = NULL, alpha = alp, shape = better), size = 4,
+						 position = position_dodgenudge(width = 0.5, y = ny), # alpha = aalpha,
+						 color = tcol, show.legend = FALSE) +
+	geom_errorbarh(aes(xmin = lwr, xmax = upr, color = ordered(EPV), alpha = alp1),
 								 position = position_dodge(width = 0.5), # alpha = palpha,
 								 height = 0.25, show.legend = FALSE) +
-	## geom_point(aes(x = Estimate, col = ordered(EPV)), size = 0.8,
+	## geom_point(aes(x = Estimate, color = ordered(EPV)), size = 0.8,
 	##            position = position_dodge(width = 0.5), alpha = 0.5) +
 	geom_point(data = pdatE46wide,
-						 aes(x = final, col = ordered(EPV), alpha = alp1), size = 0.8,
+						 aes(x = final, color = ordered(EPV), alpha = alp1), size = 0.8,
 						 position = position_dodge(width = 0.5)) + # , alpha = palpha) +
 	geom_point(data = pdatE46wide,
-						 aes(x = `nonlinear`, col = ordered(EPV), alpha = alp1), size = 0.8,
+						 aes(x = `nonlinear`, color = ordered(EPV), alpha = alp1), size = 0.8,
 						 position = position_dodge(width = 0.5)) + # , alpha = palpha) +
-	geom_point(data = pdatE46wide,
-						 aes(x = `nonlinear`, col = ordered(EPV), alpha = alp, shape = better), size = 4,
-						 position = position_dodgenudge(width = 0.5, y = ny), # alpha = aalpha,
-						 show.legend = FALSE) +
 	scale_shape_manual(values = c("better" = 60, "worse" = 62)) +
 	labs(x = "Difference in Brier score (negative: AINET better)",
 			 y = element_blank(), color = "EPV") +
@@ -202,9 +207,9 @@ p3 <- ggplot(data = pdatE46, aes(y = contrast, alpha = alp)) +
 	facet_grid(. ~ n, # scales = "free",
 						 labeller = label_bquote(cols = italic(n) == .(n))) +
 	geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
-	geom_point(aes(x = Estimate, col = ordered(EPV), alpha = alp),
+	geom_point(aes(x = Estimate, color = ordered(EPV), alpha = alp),
 						 position = position_dodge(width = 0.5), size = 0.8) +
-	geom_errorbarh(aes(xmin = lwr, xmax = upr, col = ordered(EPV)),
+	geom_errorbarh(aes(xmin = lwr, xmax = upr, color = ordered(EPV)),
 								 position = position_dodge(width = 0.5),
 								 height = 0.25, show.legend = FALSE) +
 	labs(x = "Difference in Brier score (negative: AINET better)",
