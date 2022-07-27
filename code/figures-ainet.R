@@ -67,7 +67,7 @@ pdatE46 <- pdat %>%
 
 palpha <- 0.9
 aalpha <- 0.7
-tsize <- 3
+tsize <- 4
 ny <- 0
 
 p0 <- ggplot(data = pdatE46, aes(y = contrast)) +
