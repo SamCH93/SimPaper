@@ -67,7 +67,7 @@ pdatE46 <- pdat %>%
 
 palpha <- 0.9
 aalpha <- 0.7
-tsize <- 5
+tsize <- 3
 ny <- 0
 
 p0 <- ggplot(data = pdatE46, aes(y = contrast)) +
@@ -99,9 +99,15 @@ pdatE1 <- pdat %>%
     )
 pdatE1wide <- pdatE1 %>%
     mutate(sparsity = 0.9) %>%
-    select(contrast, n, EPV, prev, rho, sparsity, Estimate, set) %>%
-    spread(key = set, value = Estimate) %>%
-    mutate(better = ifelse(nonlinear < final, "better", "worse"))
+    select(contrast, n, EPV, prev, rho, sparsity, Estimate, lwr, upr, set) %>%
+    pivot_wider(names_from = set, values_from = c(Estimate, lwr, upr)) %>%
+    mutate(better = ifelse(Estimate_nonlinear < Estimate_final, "better", "worse"),
+           from = ifelse(better  == "better", lwr_final, lwr_nonlinear),
+           to = ifelse(better  == "better", upr_nonlinear, upr_final),
+           head = ifelse(better == "better", upr_nonlinear, lwr_nonlinear),
+           head = ifelse((pmin(lwr_nonlinear, lwr_final) <= pmax(upr_nonlinear, upr_final) &
+                    pmax(lwr_nonlinear, lwr_final) <= pmin(upr_nonlinear, upr_final)),
+               NA, head))
 
 # pdatE1 %>% filter(n == 1000, contrast == "RF")
 # pdatE1wide %>% filter(n == 1000, contrast == "RF")
@@ -111,12 +117,12 @@ p1 <- ggplot(data = pdatE1, aes(y = contrast)) +
                labeller = label_bquote(cols = italic(n) == .(n))) +
     geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
     geom_linerange(data = pdatE1wide, alpha = aalpha, lwd = 0.3,
-                   aes(xmin = final, xmax = nonlinear, y = contrast,
-                       color = NULL), color = tcol, # ordered(EPV)),
+                   aes(xmin = from, xmax = to, y = contrast,
+                       color = NULL, group = ordered(EPV)), color = tcol, # ordered(EPV)),
                    position = position_dodgenudge(0.5, y = ny),
                    show.legend = FALSE) +
     geom_point(data = pdatE1wide,
-               aes(x = `nonlinear`, group = ordered(EPV), shape = better),
+               aes(x = head, group = ordered(EPV), shape = better),
                size = tsize, position = position_dodgenudge(width = 0.5, y = ny),
                alpha = aalpha, show.legend = FALSE, color = tcol) +
     geom_errorbarh(aes(xmin = lwr, xmax = upr, color = ordered(EPV)),
@@ -125,10 +131,10 @@ p1 <- ggplot(data = pdatE1, aes(y = contrast)) +
     ## geom_point(aes(x = Estimate, color = ordered(EPV)), size = 0.8,
     ##            position = position_dodge(width = 0.5), alpha = 0.5) +
     geom_point(data = pdatE1wide,
-               aes(x = final, color = ordered(EPV)), size = 0.8,
+               aes(x = Estimate_final, color = ordered(EPV)), size = 0.8,
                position = position_dodge(width = 0.5), alpha = palpha) +
     geom_point(data = pdatE1wide,
-               aes(x = nonlinear, color = ordered(EPV)), size = 0.8,
+               aes(x = Estimate_nonlinear, color = ordered(EPV)), size = 0.8,
                position = position_dodge(width = 0.5), alpha = palpha) +
     scale_shape_manual(values = c("better" = 60, "worse" = 62)) +
     labs(x = "Difference in Brier score (negative: AINET better)",
@@ -153,21 +159,29 @@ pdatE46 <- pdat %>%
            alp = ordered(alp, levels = str_sort(unique(alp), numeric = TRUE)))
 pdatE46wide <- pdatE46 %>%
     mutate(sparsity = 0.9) %>%
-    select(contrast, n, EPV, prev, rho, sparsity, Estimate, set, alp, alp1) %>%
-    spread(key = set, value = Estimate) %>%
-    mutate(better = ifelse(nonlinear < final, "better", "worse"))
+    select(contrast, n, EPV, prev, rho, sparsity, Estimate, lwr, upr, set, alp, alp1) %>%
+    pivot_wider(names_from = set, values_from = c(Estimate, lwr, upr)) %>%
+    mutate(better = ifelse(Estimate_nonlinear < Estimate_final, "better", "worse"),
+           from = ifelse(better  == "better", lwr_final, lwr_nonlinear),
+           to = ifelse(better  == "better", upr_nonlinear, upr_final),
+           head = ifelse(better == "better", upr_nonlinear, lwr_nonlinear),
+           head = ifelse((pmin(lwr_nonlinear, lwr_final) <= pmax(upr_nonlinear, upr_final) &
+                    pmax(lwr_nonlinear, lwr_final) <= pmin(upr_nonlinear, upr_final)),
+               NA, head))
+    # spread(key = set, value = Estimate) %>%
+    # mutate(better = ifelse(nonlinear < final, "better", "worse"))
 
 p2 <- ggplot(data = pdatE46, aes(y = contrast)) +
     facet_grid(. ~ n, # scales = "free",
                labeller = label_bquote(cols = italic(n) == .(n))) +
     geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
     geom_linerange(data = pdatE46wide, lwd = 0.3, # alpha = aalpha,
-                   aes(xmin = final, xmax = `nonlinear`, y = contrast, alpha = alp,
+                   aes(xmin = from, xmax = to, y = contrast, alpha = alp,
                        color = NULL), color = tcol,
                    position = position_dodgenudge(0.5, y = ny),
                    show.legend = FALSE) +
     geom_point(data = pdatE46wide,
-               aes(x = `nonlinear`, color = NULL, alpha = alp, shape = better), 
+               aes(x = head, color = NULL, alpha = alp, shape = better), 
                size = tsize, position = position_dodgenudge(width = 0.5, y = ny), # alpha = aalpha,
                color = tcol, show.legend = FALSE) +
     geom_errorbarh(aes(xmin = lwr, xmax = upr, color = ordered(EPV), alpha = alp1),
@@ -176,10 +190,10 @@ p2 <- ggplot(data = pdatE46, aes(y = contrast)) +
     ## geom_point(aes(x = Estimate, color = ordered(EPV)), size = 0.8,
     ##            position = position_dodge(width = 0.5), alpha = 0.5) +
     geom_point(data = pdatE46wide,
-               aes(x = final, color = ordered(EPV), alpha = alp1), size = 0.8,
+               aes(x = Estimate_final, color = ordered(EPV), alpha = alp1), size = 0.8,
                position = position_dodge(width = 0.5)) + # , alpha = palpha) +
     geom_point(data = pdatE46wide,
-               aes(x = `nonlinear`, color = ordered(EPV), alpha = alp1), size = 0.8,
+               aes(x = Estimate_nonlinear, color = ordered(EPV), alpha = alp1), size = 0.8,
                position = position_dodge(width = 0.5)) + # , alpha = palpha) +
     scale_shape_manual(values = c("better" = 60, "worse" = 62)) +
     labs(x = "Difference in Brier score (negative: AINET better)",
