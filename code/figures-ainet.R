@@ -238,9 +238,9 @@ p3 <- ggplot(data = pdatE46, aes(y = contrast, alpha = alp)) +
 
 ggarrange(
     p0 + labs(subtitle = "Per-protocol"),
-    p1 + labs(subtitle = "QRP: E1"),
-    p2 + labs(subtitle = "QRP: E1 + E2"),
-    p3 + labs(subtitle = "QRP: E1 + E2 + R1 (reported)"),
+    p1 + labs(subtitle = "QRP: E2"),
+    p2 + labs(subtitle = "QRP: E2 + E3"),
+    p3 + labs(subtitle = "QRP: E2 + E3 + R2 (reported)"),
     common.legend = TRUE, ncol = 1, legend = "right"
 )
 
