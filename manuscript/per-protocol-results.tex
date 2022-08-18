@@ -73,7 +73,7 @@ Figure~\ref{fig:tienll} shows the differences in log-score between \ainet{} and
 the other methods stratified by simulation conditions. We see that in certain
 conditions, the error bars of certain methods are much larger. This is due to
 the log-score's sensitivity to extreme predictions, which often happen under the
-RF (and sometimes under the GLM). Despite the larger variability of the log-score, 
+RF (and sometimes under the GLM). Despite the larger variability of the log-score,
 conclusion regarding the comparison between \ainet{} and the other
 methods are largely the same as under the Brier score.
 
@@ -102,8 +102,8 @@ simulation condition and method. For each condition the percentage of
 simulations where no estimate could be obtained is indicated. This usually
 happened because of extreme (close to zero or one) predictions, or
 non-convergence of the method itself. We caution against interpretation of the
-random forest (RF) calibration slopes because this method often resulted in 
-predicted probabilities of zero or one, so that a calibration slope could not 
+random forest (RF) calibration slopes because this method often resulted in
+predicted probabilities of zero or one, so that a calibration slope could not
 be fitted.
 
 We see that logistic regression (GLM) shows on average optimal calibration slopes
@@ -141,7 +141,7 @@ events per variables.
 \begin{landscape}
 \begin{figure}[!ht]
 \center
-\includegraphics[width=0.9\linewidth]{figures-appendix/figures-results/tie-fighter_brier.pdf}
+\includegraphics[width=0.9\linewidth]{figures-appendix/tie-fighter_brier.pdf}
 \caption{Tie-fighter plot for the difference in Brier score between any method
   on the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted per
   simulation condition using the single-step method. Lower values indicate
@@ -154,7 +154,7 @@ events per variables.
 \begin{landscape}
 \begin{figure}[!ht]
 \center
-\includegraphics[width=0.9\linewidth]{figures-appendix/figures-results/tie-fighter_scaledBrier.pdf}
+\includegraphics[width=0.9\linewidth]{figures-appendix/tie-fighter_scaledBrier.pdf}
 \caption{Tie-fighter plot for the difference in scaled Brier score between any
   method on the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted
   per simulation condition using the single-step method. Larger
@@ -167,7 +167,7 @@ events per variables.
 \begin{landscape}
 \begin{figure}[!ht]
 \center
-\includegraphics[width=0.9\linewidth]{figures-appendix/figures-results/tie-fighter_nll.pdf}
+\includegraphics[width=0.9\linewidth]{figures-appendix/tie-fighter_nll.pdf}
 \caption{Tie-fighter plot for the difference in log-score between any method on
   the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted per
   simulation condition using the single-step method. Lower values indicate
@@ -180,7 +180,7 @@ events per variables.
 \begin{landscape}
 \begin{figure}[!ht]
 \center
-\includegraphics[width=0.9\linewidth]{figures-appendix/figures-results/calibration-cslope.pdf}
+\includegraphics[width=0.9\linewidth]{figures-appendix/calibration-cslope.pdf}
 \caption{Boxplots of calibration slopes stratified by method and simulation
   conditions. Mean calibration slope is indicated by a cross. A value of one
   indicates optimal calibration. Percentage of simulations where calibration
@@ -194,7 +194,7 @@ events per variables.
 \begin{landscape}
 \begin{figure}[!ht]
 \center
-\includegraphics[width=0.9\linewidth]{figures-appendix/figures-results/calibration-clarge.pdf}
+\includegraphics[width=0.9\linewidth]{figures-appendix/calibration-clarge.pdf}
 \caption{Boxplots of calibration in the large stratified by method and
   simulation conditions. Mean calibration in the large is indicated by a cross.
   A value of zero indicates optimal calibration in the large. Percentage of
