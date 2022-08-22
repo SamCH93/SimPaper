@@ -49,11 +49,11 @@ pdat <- paths %>%
 ## Create Figure 1 -------------------------------------------------------------
 
 # plot parameters
-palpha <- 0.9 # ? FIXME
-aalpha <- 0.7 # ? FIXME
-tsize <- 4 # ? FIXME
-ny <- 0 # ? FIXME
-tcol <- "gray60" # color for arrows ? FIXME
+point_alpha <- 0.9 # Alpha for points and error bars
+arrow_alpha <- 0.7 # Alpha value for arrows
+arrow_head_size <- 4 # Size of arrow heads
+ny <- 0 # Nudge of arrow heads in y direction
+arrow_col <- "gray60" # color for arrows
 plotDeco <- function(ggp) {
     # function to add the same plot style to all plots
     out <- ggp +
@@ -105,7 +105,7 @@ pdatE2 <- pdatSubset %>%
            set %in% c("final", "nonlinear"))
 pdatE2wide <- pdatE2 %>%
     # creating variable to indicate whether modified DGP improved performance
-    mutate(sparsity = 0.9) %>% # FIXME is this necessary?
+    mutate(sparsity = 0.9) %>% # overwrite sparsity column
     select(contrast, n, EPV, prev, rho, sparsity, Estimate, lwr, upr, set) %>%
     pivot_wider(names_from = set, values_from = c(Estimate, lwr, upr)) %>%
     mutate(better = ifelse(Estimate_nonlinear < Estimate_final, "better", "worse"),
@@ -119,24 +119,24 @@ p1raw <- ggplot(data = pdatE2, aes(y = contrast)) +
     facet_grid(. ~ n,
                labeller = label_bquote(cols = italic(n) == .(n))) +
     geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
-    geom_linerange(data = pdatE2wide, alpha = aalpha, lwd = 0.3,
+    geom_linerange(data = pdatE2wide, alpha = arrow_alpha, lwd = 0.3,
                    aes(xmin = from, xmax = to, y = contrast,
-                       color = NULL, group = ordered(EPV)), color = tcol,
+                       color = NULL, group = ordered(EPV)), color = arrow_col,
                    position = position_dodgenudge(0.5, y = ny),
                    show.legend = FALSE) +
     geom_point(data = pdatE2wide,
                aes(x = head, group = ordered(EPV), shape = better),
-               size = tsize, position = position_dodgenudge(width = 0.5, y = ny),
-               alpha = aalpha, show.legend = FALSE, color = tcol) +
+               size = arrow_head_size, position = position_dodgenudge(width = 0.5, y = ny),
+               alpha = arrow_alpha, show.legend = FALSE, color = arrow_col) +
     geom_errorbarh(aes(xmin = lwr, xmax = upr, color = ordered(EPV)),
-                   position = position_dodge(width = 0.5), alpha = palpha,
+                   position = position_dodge(width = 0.5), alpha = point_alpha,
                    height = 0.25, show.legend = FALSE) +
     geom_point(data = pdatE2wide,
                aes(x = Estimate_final, color = ordered(EPV)), size = 0.8,
-               position = position_dodge(width = 0.5), alpha = palpha) +
+               position = position_dodge(width = 0.5), alpha = point_alpha) +
     geom_point(data = pdatE2wide,
                aes(x = Estimate_nonlinear, color = ordered(EPV)), size = 0.8,
-               position = position_dodge(width = 0.5), alpha = palpha)
+               position = position_dodge(width = 0.5), alpha = point_alpha)
 p1 <- plotDeco(ggp = p1raw)
 
 ## plot simulation results after QRPs E2 + E3 (removing competitor EN)
@@ -148,7 +148,7 @@ pdatE3 <- pdatSubset %>%
            alp = ordered(alp, levels = str_sort(unique(alp), numeric = TRUE)))
 pdatE3wide <- pdatE3 %>%
     # creating variable to indicate whether modified DGP improved performance
-    mutate(sparsity = 0.9) %>% # FIXME is this necessary?
+    mutate(sparsity = 0.9) %>% # overwrite sparsity column
     select(contrast, n, EPV, prev, rho, sparsity, Estimate, lwr, upr, set, alp, alp1) %>%
     pivot_wider(names_from = set, values_from = c(Estimate, lwr, upr)) %>%
     mutate(better = ifelse(Estimate_nonlinear < Estimate_final, "better", "worse"),
@@ -164,13 +164,13 @@ p2raw <- ggplot(data = pdatE3, aes(y = contrast)) +
     geom_vline(xintercept = 0, lty = 2, alpha = 0.3) +
     geom_linerange(data = pdatE3wide, lwd = 0.3,
                    aes(xmin = from, xmax = to, y = contrast, alpha = alp,
-                       color = NULL), color = tcol,
+                       color = NULL), color = arrow_col,
                    position = position_dodgenudge(0.5, y = ny),
                    show.legend = FALSE) +
     geom_point(data = pdatE3wide,
                aes(x = head, color = NULL, alpha = alp, shape = better), 
-               size = tsize, position = position_dodgenudge(width = 0.5, y = ny),
-               color = tcol, show.legend = FALSE) +
+               size = arrow_head_size, position = position_dodgenudge(width = 0.5, y = ny),
+               color = arrow_col, show.legend = FALSE) +
     geom_errorbarh(aes(xmin = lwr, xmax = upr, color = ordered(EPV), alpha = alp1),
                    position = position_dodge(width = 0.5),
                    height = 0.25, show.legend = FALSE) +
@@ -181,7 +181,7 @@ p2raw <- ggplot(data = pdatE3, aes(y = contrast)) +
                aes(x = Estimate_nonlinear, color = ordered(EPV), alpha = alp1), size = 0.8,
                position = position_dodge(width = 0.5))
 p2 <- plotDeco(ggp = p2raw) +
-    scale_alpha_manual(values = c(rep(c(0.1, aalpha), 4), 0.1, palpha)) +
+    scale_alpha_manual(values = c(rep(c(0.1, arrow_alpha), 4), 0.1, point_alpha)) +
     theme(axis.text.y.left = element_text(color = c("gray30", "gray80", "gray30", "gray30")))
 
 ## plot simulation results after QRPs E2 + E3 + R2 (selective reporting of low EPV settings)
