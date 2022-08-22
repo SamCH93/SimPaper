@@ -4,11 +4,8 @@
 
 ## Dependencies ----------------------------------------------------------------
 
-library(tidyverse)
-library(ggpubr)
-#library(ggbeeswarm)
-#library(factoextra)
-#library(patchwork)
+library(tidyverse) # data manipulation and plotting
+library(ggpubr) # combining ggplots
 library(ggpp) # for position_dodgenudge
 
 ## Data ------------------------------------------------------------------------
@@ -214,4 +211,3 @@ ggarrange(
     common.legend = TRUE, ncol = 1, legend = "right"
 )
 ggsave("ainet-results.pdf", height = 13 * 0.9, width = 10 * 0.9)
-
