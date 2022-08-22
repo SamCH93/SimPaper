@@ -58,7 +58,7 @@ plotDeco <- function(ggp) {
     # function to add the same plot style to all plots
     out <- ggp +
         theme_bw() +
-        labs(x = "Difference in Brier score (negative: AINET better)",
+        labs(x = expression(AINET~better%<-%Difference~"in"~Brier~score%->%AINET~worse),
              y = element_blank(), color = "EPV") +
         theme(panel.grid.major.y = element_blank(),
               panel.grid.minor.x = element_blank()) +
