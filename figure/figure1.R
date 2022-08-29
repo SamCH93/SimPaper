@@ -211,4 +211,3 @@ ggarrange(
     common.legend = TRUE, ncol = 1, legend = "right"
 )
 ggsave("ainet-results.pdf", height = 13 * 0.9, width = 10 * 0.9)
-ggsave("ainet-results.tiff", height = 13 * 0.9, width = 10 * 0.9)
