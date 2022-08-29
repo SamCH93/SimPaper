@@ -1,6 +1,9 @@
 #!/usr/bin/env Rscript
 repro_type <- commandArgs(trailingOnly = TRUE)[1] # full / partial / figure
 
+if (is.na(repro_type))
+    repro_type <- "full"
+
 ## Code to produce Figure 1 in "Pitfalls and Potentials in Simulation Studies"
 ## Lucas Kook, Samuel Pawel, Kelly Reeve
 ## August 2022
@@ -25,8 +28,8 @@ if (repro_type %in% c("figure", "partial")) {
     folders <- c("../simulation/results_anova/",
                  "../hacking/simResults-nonlin-results/")
 } else if (repro_type == "full") {
-    folders <- c("../reproduce-results/simResults-full/",
-                 "../reproduce-results/simResults-nonlin/")
+    folders <- c("../reproduce-results/results_anova-full/",
+                 "../reproduce-results/results_anova-nonlin/")
 } else {
     stop("Supplied type of reproducibility not implemented.")
 }

@@ -1,7 +1,7 @@
 
 SR = Rscript --vanilla --no-restore-data
 
-full:
+final:
 	cd reproduce-results && make all SETTING=full
 
 nonlin:
@@ -16,7 +16,7 @@ sparse:
 trunc:
 	cd reproduce-results && make all SETTING=trunc
 
-pfull:
+pfinal:
 	cd simulation && make all
 
 pnonlin:
@@ -31,10 +31,10 @@ psparse:
 ptrunc:
 	cd hacking && make all SETTING=trunc
 
-full-repro: full nonlin # nonlin-fixed sparse trunc
+full-repro: final nonlin # nonlin-fixed sparse trunc
 	cd figure && $(SR) figure1.R full
 
-partial-repro: pfull pnonlin # pnonlin-fixed psparse ptrunc
+partial-repro: pfinal pnonlin # pnonlin-fixed psparse ptrunc
 	cd figure && $(SR) figure1.R partial
 
 figure-repro:
