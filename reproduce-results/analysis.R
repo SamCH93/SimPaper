@@ -1,3 +1,7 @@
+#!/usr/bin/env Rscript
+setting <- commandArgs(trailingOnly = TRUE)[1]
+tpath <- paste0("simResults-", setting)
+
 # analysis of simulations
 # LK, SP, KR
 # Oct 2021
@@ -10,9 +14,9 @@ library(tidyverse)
 # Read results ------------------------------------------------------------
 
 ## load simulation results
-files <- list.files(path = "simResults/")
+files <- list.files(path = tpath)
 simres <- lapply(X = files, FUN = function(filename) {
-    resList <- readRDS(file = paste0("simResults/", filename))
+    resList <- readRDS(file = paste0(tpath, filename))
     lapply(X = resList$results, FUN = function(resListSimi) {
         resListSimi$estimands
     }) %>%
@@ -35,11 +39,11 @@ ggplot(iamna, aes(x = model, y = failed)) +
     coord_flip() +
     theme(text = element_text(size = 7)) +
     labs(y = "Proportion of simulation with convergence issues (among 100 simulations)", x = "Model")
-ggsave("figures/failed.pdf", height = 8.3, width = 11.7)
+ggsave(file.path(tpath, "failed.pdf"), height = 8.3, width = 11.7)
 
 ## errors
 iamerror <- lapply(X = files, FUN = function(filename) {
-    resList <- readRDS(file = paste0("simResults/", filename))
+    resList <- readRDS(file = paste0(tpath, filename))
     err <- resList$errors
     data.frame(resList$condition,
                error = ifelse(is.null(err), NA, err),
@@ -59,7 +63,7 @@ ggplot(perr %>% filter(!is.na(type)), aes(x = type, y = error / 100)) +
     coord_flip() +
     theme(text = element_text(size = 7), axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1)) +
     labs(y = "Proportion of simulation with errors (among 100 simulations)", x = "Type of error")
-ggsave("figures/errors.pdf", height = 8.3, width = 4.5)
+ggsave(file.path(tpath, "errors.pdf"), height = 8.3, width = 4.5)
 
 ## warnings
 iamwarning <- lapply(X = files, FUN = function(filename) {
@@ -91,4 +95,4 @@ ggplot(pwarn, aes(x = warning, y = as.numeric(number))) +
     coord_flip() +
     labs(x = "Type of warning", y = "Count") +
     theme(text = element_text(size = 7), axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1))
-ggsave("figures/warnings.pdf", height = 8.3, width = 11.7)
+ggsave(file.path(tpath, "warnings.pdf"), height = 8.3, width = 11.7)

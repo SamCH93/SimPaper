@@ -1,3 +1,7 @@
+#!/usr/bin/env Rscript
+setting <- commandArgs(trailingOnly = TRUE)[1]
+tpath <- paste0("simResults-", setting)
+
 # analysis of simulations
 # LK, SP, KR
 # Oct 2021
@@ -9,8 +13,8 @@ library(tidyverse)
 library(ggpubr)
 library(ainet)
 
-inp <- "simResults/"
-outdir <- "results_anova"
+inp <- paste0("simResults-", setting)
+outdir <- paste0("results_anova-", setting)
 if (!dir.exists(outdir)) {
     dir.create(outdir)
 }

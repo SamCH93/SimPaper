@@ -1,3 +1,7 @@
+#!/usr/bin/env Rscript
+setting <- commandArgs(trailingOnly = TRUE)[1]
+tpath <- paste0("simResults-", setting)
+
 # ANOVA with worst-case imputation
 # SP, LK, KR
 # Oct 2021
@@ -10,7 +14,7 @@ library(multcomp)
 library(ggpubr)
 library(ainet)
 
-inp <- "simResults"
+inp <- tpath
 
 outdir <- paste0(inp, "-results-imputed")
 if (!dir.exists(outdir)) {
