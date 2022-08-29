@@ -1,19 +1,20 @@
-TR = R --vanilla --no-restore-data
+SR = Rscript --vanilla --no-restore-data
+SETTING = "full"
 
 simulation:
-	$(TR) < simulation.R
+	$(SR) < simulation.R $(SETTING)
 
 anova:
-	$(TR) < anova.R
+	$(SR) < anova.R $(SETTING)
 
 impute:
-	$(TR) < anova-imputed.R
+	$(SR) < anova-imputed.R $(SETTING)
 
 coefs:
-	$(TR) < analyze-coefs.R
+	$(SR) < analyze-coefs.R $(SETTING)
 
 calib:
-	$(TR) < calibration.R
+	$(SR) < calibration.R $(SETTING)
 
 all: simulation anova impute coefs calib
 
