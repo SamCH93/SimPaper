@@ -44,7 +44,7 @@ if (setting == "full") {
     nsim <- 1000
 } else if (setting == "trunc") {
     # TODO: Pass trunc through fixed_objects in runSimulation
-    warning("trunc setting not implemented yet.")
+    stop("trunc setting not implemented yet.")
     tsparse <- 0
     tnonlin <- FALSE
     tfixed <- FALSE
