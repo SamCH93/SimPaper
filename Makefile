@@ -1,4 +1,6 @@
 
+SR = Rscript --vanilla --no-restore-data
+
 full:
 	cd reproduce-results && make all SETTING=full
 
@@ -29,9 +31,11 @@ psparse:
 ptrunc:
 	cd hacking && make all SETTING=trunc
 
-full-repro: full nonlin nonlin-fixed sparse trunc
+full-repro: full nonlin # nonlin-fixed sparse trunc
+	cd figure && $(SR) figure1.R full
 
-partial-repro: pfull pnonlin pnonlin-fixed psparse ptrunc
+partial-repro: pfull pnonlin # pnonlin-fixed psparse ptrunc
+	cd figure && $(SR) figure1.R partial
 
 figure-repro:
-	cd figure && R --vanilla < figure1.R
+	cd figure && $(SR) figure1.R figure

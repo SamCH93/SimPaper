@@ -1,3 +1,6 @@
+#!/usr/bin/env Rscript
+repro_type <- commandArgs(trailingOnly = TRUE)[1] # full / partial / figure
+
 ## Code to produce Figure 1 in "Pitfalls and Potentials in Simulation Studies"
 ## Lucas Kook, Samuel Pawel, Kelly Reeve
 ## August 2022
@@ -11,33 +14,23 @@ library(ggpp) # for position_dodgenudge
 ## Data ------------------------------------------------------------------------
 
 # names and labels of simulation studies
-tnms <- c(
-    "prelim",
-    "final",
-    "final (imputed)",
-    "nonlin_fix",
-    "nonlin_fix (imputed)",
-    "nonlin"
-)
-tlabs <- c(
-    "preliminary",
-    "final",
-    "final (imputed)",
-    "nonlinear (fixed)",
-    "nonlinear (fixed+imputed)",
-    "nonlinear"
-) 
+tnms <- c("final", "nonlin")
+tlabs <- c("final", "nonlinear") 
 
 # evaluation metrics
 which <- c("brier", "scaledBrier", "nll", "auc", "acc")
 
 # load data from simulation studies
-folders <- c("../preliminary-sim/results_anova/",
-             "../simulation/results_anova/",
-             "../simulation/simResults-results-imputed/",
-             "../hacking/simResults-nonlin_fix-results/",
-             "../hacking/simResults-nonlin_fix-results-imputed/",
-             "../hacking/simResults-nonlin-results/")
+if (repro_type %in% c("figure", "partial")) {
+    folders <- c("../simulation/results_anova/",
+                 "../hacking/simResults-nonlin-results/")
+} else if (repro_type == "full") {
+    folders <- c("../reproduce-results/simResults-full/",
+                 "../reproduce-results/simResults-nonlin/")
+} else {
+    stop("Supplied type of reproducibility not implemented.")
+}
+
 paths <- expand_grid(folder = folders, metric = which)
 paths$path <- paste0(paths$folder, paste0("anova_", paths$metric, ".csv"))
 pdat <- paths %>% 
