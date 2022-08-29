@@ -2,7 +2,7 @@
 repro_type <- commandArgs(trailingOnly = TRUE)[1] # full / partial / figure
 
 if (is.na(repro_type))
-    repro_type <- "full"
+    repro_type <- "figure"
 
 ## Code to produce Figure 1 in "Pitfalls and Potentials in Simulation Studies"
 ## Lucas Kook, Samuel Pawel, Kelly Reeve
