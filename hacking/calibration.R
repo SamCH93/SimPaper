@@ -1,3 +1,7 @@
+#!/usr/bin/env Rscript
+setting <- commandArgs(trailingOnly = TRUE)[1]
+inp <- paste0("simResults-", setting)
+
 # Calibration plots
 # SP, LK, KR
 # Oct 2021
@@ -9,8 +13,6 @@ library(tidyverse)
 library(multcomp)
 library(ggpubr)
 library(ainet)
-
-inp <- "simResults-sparse"
 
 outdir <- paste0(inp, "-results")
 if (!dir.exists(outdir)) {

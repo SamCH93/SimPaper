@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 args <- commandArgs(trailingOnly = TRUE)
 
-TEST <- FALSE
+TEST <- TRUE
 
 # Simulations
 # SP, LK, KR
@@ -44,7 +44,7 @@ if (setting == "full") {
     nsim <- 1000
 } else if (setting == "trunc") {
     # TODO: Pass trunc through fixed_objects in runSimulation
-    warning("trunc setting not implemented yet.")
+    stop("trunc setting not implemented yet.")
     tsparse <- 0
     tnonlin <- FALSE
     tfixed <- FALSE
@@ -73,13 +73,13 @@ nScenarios <- nrow(simGrid)
 
 if (TEST) {
     simGrid <- simGrid[1:5, ]
-    nsim <- 2
+    nsim <- 5
 }
 
 # Write conditions --------------------------------------------------------
 
-write.csv(simGrid, "simulation-conditions.csv", row.names = FALSE,
-          quote = FALSE)
+write.csv(simGrid, paste0(setting, "simulation-conditions.csv"), 
+          row.names = FALSE, quote = FALSE)
 
 # Simulation --------------------------------------------------------------
 
@@ -93,8 +93,8 @@ res <- runSimulation(
     save_seeds = TRUE,
     save_results = TRUE,
     save_details = list(safe = TRUE,
-                        save_results_dirname = "simResults",
-                        save_seeds_dirname = "simSeeds"),
+                        save_results_dirname = paste0("simResults-", setting),
+                        save_seeds_dirname = paste0("simSeeds-", setting)),
     parallel = TRUE,
     ncores = ncores,
     fixed_objects = list(ntest = 1e4),

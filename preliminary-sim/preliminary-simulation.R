@@ -3,6 +3,7 @@
 set.seed(42)
 
 # Dependencies ------------------------------------------------------------
+
 library(ainet)
 
 # Conditions --------------------------------------------------------------
@@ -20,6 +21,7 @@ simGrid <- simGrid[order(simGrid$p),]
 nScenarios <- nrow(simGrid)
 
 # Simulation --------------------------------------------------------------
+
 res <- runSimulation(
     design = simGrid,
     replications = 100, # for preliminary simulations
@@ -38,45 +40,3 @@ res <- runSimulation(
     packages = c("ainet")
 )
 
-## ## extract summaries
-## simSum <- SimExtract(res, what = "summarise")
-
-## ## extract raw simulation results
-## estimands <- do.call("rbind", lapply(
-##     X = SimResults(results = res),
-##     FUN = function(x) {
-##         do.call("rbind", lapply(
-##             X = x$results,
-##             FUN = function(y)
-##                 y$estimands
-##         ))
-##     }
-## ))
-
-## coefs <- do.call("rbind", lapply(
-##     X = SimResults(results = res),
-##     FUN = function(x) {
-##         do.call("rbind", lapply(
-##             X = x$results,
-##             FUN = function(y)
-##                 y$coefs
-##         ))
-##     }
-## ))
-
-## ## Visualize raw simulation results
-## library(tidyverse)
-## theme_set(theme_bw())
-
-## ggplot(estimands, aes(x = model, y = brier - brier_oracle)) +
-##     geom_point(alpha = 0.5) +
-##     facet_wrap(~ paste0("n==", n, "~EPV==", EPV, "~prev==", prev, "~rho==", rho, "~p==", p),
-##                labeller = label_parsed) +
-##     labs(y = "Brier score (difference from oracle)")
-
-## gather(coefs, key = "model", value = "estimate", AINET:AEN) %>%
-##     ggplot(aes(x = model, y = estimate - oracle, color = coef)) +
-##     geom_point(alpha = 0.7, position = position_dodge(0.5)) +
-##     facet_wrap(~ paste0("n==", n, "~EPV==", EPV, "~prev==", prev, "~rho==", rho, "~p==", p),
-##                labeller = label_parsed) +
-##     labs(y = expression(hat(beta[j])-beta[j]^0))

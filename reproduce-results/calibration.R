@@ -1,3 +1,7 @@
+#!/usr/bin/env Rscript
+setting <- commandArgs(trailingOnly = TRUE)[1]
+tpath <- paste0("simResults-", setting)
+
 # Calibration plots
 # SP, LK, KR
 # Oct 2021
@@ -10,8 +14,8 @@ library(multcomp)
 library(ggpubr)
 library(ainet)
 
-inp <- "simResults"
-outdir <- "figures"
+inp <- tpath
+outdir <- paste0("figures-", setting)
 if (!dir.exists(outdir)) {
     dir.create(outdir)
 }

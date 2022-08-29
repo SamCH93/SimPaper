@@ -1,3 +1,7 @@
+#!/usr/bin/env Rscript
+setting <- commandArgs(trailingOnly = TRUE)[1]
+tpath <- paste0("simResults-", setting)
+
 # ANOVA for brier score
 # SP, LK, KR
 # Oct 2021
@@ -10,9 +14,9 @@ library(multcomp)
 library(ggpubr)
 library(ainet)
 
-inp <- "simResults"
+inp <- tpath
 
-outdir <- "results_anova"
+outdir <- paste0("results_anova-", setting)
 if (!dir.exists(outdir)) {
     dir.create(outdir)
 }

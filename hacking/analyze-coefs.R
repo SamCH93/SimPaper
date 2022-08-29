@@ -1,3 +1,7 @@
+#!/usr/bin/env Rscript
+setting <- commandArgs(trailingOnly = TRUE)[1]
+inp <- paste0("simResults-", setting)
+
 # analysis of simulations
 # LK, SP, KR
 # Oct 2021
@@ -9,7 +13,6 @@ library(tidyverse)
 library(ggpubr)
 library(ainet)
 
-inp <- "simResults-nonlin"
 outdir <- paste0(inp, "-results")
 
 if (!dir.exists(outdir))
