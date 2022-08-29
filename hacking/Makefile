@@ -21,4 +21,3 @@ clean:
 	rm -rf simResults* simSeeds* results_anova TEMP* figures \
 		Rplots.pdf simulation-conditions.csv
 
-
