@@ -14,6 +14,9 @@ sparse:
 trunc:
 	cd reproduce-results && make all SETTING=trunc
 
+pfull:
+	cd simulation && make all
+
 pnonlin:
 	cd hacking && make all SETTING=nonlin
 
@@ -28,7 +31,7 @@ ptrunc:
 
 full-repro: full nonlin nonlin-fixed sparse trunc
 
-partial-repro: pnonlin pnonlin-fixed psparse ptrunc
+partial-repro: pfull pnonlin pnonlin-fixed psparse ptrunc
 
 figure-repro:
 	cd figure && R --vanilla < figure1.R

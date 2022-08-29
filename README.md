@@ -15,11 +15,10 @@ reproducible in three steps.
    considered in the manuscript and more.
 
 2. The simulation results are saved, such that only the _analysis_ (ANOVAs) can
-   be reproduced. To reproduce the results of the final simulation, follow the
-   instructions [here](./simulation/) or run `make partial-repro` . To reproduce 
-   the results of the tweaked simulation, follow the instructions [here](./hacking/)
-   or run `make partial-repro`. Due to the many conditions, running the ANOVAs may 
-   take some time on a standard machine.
+   be reproduced. To reproduce the results of the final and tweaked simulations,
+   follow the instructions [here](./simulation/) or run `make partial-repro`. 
+   Due to the many conditions, running the ANOVAs may take some time on a standard 
+   machine.
 
 3. All figures are reproducible from the results obtained by running the ANOVAs
    in step 2. Figure 1 can be reproduced with `make figure-repro` in this
