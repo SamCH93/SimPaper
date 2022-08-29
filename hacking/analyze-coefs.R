@@ -20,7 +20,7 @@ if (!dir.exists(outdir))
 
 # Read results ------------------------------------------------------------
 
-read_results(inp, "coefs")
+simres <- read_results(inp, "coefs")
 
 # Vis ---------------------------------------------------------------------
 

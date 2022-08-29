@@ -15,7 +15,7 @@ coefs:
 calib:
 	$(TR) < calibration.R
 
-all: anova impute coefs calib
+all: anova coefs calib
 
 clean:
 	rm -rf simResults* simSeeds* results_anova TEMP* figures \

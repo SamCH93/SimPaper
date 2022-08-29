@@ -21,7 +21,7 @@ if (!dir.exists(outdir)) {
 
 # Load --------------------------------------------------------------------
 
-res <- read_results(inp)
+adat <- read_results(inp)
 
 # Run ---------------------------------------------------------------------
 
@@ -35,8 +35,8 @@ sapply(metrics, function(met) {
     cat("\nRemoved", nrow(adat) - nrow(mdat),
         "rows due to infinite values / missingness in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
-    out <- run_anova(formula = fml, data = mdat)
-    # out <- read.csv(file.path(outdir, paste0("anova_", met, ".csv")))
+    # out <- run_anova(formula = fml, data = mdat)
+    out <- read.csv(file.path(outdir, paste0("anova_", met, ".csv")))
     try(vis_results(out, xlab = met))
     try(vis_na(pdat = nadat, xlab = met))
 })
