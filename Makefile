@@ -35,14 +35,16 @@ full-repro: final nonlin # nonlin-fixed sparse trunc
 	cd figure && $(SR) figure1.R full
 	cp -r manuscript reproduce-results
 	cp figure/ainet-results.pdf reproduce-results/manuscript
-	cp reproduce-results/results_anova-full/*.pdf reproduce-results/manuscript
+	cp reproduce-results/results_anova-full/*sparsity*.pdf reproduce-results/manuscript
+	rename 's/_sparsity?//g' reproduce-results/manuscript/figures-appendix/*.pdf
 	cd reproduce-results/manuscript && make all
 
 partial-repro: pfinal pnonlin # pnonlin-fixed psparse ptrunc
 	cd figure && $(SR) figure1.R partial
 	cp -r manuscript reproduce-manuscript
 	cp figure/ainet-results.pdf reproduce-manuscript
-	cp simulation/results_anova/*.pdf reproduce-manuscript/figures-appendix/
+	cp simulation/figures/*sparsity*.pdf reproduce-manuscript/figures-appendix/
+	rename 's/_sparsity?//g' reproduce-manuscript/figures-appendix/*.pdf
 	cd reproduce-manuscript && make all
 	make clean
 
