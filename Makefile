@@ -1,6 +1,9 @@
 
 SR = Rscript --vanilla --no-restore-data
 
+dependencies:
+	$(SR) dependencies.R
+
 final:
 	cd reproduce-results && make all SETTING=full
 

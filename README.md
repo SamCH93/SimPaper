@@ -3,6 +3,11 @@
 This GitHub repository accompanies the arXiv preprint
 [arXiv:2203.13076](https://arxiv.org/abs/2203.13076).
 
+## Installing dependencies
+
+The `dependencies.R` file installs all dependencies necessary for reproducing
+the results (see below). It can be executed via `make dependencies`.
+
 ## Reproducing the results
 
 Due to the computational overhead of running the simulations from scratch
@@ -52,10 +57,10 @@ Note that the below session info was taken from the time of the first
 ## [7] base
 ##
 ## other attached packages:
-##  [1] ainet_0.0.0.9000 magrittr_2.0.1 tidyr_1.1.3
-##  [4] dplyr_1.0.6      pROC_1.17.0.1  mvtnorm_1.1-2
-##  [7] SimDesign_2.7    glmnet_4.1-1   Matrix_1.3-4
-## [10] ranger_0.13.1   knitr_1.33
+##  [1] ainet_0.0-1   magrittr_2.0.1 tidyr_1.1.3
+##  [4] dplyr_1.0.6   pROC_1.17.0.1  mvtnorm_1.1-2
+##  [7] SimDesign_2.7 glmnet_4.1-1   Matrix_1.3-4
+## [10] ranger_0.13.1 knitr_1.33
 ##
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.7        plyr_1.8.6       compiler_4.1.1
