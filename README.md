@@ -17,19 +17,20 @@ reproducible in three steps.
 1. The simulation results can be reproduced from scratch following the
    instructions [here](./reproduce-results/) or by running `make full-repro` in
    this directory. This includes the final simulation, the tweaked simulations
-   considered in the manuscript and more.
+   considered in the manuscript and more. The script will produce a folder
+   `./reproduce-results/manuscript/` in which the full manuscript `QRP.pdf` will
+   be reproduced.
 
 2. The simulation results are saved, such that only the _analysis_ (ANOVAs) can
    be reproduced. To reproduce the results of the final and tweaked simulations,
    follow the instructions [here](./simulation/) or run `make partial-repro`. 
    Due to the many conditions, running the ANOVAs takes about 2 hours on our
    server (64GB of RAM). R is likely to crash on a personal computer with 16GB
-   of RAM.
+   of RAM. The script will reproduce the manuscript in
+   `./reproduce-manuscript/QRP.pdf`.
 
-3. All figures are reproducible from the results obtained by running the ANOVAs
-   in step 2. Figure 1 can be reproduced with `make figure-repro` in this
-   directory. Figures for the simulations can be reproduced by following the
-   instruction in the respective folders, as described in 1. and 2.
+3. Figure 1 can be reproduced with `make figure-repro` in this directory. The
+   reproduced figure can be found in `./figure/ainet-results.pdf`.
 
 # Folder structure
 
