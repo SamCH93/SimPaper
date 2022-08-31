@@ -22,13 +22,42 @@ reproducible in three steps.
 2. The simulation results are saved, such that only the _analysis_ (ANOVAs) can
    be reproduced. To reproduce the results of the final and tweaked simulations,
    follow the instructions [here](./simulation/) or run `make partial-repro`. 
-   Due to the many conditions, running the ANOVAs may take some time on a standard 
-   machine.
+   Due to the many conditions, running the ANOVAs takes about 2 hours on our
+   server (64GB of RAM). R is likely to crash on a personal computer with 16GB
+   of RAM.
 
 3. All figures are reproducible from the results obtained by running the ANOVAs
    in step 2. Figure 1 can be reproduced with `make figure-repro` in this
    directory. Figures for the simulations can be reproduced by following the
    instruction in the respective folders, as described in 1. and 2.
+
+# Folder structure
+
+* `./figure/` contains the code to reproduce Figure 1 in the manuscript.
+
+* `./hacking/` contains code and results of the tweaked simulations
+
+* `./manuscript/` contains the source code of the manuscript
+
+* `./preliminary-sim/` contains code and results of the pilot simulation
+
+* `./protocol/` contains source code for the simulation protocol
+
+* `./reproduce-results/` contains the skeleton for reproducing all simulations
+
+* `./simulation/` contains code and results of the final simulation reported in
+  the paper
+
+* `./Makefile` Makefile for reproducing the results as outlined above
+
+* `./dependencies.R` Script for installing all necessary dependencies
+
+* `./preprint.pdf` Time-stamped version of the preprint
+
+* `./protocol-final-sim.pdf` Time-stamped final simulation protocol
+
+* `./protocol-preliminary-sim.pdf` Time-stamped initial protocol before
+  amendments
 
 # Session Info
 
