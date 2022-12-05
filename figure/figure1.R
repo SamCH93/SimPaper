@@ -62,7 +62,7 @@ plotDeco <- function(ggp) {
                                     label.position = "left")) +
         theme(panel.grid.major.y = element_blank(),
               panel.grid.minor.x = element_blank(),
-              legend.text = element_text(size = 11),
+              legend.text = element_text(size = 12),
               axis.text.y = element_text(size = 12),
               axis.text.x = element_text(size = 10),
               axis.title = element_text(size = 13),
