@@ -56,8 +56,22 @@ plotDeco <- function(ggp) {
         theme_bw() +
         labs(x = expression(AINET~better%<-%Difference~"in"~Brier~score%->%AINET~worse),
              y = element_blank(), color = "EPV") +
+        guides(color = guide_legend(reverse = TRUE,
+                                    override.aes = list(size = 3),
+                                    label.hjust = 0,
+                                    label.position = "left")) +
         theme(panel.grid.major.y = element_blank(),
-              panel.grid.minor.x = element_blank()) +
+              panel.grid.minor.x = element_blank(),
+              legend.text = element_text(size = 11),
+              axis.text.y = element_text(size = 12),
+              axis.text.x = element_text(size = 10),
+              axis.title = element_text(size = 13),
+              plot.subtitle = element_text(size = 13),
+              strip.text = element_text(size = 12),
+              legend.spacing = unit(0.1, "cm"),
+              legend.margin = margin(t = 0.1, unit = 'cm')## ,
+              ## legend.text.align = 2
+              ) +
         geom_hline(yintercept = seq(1.5, 3.5, 1), alpha = 0.1, size = 0.8) +
         scale_alpha_manual(values = c(0.1, 1)) +
         scale_shape_manual(values = c("better" = 60, "worse" = 62))
@@ -206,4 +220,4 @@ ggarrange(
     p3 + labs(subtitle = "QRP: E2 + E3 + R2 (reported)"),
     common.legend = TRUE, ncol = 1, legend = "right"
 )
-ggsave("ainet-results.pdf", height = 13 * 0.9, width = 10 * 0.9)
+ggsave("ainet-results.pdf", height = 13 * 0.9, width = 10 * 0.95)
