@@ -214,7 +214,7 @@ p3 <- plotDeco(ggp = p3raw) +
 
 ## combine plots in one Figure and save
 ggarrange(
-    p0 + labs(subtitle = "Per-protocol"),
+    p0 + labs(subtitle = "Pre-registered"),
     p1 + labs(subtitle = "QRP: E2"),
     p2 + labs(subtitle = "QRP: E2 + E3"),
     p3 + labs(subtitle = "QRP: E2 + E3 + R2 (reported)"),
