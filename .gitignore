@@ -348,3 +348,5 @@ TSWLatexianTemp*
 *.csv
 *.tiff
 
+/submission
+figure/figure-presentation.R
