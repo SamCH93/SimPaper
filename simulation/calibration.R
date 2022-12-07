@@ -1,3 +1,13 @@
+#!/usr/bin/env Rscript
+repro_type <- commandArgs(trailingOnly = TRUE)[1] # full/partial/figure
+outdir <- commandArgs(trailingOnly = TRUE)[2] # "../figure"
+
+if (is.na(outdir))
+    outdir <- "figures"
+
+if (is.na(repro_type))
+    repro_type <- "figure"
+
 # Calibration plots
 # SP, LK, KR
 # Oct 2021
@@ -10,8 +20,10 @@ library(multcomp)
 library(ggpubr)
 library(ainet)
 
-inp <- "simResults"
-outdir <- "figures"
+inp <- if (repro_type %in% c("partial", "figure")) 
+	"simResults" else if (repro_type == "full") "" else 
+		stop("`repro_type' not implemented.")
+
 if (!dir.exists(outdir)) {
     dir.create(outdir)
 }

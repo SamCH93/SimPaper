@@ -1,3 +1,13 @@
+#!/usr/bin/env Rscript
+repro_type <- commandArgs(trailingOnly = TRUE)[1] # full / partial / figure
+outdir <- commandArgs(trailingOnly = TRUE)[2] # "../figure"
+
+if (is.na(repro_type))
+    repro_type <- "figure"
+
+if (is.na(outdir))
+    outdir <- "results_anova"
+
 # ANOVA for brier score
 # SP, LK, KR
 # Oct 2021
@@ -12,7 +22,6 @@ library(ainet)
 
 inp <- "simResults"
 
-outdir <- "results_anova"
 if (!dir.exists(outdir)) {
     dir.create(outdir)
 }
@@ -30,7 +39,10 @@ sapply(metrics, function(met) {
     cat("\nRemoved", nrow(adat) - nrow(mdat),
     "rows due to infinite values / missingness in", met, "\n")
     fml <- as.formula(paste(met, "~ 0 + fct"))
-    out <- run_anova(formula = fml, data = mdat)
-    # out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
+    if (repro_type != "figure") {
+        out <- run_anova(formula = fml, data = mdat)
+    } else {
+        out <- read.csv(paste0("results_anova/anova_", met, ".csv"))
+    }
     vis_results(out, xlab = met)
 })
