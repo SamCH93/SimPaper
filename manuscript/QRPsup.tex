@@ -32,8 +32,8 @@
  total={170mm,257mm},
  left=25mm,
  right=25mm,
- top=20mm,
- bottom=20mm,
+ top=25mm,
+ bottom=25mm,
  }
 
 %% title, authors, affiliations, mail
@@ -43,7 +43,7 @@
 \newcommand\subtitle{Online Supplement}
 \newcommand\longauthors{Samuel Pawel\footnote{Contributed equally.}
 \footnote{Corresponding author: samuel.pawel@uzh.ch \newline
-Preprint. Version September 1, 2022. Licensed under CC-BY.} , Lucas Kook$^*$, Kelly Reeve}
+Preprint. Version December 16, 2022. Licensed under CC-BY.} , Lucas Kook$^*$, Kelly Reeve}
 \newcommand\shortauthors{S. Pawel, L. Kook, K. Reeve} % if longauthors too long, change here
 \newcommand\affiliation{
   \small Epidemiology, Biostatistics and Prevention Institute  \\
@@ -82,10 +82,10 @@ Preprint. Version September 1, 2022. Licensed under CC-BY.} , Lucas Kook$^*$, Ke
 
 %% Headers and footers
 %% ----------------------------------------------------------------------------
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\lhead{\shorttitle}
-\rhead{\shortauthors}
+% \usepackage{fancyhdr}
+% \pagestyle{fancy}
+% \lhead{\shorttitle}
+% \rhead{\shortauthors}
 
 %% Useful commands
 %% ----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ Preprint. Version September 1, 2022. Licensed under CC-BY.} , Lucas Kook$^*$, Ke
 \begin{document}
 \maketitle
 
-Here, we describe the outcomes of the preregistered simulations.
+Here, we describe the outcomes of the pre-registered simulations.
 Overall, the performance of \ainet{} was virtually identical to elastic net
 regression. The adaptive penalization weights of \ainet{} do not seem to make a
 difference for the data generating mechanism considered in our simulations.
