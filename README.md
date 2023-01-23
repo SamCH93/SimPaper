@@ -3,67 +3,92 @@
 This GitHub repository accompanies the arXiv preprint
 [arXiv:2203.13076](https://arxiv.org/abs/2203.13076).
 
+
+## Folder structure
+
+* `./figure/` contains R code and a Makefile to reproduce figure 2 and the six
+   figures from the supplementary.
+
+* `./results-simulations/` contains raw and intermediate results of
+  pre-registered and tweaked simulation studies.
+  
+* `./reproduce-simulations/` contains the R code and Makefile skeleton for
+  reproducing all simulation results from scratch or from the intermediate
+  results.
+
+* `./Makefile` master Makefile for reproducing the results as outlined below.
+
+* `./dependencies.R` R script for installing all necessary dependencies.
+
+* `./ainet_0.0-1.tar.gz` R package containing functions for model fitting,
+  performing the simulation studies and the analyses. See also
+  <https://github.com/LucasKook/ainet> for the most recent version.
+
+
 ## Installing dependencies
 
-The `dependencies.R` file installs all dependencies necessary for reproducing
-the results (see below). It can be executed via `make dependencies`.
+The `./dependencies.R` file installs all dependencies necessary for reproducing
+the results. It can be executed via `make dependencies`. This will also install
+a custom package `ainet` which includes functions for fitting the different
+methods, simulating data, running the simulation study and producing figures.
+
 
 ## Reproducing the results
 
 Due to the computational overhead of running the simulations from scratch
 (several weeks of computation time on a 60 core server), we make our results
-reproducible in three steps.
+reproducible in three different levels that require different amounts of
+computation.
 
-1. The simulation results can be reproduced from scratch following the
-   instructions [here](./reproduce-results/) or by running `make full-repro` in
-   this directory. This includes the final simulation, the tweaked simulations
-   considered in the manuscript and more. The script will produce a folder
-   `./reproduce-results/manuscript/` in which the full manuscript `QRP.pdf` will
-   be reproduced.
+1. The simulation results can be reproduced from scratch by running `make
+   full-repro`. This includes the pre-registered simulation and the tweaked
+   simulations. The script will save the raw and intermediate simulation results
+   in `./reproduce-simulations/`, and then reproduce all figures in `./figure/`.
+   Adjust the parameter `ncores` in `./reproduce-simulations/simulation.R` to
+   fit your system (currently set to 8).
 
-2. The simulation results are saved, such that only the _analysis_ (ANOVAs) can
-   be reproduced. To reproduce the results of the final and tweaked simulations,
-   follow the instructions [here](./simulation/) or run `make partial-repro`. 
-   Due to the many conditions, running the ANOVAs takes about 2 hours on our
-   server (64GB of RAM). R is likely to crash on a personal computer with 16GB
-   of RAM. The script will reproduce the manuscript in
-   `./reproduce-manuscript/QRP.pdf`.
+2. The raw simulation results are saved in `./results-simulations/`, such that
+   only the _analyses_ (ANOVAs) can be reproduced. To do so, run `make
+   partial-repro`. Due to the many conditions, running the ANOVAs takes about 2
+   hours on our server (64GB of RAM). R crashes on our personal computers with
+   16GB of RAM while running the ANOVA. The script will save the intermediate
+   results from the ANOVAs in `./reproduce-simulations/`, and then reproduce all
+   figures in `./figure/`.
 
-3. Figure 1 can be reproduced with `make figure-repro` in this directory. The
-   reproduced figure can be found in `./figure/ainet-results.pdf`.
+3. The intermediate results are saved in `./results-simulations/`, such that
+   figure 2 and the six supplementary figures can be reproduced with `make
+   figure-repro`. The reproduced figure can be found in `./figures/`. This is
+   the only option that runs on our personal computers and does not require a
+   more powerful server.
+   
+## Testing the pipeline
 
-# Folder structure
+By running `make test-repro` the full pipeline (simulation -> ANOVA -> figures)
+can be tested based on a subset of the simulation conditions and fewer
+repetitions than in the simulation studies reported in the paper. This should
+produce the same folders and outputs files as in reproducibility level 1. When
+reproduced in this way, figure 2 will differ from the manuscript figure 2 as
+much fewer repetitions are performed. Similarly, the supplementary figures will
+differ and some parts of them will be empty as these conditions are not
+simulated.
 
-* `./figure/` contains the code to reproduce Figure 1 in the manuscript.
+## Windows compatibility
 
-* `./hacking/` contains code and results of the tweaked simulations
+All simulations and analyses were performed in Ubuntu Linux 20.04 LTS. As only
+basic Unix shell utilities are required, they should also work on Mac. To
+reproduce the results under Windows, install the [Chocolatey package
+manager](https://chocolatey.org/install) and then install make by running `choco
+install make` from PowerShell. Typically, the `Rscript.exe` executable is not in
+the Windows PATH. Therefore modify the makefiles `./Makefile`,
+`./figure/Makefile` and `./reproduce-simulations/Makefile` as indicated in the
+comments starting with `## Windows` in each file. Based on these changes we ran
+successfully `make test-repro` and `make figure-repro` on Windows 10 with a
+fresh installation of R 4.2.2.
 
-* `./manuscript/` contains the source code of the manuscript
+## Session Info
 
-* `./preliminary-sim/` contains code and results of the pilot simulation
-
-* `./protocol/` contains source code for the simulation protocol
-
-* `./reproduce-results/` contains the skeleton for reproducing all simulations
-
-* `./simulation/` contains code and results of the final simulation reported in
-  the paper
-
-* `./Makefile` Makefile for reproducing the results as outlined above
-
-* `./dependencies.R` Script for installing all necessary dependencies
-
-* `./preprint.pdf` Time-stamped version of the preprint
-
-* `./protocol-final-sim.pdf` Time-stamped final simulation protocol
-
-* `./protocol-preliminary-sim.pdf` Time-stamped initial protocol before
-  amendments
-
-# Session Info
-
-Note that the below session info was taken from the time of the first
-(preliminary) simulation.
+The below session info was taken from the time of the first (preliminary)
+simulation.
 
 ```
 ## R version 4.1.1 (2021-08-10)

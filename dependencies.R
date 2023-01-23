@@ -8,5 +8,5 @@ if (!require(tidyverse))
 if (!require(ggpp))
   install.packages("ggpp", repo = "http://cran.ch.r-project.org")
 
-remotes::install_github("LucasKook/ainet", ref = "0.0-1")
+remotes::install_local("ainet_0.0-1.tar.gz")
 

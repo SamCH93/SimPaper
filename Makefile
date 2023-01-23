@@ -1,57 +1,45 @@
-
+## Windows: change Rscript to location of Rscript.exe, for example:
+## SR = C:\Program Files\R\R-4.2.2\bin\Rscript.exe --vanilla --no-restore-data
 SR = Rscript --vanilla --no-restore-data
 
+## install R dependencies
 dependencies:
 	$(SR) dependencies.R
 
+## the pre-registered simulation study
 final:
-	cd reproduce-results && make all SETTING=full
+	cd reproduce-simulations && make all SETTING=full
 
+## the tweaked simulation study
 nonlin:
-	cd reproduce-results && make all SETTING=nonlin
+	cd reproduce-simulations && make all SETTING=nonlin
 
-nonlin-fixed:
-	cd reproduce-results && make all SETTING=nonlin-fixed
+## run ANOVA for pre-registered simulation study
+anovafinal:
+	cd reproduce-simulations && make anova SETTING=full
 
-sparse:
-	cd reproduce-results && make all SETTING=sparse
+## run ANOVA and create plots for tweaked simulation study
+anovanonlin:
+	cd reproduce-simulations && make anova SETTING=nonlin
 
-trunc:
-	cd reproduce-results && make all SETTING=trunc
+## level 1: run simulation from scratch, run ANOVA, create figures
+full-repro: final nonlin
+	cd figure && make all SETTING=full
 
-pfinal:
-	cd simulation && make all
+## level 2: run ANOVA, create figures from intermediate simulation results
+partial-repro:
+	cp -r results-simulations/pre-registered/results-simulation reproduce-simulations/simResults-full/
+	cp -r results-simulations/tweaked/results-simulation reproduce-simulations/simResults-nonlin/
+	make anovafinal anovanonlin
+	cd figure && make all SETTING=partial
 
-pnonlin:
-	cd hacking && make all SETTING=nonlin
-
-pnonlin-fixed:
-	cd hacking && make all SETTING=nonlin_fixed
-
-psparse:
-	cd hacking && make all SETTING=sparse
-
-ptrunc:
-	cd hacking && make all SETTING=trunc
-
-full-repro: final nonlin # nonlin-fixed sparse trunc
-	cd figure && $(SR) figure1.R full
-	cp -r manuscript reproduce-results
-	cp figure/ainet-results.pdf reproduce-results/manuscript
-	cp reproduce-results/results_anova-full/*sparsity*.pdf reproduce-results/manuscript
-	cd reproduce-results/manuscript && make all
-
-partial-repro: pfinal pnonlin # pnonlin-fixed psparse ptrunc
-	cd figure && $(SR) figure1.R partial
-	cp -r manuscript reproduce-manuscript
-	cp figure/ainet-results.pdf reproduce-manuscript
-	cp simulation/figures/*sparsity*.pdf reproduce-manuscript/figures-appendix/
-	cd reproduce-manuscript && make all
-
+## level 3: create figures from pre-run ANOVA results
 figure-repro:
-	cd figure && $(SR) figure1.R figure
-	cd simulation && $(SR) anova.R figure "../figure"
-	cd simulation && $(SR) calibration.R figure "../figure"
+	cd figure && make all SETTING=figure
 
-clean:
-	rm -rf reproduce-manuscript figure/*.pdf figure/*.csv
+## test pipeline from start to finish with number of simulation conditions and
+## small number of repetitions
+test-repro:
+	cd reproduce-simulations && make all SETTING=full TEST=1
+	cd reproduce-simulations && make all SETTING=nonlin TEST=1
+	cd figure && make all SETTING=full
