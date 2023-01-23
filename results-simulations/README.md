@@ -1,3 +1,5 @@
+# Raw and intermediate simulation results
+
 This directory contains the raw and intermediate simulation results based on the
 pre-registered and the tweaked simulation study. Running the commands `make
 partial-repro` and `make figure-repro` from the root directory of this
