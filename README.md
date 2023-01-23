@@ -1,7 +1,9 @@
 # Pitfalls and Potentials in Simulation Studies
 
 This GitHub repository accompanies the arXiv preprint
-[arXiv:2203.13076](https://arxiv.org/abs/2203.13076).
+[arXiv:2203.13076](https://arxiv.org/abs/2203.13076). All current and previous
+versions of the files are archived at <https://doi.org/10.5281/zenodo.6364574>.
+
 
 
 ## Folder structure
