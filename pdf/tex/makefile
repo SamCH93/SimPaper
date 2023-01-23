@@ -1,6 +1,6 @@
 all: pdf supplement clean
 
-FILE=QRP
+FILE=manuscript
 BIB=bibliography
 BIBSTYLE=apalikedoiurl
 
