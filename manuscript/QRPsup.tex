@@ -176,7 +176,7 @@ methods are largely the same as under the Brier score.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Area under the curve (secondary estimand)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Figure~\ref{fig:tienll} shows the differences in area under the curve (AUC)
+Figure~\ref{fig:tieauc} shows the differences in area under the curve (AUC)
 between \ainet{} and the other methods stratified by simulation conditions.
 As with the other estimands, \ainet{} shows virtually identical performance
 as EN regression across all simulation conditions.
@@ -268,6 +268,19 @@ events per variables.
   the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted per
   simulation condition using the single-step method. Lower values indicate
   better performance of \ainet{}. } \label{fig:tienll}
+\end{figure}
+\end{landscape}
+% ---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---
+
+%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---
+\begin{landscape}
+\begin{figure}[!ht]
+\center
+\includegraphics[width=0.8\linewidth]{figures-appendix/tie-fighter_auc_sparsity0.pdf}
+\caption{Tie-fighter plot for the difference in AUC between any method on
+  the $y$-axis and \ainet{}. The 95\% confidence intervals are adjusted per
+  simulation condition using the single-step method. Higher values indicate
+  better performance of \ainet{}. } \label{fig:tieauc}
 \end{figure}
 \end{landscape}
 %---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---
