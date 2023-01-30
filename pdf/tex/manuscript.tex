@@ -1,5 +1,4 @@
 %% Template for a scientific paper by Samuel Pawel
-%% Last modification: 17. December 2020
 \documentclass[a4paper, 11pt]{article}
 \usepackage{alltt}
 \usepackage[T1]{fontenc}
@@ -69,7 +68,7 @@ comparative simulation studies allow for spurious claims of superiority
 of any method}
 \newcommand\longauthors{Samuel Pawel\footnote{Contributed equally.}
 \footnote{Corresponding author: samuel.pawel@uzh.ch \newline
-Preprint. Version December 16, 2022. Licensed under CC-BY.} , Lucas Kook$^*$, Kelly Reeve}
+Version January 30, 2023. Licensed under CC-BY.} , Lucas Kook$^*$, Kelly Reeve}
 \newcommand\shortauthors{S. Pawel, L. Kook, K. Reeve} % if longauthors too long, change here
 \newcommand\affiliation{
   \small Epidemiology, Biostatistics and Prevention Institute  \\
@@ -116,7 +115,6 @@ Preprint. Version December 16, 2022. Licensed under CC-BY.} , Lucas Kook$^*$, Ke
 %% Useful commands
 %% ----------------------------------------------------------------------------
 %% Shortforms
-% \input{defs.tex}
 % Packages for markup/maths
 \usepackage{accents}
 \usepackage{dsfont}
@@ -227,33 +225,34 @@ Preprint. Version December 16, 2022. Licensed under CC-BY.} , Lucas Kook$^*$, Ke
 
 Simulation studies are to a statistician what experiments are to a scientist
 \citep{Hoaglin1975}. They have become a ubiquitous tool for the evaluation of
-statistical methods, mainly because simulation can be used
-for studying the statistical properties of methods under
-conditions that would be difficult or impossible to study theoretically.
-In this paper we focus on simulation studies where the objective is to compare
-the performance of two or more statistical methods (\emph{comparative simulation
-studies}). Such studies are needed to ensure that previously proposed methods
-work as expected under various conditions, and to identify conditions under which
-they fail. Moreover, evidence from comparative simulation studies is often the
-only guidance available to data analysts for choosing from the plethora of
-available methods \citep{Boulesteix2013, Boulesteix2017b}. Proper design and
-execution of comparative simulation studies is therefore important, and
-results of methodologically flawed studies may lead to misinformed
-decisions in scientific and medical practice.
+statistical methods, mainly because simulation can be used for studying the
+statistical properties of methods under conditions that would be difficult or
+impossible to study theoretically. In this paper we focus on simulation studies
+where the objective is to compare the performance of two or more statistical
+methods (\emph{comparative simulation studies}). Such studies are needed to
+ensure that previously proposed methods work as expected under various
+conditions, and to identify conditions under which they fail. Moreover, evidence
+from comparative simulation studies is often the only guidance available to data
+analysts for choosing from the plethora of available methods
+\citep{Boulesteix2013, Boulesteix2017b}. Proper design and execution of
+comparative simulation studies is therefore important, and results of
+methodologically flawed studies may lead to misinformed decisions in scientific
+and medical practice.
 
 Figure~\ref{fig:diagram} shows a schematic illustration of an example
-comparative simulation study. We see that, just like non-simulation based studies, comparative simulation
-studies require many decisions to be made, for instance: How will the data be generated?
-How often will a simulation condition be repeated? Which statistical methods will be
-compared and how are their parameters specified? How will the performance of the methods
-be evaluated? The degree of flexibility, however, is much higher for simulation studies
-than for non-simulation based studies as they can often be rapidly repeated under
-different conditions at practically no additional cost. This is why numerous recommendations
-and best practices for design, execution and reporting of simulation studies
-have been proposed \citep{Hoaglin1975, Holford2000, Burton2006, Smith2010,
-OKelly2016, Monks2018, Elofsson2019, Morris2019, Boulesteix2020B, Chipman2022}. We
-recommend \citet{Morris2019} for an introduction to state-of-the-art simulation
-study methodology.
+comparative simulation study. We see that, just like non-simulation based
+studies, comparative simulation studies require many decisions to be made, for
+instance: How will the data be generated? How often will a simulation condition
+be repeated? Which statistical methods will be compared and how are their
+parameters specified? How will the performance of the methods be evaluated? The
+degree of flexibility, however, is much higher for simulation studies than for
+non-simulation based studies as they can often be rapidly repeated under
+different conditions at practically no additional cost. This is why numerous
+recommendations and best practices for design, execution and reporting of
+simulation studies have been proposed \citep{Hoaglin1975, Holford2000,
+  Burton2006, Smith2010, OKelly2016, Monks2018, Elofsson2019, Morris2019,
+  Boulesteix2020B, Chipman2022}. We recommend \citet{Morris2019} for an
+introduction to state-of-the-art simulation study methodology.
 
 %---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---%---
 \begin{figure}[!htb]
@@ -403,46 +402,43 @@ rarely be sure of the quality of evidence that a simulation study provides.
 Unfortunately, there are many questionable research practices (QRPs) which may
 undermine the validity of comparative simulations studies and which can easily
 go undetected under current publishing standards. Figure~\ref{fig:diagram} shows
-several QRPs that may occur in the exemplary simulation study. There is often
-a fine line between QRPs and legitimate research practices. For instance, a
+several QRPs that may occur in the exemplary simulation study. There is often a
+fine line between QRPs and legitimate research practices. For instance, a
 researcher may choose to selectively report the most relevant simulation
 conditions, methods and outcomes in order to streamline the results for the
-reader. These practices only become questionable when they serve to confirm
-the hopes and beliefs of researchers regarding a particular method. For instance,
-if only conditions and outcomes are reported where the researcher's favored
-method appears superior over competitor methods. Consequently, the results and
-conclusions of the study will be biased in favor of this method \citep{Niessl2021}.
-% modify the data-generating
-% process of a simulation study based on the observed results, \eg if the initially
-% considered data-generating process results in many missing or non-convergent simulations.
-% However, it is then important that such \emph{post hoc} modifications are transparently
-% reported.
+reader. These practices only become questionable when they serve to confirm the
+hopes and beliefs of researchers regarding a particular method. For instance, if
+only conditions and outcomes are reported where the researcher's favored method
+appears superior over competitor methods. Consequently, the results and
+conclusions of the study will be biased in favor of this method
+\citep{Niessl2021}.
 
-The aim of this paper is to raise awareness about the issue of QRPs in comparative
-simulation studies, and to highlight the need for the adoption of higher standards.
-While researchers may make decisions that can make the conclusions of simulation
-studies misleading, we are not accusing them of doing so intentionally or
-maliciously. Instead, we highlight how QRPs can occur and possibly be prevented.
-External pressures, for example, to publish novel and superior methods \citep{Boulesteix2015}
-or to concisely report large amounts of simulation results, may also lead honest researchers
-to (unknowingly) employ QRPs. As we will argue, it is not only up to the researchers but
-also other academic stakeholders to improve on these issues.
+The aim of this paper is to raise awareness about the issue of QRPs in
+comparative simulation studies, and to highlight the need for the adoption of
+higher standards. While researchers may make decisions that can make the
+conclusions of simulation studies misleading, we are not accusing them of doing
+so intentionally or maliciously. Instead, we highlight how QRPs can occur and
+possibly be prevented. External pressures, for example, to publish novel and
+superior methods \citep{Boulesteix2015} or to concisely report large amounts of
+simulation results, may also lead honest researchers to (unknowingly) employ
+QRPs. As we will argue, it is not only up to the researchers but also other
+academic stakeholders to improve on these issues.
 
-This article is structured as follows: We first give an illustrative list of QRPs
-related to comparative simulation studies (Section \ref{sec:QRP}). With an
+This article is structured as follows: We first give an illustrative list of
+QRPs related to comparative simulation studies (Section \ref{sec:QRP}). With an
 exemplary simulation study, we then show how easy it is to present a novel,
-made-up method as an improvement over others if QRPs are employed and
-\emph{a priori} simulation plans remain undisclosed (Section \ref{sec:study}).
-The main inspiration for this work is drawn from similar illustrative studies
-which have been conducted by \citet{Yousefi2009} and \citet{Jelizarow2010}
-for benchmarking studies, and by \citet{Simmons2011} in the context of
-$p$-hacking in psychological
-research. Recently, \citet{Niessl2021} and \citet{Ullmann2022} expanded on
-QRPs in benchmarking studies with the latter also including simulation studies.
-In Section~\ref{sec:recommendations}, we then provide concrete suggestions for
-researchers, reviewers, editors and funding bodies to alleviate the issues of
-QRPs and improve the methodological quality of comparative simulation studies.
-Section~\ref{sec:discussion} closes with limitations and concluding remarks.
+made-up method as an improvement over others if QRPs are employed and \emph{a
+  priori} simulation plans remain undisclosed (Section \ref{sec:study}). The
+main inspiration for this work is drawn from similar illustrative studies which
+have been conducted by \citet{Yousefi2009} and \citet{Jelizarow2010} for
+benchmarking studies, and by \citet{Simmons2011} in the context of $p$-hacking
+in psychological research. Recently, \citet{Niessl2021} and \citet{Ullmann2022}
+expanded on QRPs in benchmarking studies with the latter also including
+simulation studies. In Section~\ref{sec:recommendations}, we then provide
+concrete suggestions for researchers, reviewers, editors and funding bodies to
+alleviate the issues of QRPs and improve the methodological quality of
+comparative simulation studies. Section~\ref{sec:discussion} closes with
+limitations and concluding remarks.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -462,29 +458,27 @@ study, namely, design, execution and reporting.
 
 \begin{table}[!htb]
   \caption{Types of questionable research practices (QRPs) in comparative
-  simulation studies at different stages of the research process. A QRP
-  becomes more problematic if combined with a related QRP, especially a
-  reporting QRP.}
+    simulation studies at different stages of the research process. A QRP
+    becomes more problematic if combined with a related QRP, especially a
+    reporting QRP.}
   \label{table:QRPs}
   \centering
-	\begin{tabular}{p{.05\textwidth} p{.11\textwidth} p{.75\textwidth}}
-		\toprule
-		\textbf{Tag} & \textbf{Related} & \textbf{Type of QRP} \\
-  		\midrule
+  \begin{tabular}{p{.05\textwidth} p{.11\textwidth} p{.75\textwidth}}
+    \toprule
+    \textbf{Tag} & \textbf{Related} & \textbf{Type of QRP} \\
+    \midrule
     \multicolumn{2}{p{.15\textwidth}}{\textit{Design}} & \\
-  		% \cmidrule{1-1}
     D1 & E1, R1 & Not/vaguely defining objectives of simulation study \\
     D2 & E2, R1 & Not/vaguely defining data-generating process \\
     D3 & E3, E4, R1 & Not/vaguely defining which methods will be compared and how their
-                  parameters are specified \\
+                      parameters are specified \\
     D4 & E1, E5, R1 & Not/vaguely defining estimands of interest \\
     D5 & E1, E5, R1 & Not/vaguely defining evaluation criteria \\
     D6 & E6, R1 & Not/vaguely defining how to handle missing values
-              (for example, due to non-convergence of methods) \\
+                  (for example, due to non-convergence of methods) \\
     D7 & E7, E8, R3 & Not justifying number of simulations \\[1em]
 
     \multicolumn{2}{p{.15\textwidth}}{\textit{Execution}} & \\
-  		% \cmidrule{1-1}
   	E1 & D1, R2 & Changing objective of the study to achieve desired outcomes \\
     E2 & D2, R2 & Adapting data-generating process to achieve desired outcomes \\
     E3 & D3, R2 & Adding/removing comparison methods to achieve desired outcomes \\
@@ -495,37 +489,34 @@ study, namely, design, execution and reporting.
     E8 & D7, R3 & Choosing random number generator seed to achieve desired outcomes \\[1em]
 
     \multicolumn{2}{p{.15\textwidth}}{\textit{Reporting}} & \\
-  		% \cmidrule{1-1}
     R1 & D1--D6 & Justifying design decisions which lead
-    to desired outcomes \emph{post hoc}\\
+                  to desired outcomes \emph{post hoc}\\
     R2 & E1--E6 & Selective reporting of results from simulations
-           that lead to desired outcomes \\
+                  that lead to desired outcomes \\
     R3 & D7, E7, E8 & Failing to report Monte Carlo uncertainty \\
     R4 & & Failing to assure computational reproducibility
-    (for example, not sharing code and sufficient
+           (for example, not sharing code and sufficient
            details about computing environment) \\
     R5 & & Failing to assure replicability (for example, not sufficiently reporting design and
            execution methodology) \\
-		\bottomrule
-	\end{tabular}
+    \bottomrule
+  \end{tabular}
 \end{table}
 
 \subsection{QRPs in the design of comparative simulation studies}
 The \emph{a priori} specification of research hypotheses, study design and
-analytic choices is what separates \emph{confirmatory} from
-\emph{exploratory} research. Evidence from confirmatory
-research is typically considered more robust because study hypotheses, design,
-and analysis are independent of the observed data \citep{Tukey1980}.
-The line between the two types of research is, however, blurry in
-simulation studies since they are often iteratively conducted, with each iteration
-including newly simulated data and building on the results of the previous study.
-The first simulation study in a sequence of studies may thus be
-exploratory whereas the subsequent studies may be confirmatory.
-Yet, one may argue that in many cases a single confirmatory simulation study
-which is carefully designed and whose design is justified based on
-external knowledge provides more relevant evidence than a sequence of
-simulation studies which are iteratively tweaked based on previous
-results.
+analytic choices is what separates \emph{confirmatory} from \emph{exploratory}
+research. Evidence from confirmatory research is typically considered more
+robust because study hypotheses, design, and analysis are independent of the
+observed data \citep{Tukey1980}. The line between the two types of research is,
+however, blurry in simulation studies since they are often iteratively
+conducted, with each iteration including newly simulated data and building on
+the results of the previous study. The first simulation study in a sequence of
+studies may thus be exploratory whereas the subsequent studies may be
+confirmatory. Yet, one may argue that in many cases a single confirmatory
+simulation study which is carefully designed and whose design is justified based
+on external knowledge provides more relevant evidence than a sequence of
+simulation studies which are iteratively tweaked based on previous results.
 
 To allow readers to distinguish between confirmatory and exploratory research,
 many non-methodo\-logical journals require pre-registration of study design and
@@ -535,119 +526,111 @@ adopted in experimental psychology \citep{Nosek2018} and epidemiology
 \citep{Lawlor2007, Loder2010}. It is also generally recommended to write and
 pre-register simulation protocols in simulation studies \citep{Morris2019}.
 Well-defined study aims and methodology are arguably at least as important as in
-simulation studies compared to non-simulation based studies because the space
-of possible design and analysis choices is typically much larger \citep{Hoffmann2021}.
-If researchers are vague or fail to define the study goals (D1), the
-data-generating process (D2), the methods under
-investigation (D3), the estimands of interest (D4), the evaluation metrics
-(D5), or how missing values should be handled (D6) \emph{a priori} a high number of
-\emph{researcher degrees of freedom} \citep{Simmons2011} are left open.
-Researchers can then generate a multiplicity of possible results which may
-foster overoptimistic impressions if they report only the subset of results
-aligning with their hopes and beliefs (R2), and for which they can find plausible
-justifications \emph{post hoc} (R1).
+simulation studies compared to non-simulation based studies because the space of
+possible design and analysis choices is typically much larger
+\citep{Hoffmann2021}. If researchers are vague or fail to define the study goals
+(D1), the data-generating process (D2), the methods under investigation (D3),
+the estimands of interest (D4), the evaluation metrics (D5), or how missing
+values should be handled (D6) \emph{a priori} a high number of \emph{researcher
+  degrees of freedom} \citep{Simmons2011} are left open. Researchers can then
+generate a multiplicity of possible results which may foster overoptimistic
+impressions if they report only the subset of results aligning with their hopes
+and beliefs (R2), and for which they can find plausible justifications
+\emph{post hoc} (R1).
 
 Another crucial part of rigorous design is simulation size calculation
-\citep[see Section~5.3 in][for an overview]{Morris2019}.
-While an arbitrarily chosen, often too small, number of simulations
-can be executed faster, they yield noisier results.
-The additional noise is not necessarily problematic if one is only concerned with
-estimation. However, if the goal is to establish method superiority through
-statistical tests (for instance, through a confidence interval for the difference in method
-performance excluding zero), simulation studies with too few repetitions come with
-undesirable properties, just as any other study with an insufficiently large sample
-size. For instance, ``true'' differences in method performance are more likely to
-remain undetected (increased type II errors), detected differences are more
-likely to be in the wrong direction
-\citep[increased ``type S'' errors, see][]{Gelman2000}, and their magnitude is more
-likely to be overestimated \citep[increased ``type M'' errors, see][]{Vanzwet2021}.
-Additionally, a researcher may start with a small simulation size and continue to
-add newly simulated data until superiority is established (\emph{optional stopping}).
-This is similar to early stopping of a trial without correction for the interim
-analysis. Without specialized corrections, optional stopping leads to biased
-estimates and increased type I error rates \citep{Robertson2022}.
-These biases may also occur when the entire simulation study is rerun with a
-larger sample size and the seed of the random number generator is left unchanged.
-The simulated data will be the same up to the additional data (provided the
-simulation runs deterministically conditional on a seed). From this perspective,
-researchers should thus change the seed if they want rerun the study and increase
-the simulation size adaptively.
+\citep[see Section~5.3 in][for an overview]{Morris2019}. While an arbitrarily
+chosen, often too small, number of simulations can be executed faster, they
+yield noisier results. The additional noise is not necessarily problematic if
+one is only concerned with estimation. However, if the goal is to establish
+method superiority through statistical tests (for instance, through a confidence
+interval for the difference in method performance excluding zero), simulation
+studies with too few repetitions come with undesirable properties, just as any
+other study with an insufficiently large sample size. For instance, ``true''
+differences in method performance are more likely to remain undetected
+(increased type II errors), detected differences are more likely to be in the
+wrong direction \citep[increased ``type S'' errors, see][]{Gelman2000}, and
+their magnitude is more likely to be overestimated \citep[increased ``type M''
+errors, see][]{Vanzwet2021}. Additionally, a researcher may start with a small
+simulation size and continue to add newly simulated data until superiority is
+established (\emph{optional stopping}). This is similar to early stopping of a
+trial without correction for the interim analysis. Without specialized
+corrections, optional stopping leads to biased estimates and increased type I
+error rates \citep{Robertson2022}. These biases may also occur when the entire
+simulation study is rerun with a larger sample size and the seed of the random
+number generator is left unchanged. The simulated data will be the same up to
+the additional data (provided the simulation runs deterministically conditional
+on a seed). From this perspective, researchers should thus change the seed if
+they want rerun the study and increase the simulation size adaptively.
 
 \subsection{QRPs in the execution of comparative simulation studies}
 During the execution of a simulation study researchers may (often unknowingly)
-engage in various QRPs that can lead to overoptimism. For instance, the objective
-of the simulation study may be changed depending on the outcome (E1). For example, an
-initial comparison of predictive performance may be changed to comparing
-estimation performance if the results suggest that the favored method performs
-better at estimation tasks rather than prediction.
-The data-generating process
-may also be adapted until conditions are found in which the favored method appears superior (E2).
-For example, the noise levels, the number of covariates, or the effect sizes could be changed.
-Competitor methods that are superior to the proposed method may also be
-excluded from the comparison altogether, or methods which
-perform worse under the (adapted) data-generating process may be added (E3).
-The methods under comparison may come with hyperparameters (for instance,
-regularization parameters in penalized regression models). In this case,
-the hyperparameters of a favored method may be tuned until the method appears
-superior, or the hyperparameters of competitor methods
+engage in various QRPs that can lead to overoptimism. For instance, the
+objective of the simulation study may be changed depending on the outcome (E1).
+For example, an initial comparison of predictive performance may be changed to
+comparing estimation performance if the results suggest that the favored method
+performs better at estimation tasks rather than prediction. The data-generating
+process may also be adapted until conditions are found in which the favored
+method appears superior (E2). For example, the noise levels, the number of
+covariates, or the effect sizes could be changed. Competitor methods that are
+superior to the proposed method may also be excluded from the comparison
+altogether, or methods which perform worse under the (adapted) data-generating
+process may be added (E3). The methods under comparison may come with
+hyperparameters (for instance, regularization parameters in penalized regression
+models). In this case, the hyperparameters of a favored method may be tuned
+until the method appears superior, or the hyperparameters of competitor methods
 may be tuned selectively, for example, left at their default values (E4).
-Finally, the evaluation criteria for comparing the performance of the investigated
-methods may also be changed to make a particular method look better than the others (E5).
-For example, even though the original aim of the study may have been to compare
-predictive performance among methods using the Brier score, the evaluation criterion
-of the simulation study may be switched to area under the curve if the results
-suggest that the favored method performs better with respect to the latter metric.
-This QRP parallels the well-known \emph{outcome-switching} problem in clinical trials
-\citep{Altman2017}. It is usually not difficult to find reasonable justification for
-such modifications and then present them as if they were specified during the planning
-of the study (R1). As emphasized earlier, iteratively changing simulation goals,
-conditions, methods under comparison and evaluation criteria can be part of finding
-out how a method works. These practices
-become mostly problematic if only the simulations in line with the
-researchers hopes and beliefs are reported (R2).
+Finally, the evaluation criteria for comparing the performance of the
+investigated methods may also be changed to make a particular method look better
+than the others (E5). For example, even though the original aim of the study may
+have been to compare predictive performance among methods using the Brier score,
+the evaluation criterion of the simulation study may be switched to area under
+the curve if the results suggest that the favored method performs better with
+respect to the latter metric. This QRP parallels the well-known
+\emph{outcome-switching} problem in clinical trials \citep{Altman2017}. It is
+usually not difficult to find reasonable justification for such modifications
+and then present them as if they were specified during the planning of the study
+(R1). As emphasized earlier, iteratively changing simulation goals, conditions,
+methods under comparison and evaluation criteria can be part of finding out how
+a method works. These practices become mostly problematic if only the
+simulations in line with the researchers hopes and beliefs are reported (R2).
 
-There are, however, practices which are considerably more problematic on their own.
-For instance, in some simulations a method may fail to converge and thus produce missing values
-in the estimates. If it is not pre-specified how these situations will be
-handled, different inclusion/exclusion or imputation strategies may be tried out
-until a favored method appears superior (E6). Choosing an inadequate strategy can result
-in systematic bias and misleading conclusions.
-If no \emph{a priori} simulation size calculation was conducted, the simulation size may also
-be changed until favorable results are obtained (E7).
-If in that case the number of simulations is too small, true performance differences
-are more likely to be missed, their estimated direction is more likely
-to be incorrect and their magnitude
-is more likely overestimated, as explained previously.
-Finally, if only few simulations are conducted (for instance, because
-the methods under investigation are computationally very expensive),
-the initializing seed for generating
-random numbers may have a substantial impact on the result. A particularly
-questionable practice in this situation is to tune the seed until
-a value is found for which a preferred method seems superior (E8).
+There are, however, practices which are considerably more problematic on their
+own. For instance, in some simulations a method may fail to converge and thus
+produce missing values in the estimates. If it is not pre-specified how these
+situations will be handled, different inclusion/exclusion or imputation
+strategies may be tried out until a favored method appears superior (E6).
+Choosing an inadequate strategy can result in systematic bias and misleading
+conclusions. If no \emph{a priori} simulation size calculation was conducted,
+the simulation size may also be changed until favorable results are obtained
+(E7). If in that case the number of simulations is too small, true performance
+differences are more likely to be missed, their estimated direction is more
+likely to be incorrect and their magnitude is more likely overestimated, as
+explained previously. Finally, if only few simulations are conducted (for
+instance, because the methods under investigation are computationally very
+expensive), the initializing seed for generating random numbers may have a
+substantial impact on the result. A particularly questionable practice in this
+situation is to tune the seed until a value is found for which a preferred
+method seems superior (E8).
 
 
 \subsection{QRPs in the reporting of comparative simulation studies}
 In the reporting stage, researchers are faced with the challenge of reporting
-the design, results,
-and analyses of their simulation study in a digestible
-manner. Various QRPs can occur at this stage. For instance,
-reporting may focus on
-results in which the method of interest performs best (R2).
-Failing to mention conditions in which
-the method was inferior (or at least not superior) to competitors creates
-overoptimistic impressions, and may lead readers to think that the method
-uniformly outperforms competitors.
-Similarly, presenting simulation conditions which were added
-based on the observed results as pre-planned and justified (R1) fosters
-overconfidence in the results.
+the design, results, and analyses of their simulation study in a digestible
+manner. Various QRPs can occur at this stage. For instance, reporting may focus
+on results in which the method of interest performs best (R2). Failing to
+mention conditions in which the method was inferior (or at least not superior)
+to competitors creates overoptimistic impressions, and may lead readers to think
+that the method uniformly outperforms competitors. Similarly, presenting
+simulation conditions which were added based on the observed results as
+pre-planned and justified (R1) fosters overconfidence in the results.
 
 Another crucial aspect of reporting is to adequately show the uncertainty
 related to the simulation results \citep{Hoaglin1975, van2019communicating}.
 Failing to report Monte Carlo uncertainty (R3), such as error bars or confidence
-intervals reflecting uncertainty in the simulation, hampers the readers' ability to
-assess the accuracy of the results from the simulation study and
-it allows one to present random differences in
-performance as if they were systematic.
+intervals reflecting uncertainty in the simulation, hampers the readers' ability
+to assess the accuracy of the results from the simulation study and it allows
+one to present random differences in performance as if they were systematic.
 
 Finally, by failing to assure computational reproducibility of the simulation study (R4),
 for example, by not sharing code and software versions to run the simulation,
@@ -665,27 +648,26 @@ performance.
   (AINET)} \label{sec:study}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-To illustrate the application of QRPs from Table~\ref{table:QRPs} we conducted
-a simulation study. The objective of the study was to evaluate the predictive
+To illustrate the application of QRPs from Table~\ref{table:QRPs} we conducted a
+simulation study. The objective of the study was to evaluate the predictive
 performance of a made-up regression method termed the \emph{adaptive importance
-elastic net} (\ainet). The main idea of \ainet{} is to use variable
-importance measures from a random forest for a weighted penalization of the
-variables in an elastic net regression model. The hope is that this \emph{ad hoc}
-modification of the elastic net model improves predictive performance in clinical prediction modeling
-settings where penalized regression models are frequently used. Superficially,
-\ainet{} may seem sensible, however, for the data-generating process
-considered in our simulation study no
-advantage over the classical elastic net is expected. For more details
-on the method, we refer the reader to the simulation protocol (Appendix~\ref{appendix:protocol}).
-We report the pre-registered\footnote{We use the term \emph{pre-registered} throughout to
-refer to simulation analyses conducted as pre-specified in the protocol.} simulation study
-results in the online supplement. As expected,
-the performance of \ainet{} was virtually identical to standard elastic net
-regression.  \ainet{} also did not yield any improvements over logistic
-regression for the data-generating process that we considered sensible
-\emph{a priori} (that is, specified based on typical conditions
-in clinical prediction modeling and simulation studies
-from other researchers).
+  elastic net} (\ainet). The main idea of \ainet{} is to use variable importance
+measures from a random forest for a weighted penalization of the variables in an
+elastic net regression model. The hope is that this \emph{ad hoc} modification
+of the elastic net model improves predictive performance in clinical prediction
+modeling settings where penalized regression models are frequently used.
+Superficially, \ainet{} may seem sensible, however, for the data-generating
+process considered in our simulation study no advantage over the classical
+elastic net is expected. For more details on the method, we refer the reader to
+the simulation protocol (Appendix~\ref{appendix:protocol}). We report the
+pre-registered\footnote{We use the term \emph{pre-registered} throughout to
+  refer to simulation analyses conducted as pre-specified in the protocol.}
+simulation study results in the online supplement. As expected, the performance
+of \ainet{} was virtually identical to standard elastic net regression. \ainet{}
+also did not yield any improvements over logistic regression for the
+data-generating process that we considered sensible \emph{a priori} (that is,
+specified based on typical conditions in clinical prediction modeling and
+simulation studies from other researchers).
 
 
 %--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--
@@ -693,89 +675,83 @@ from other researchers).
   \centering
   \includegraphics[width = 0.95\textwidth]{figure2.pdf}
   \caption{Differences in Brier score with 95\% adjusted confidence intervals
-    between \ainet{} and random forest (RF),
-    logistic regression (GLM), elastic net (EN) and adaptive elastic net (AEN)
-    are shown for representative simulation conditions (correlated covariates
-    $\rho = 0.95$, prevalence $\operatorname{prev} = 0.05$, a range of sample sizes
-    $n$ and events per variable (EPV), in each simulation the Brier score is computed
-    for 10'000 test observations; for details see Appendix~\ref{appendix:protocol}).
-    The top row depicts the pre-registered results in which \ainet{} does not
+    between \ainet{} and random forest (RF), logistic regression (GLM), elastic
+    net (EN) and adaptive elastic net (AEN) are shown for representative
+    simulation conditions (correlated covariates $\rho = 0.95$, prevalence
+    $\operatorname{prev} = 0.05$, a range of sample sizes $n$ and events per
+    variable (EPV), in each simulation the Brier score is computed for 10'000
+    test observations; for details see Appendix~\ref{appendix:protocol}). The
+    top row depicts the pre-registered results in which \ainet{} does not
     outperform any competitor uniformly, except AEN. In the second row, we apply
-    QRP E2: Altering the data-generating process by adding a non-linear effect and
-    sparsity. The gray arrows point from the pre-registered result to the results under
-    the tweaked simulation. In the third row, QRP E3 is applied: EN is removed as
-    a competitor. In the bottom row, selective reporting R2 is applied: Only low
-    EPV settings are reported to give a more favorable impression for \ainet{}.
-    Arrows are depicted only for non-overlapping confidence intervals.
-    } \label{fig:E1}
+    QRP E2: Altering the data-generating process by adding a non-linear effect
+    and sparsity. The gray arrows point from the pre-registered result to the
+    results under the tweaked simulation. In the third row, QRP E3 is applied:
+    EN is removed as a competitor. In the bottom row, selective reporting R2 is
+    applied: Only low EPV settings are reported to give a more favorable
+    impression for \ainet{}. Arrows are depicted only for non-overlapping
+    confidence intervals. } \label{fig:E1}
 \end{figure}
 %--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--
 
-We now show how application of QRPs changes the above pre-registered conclusions.
-Figure~\ref{fig:E1} illustrates different types of QRPs sequentially applied
-to simulation-based evaluation of \ainet{}. The top row depicts the
-pre-registered differences in Brier score (horizontal axis) between \ainet{} and
-competitor methods (vertical axis) for a representative subset of the simulation
-conditions. A negative difference indicates superior performance of \ainet{}.
-In the second row, the arrows depict the change in the pre-registered
-results after changing the data-generating process (E2).
-The third row shows the result after removal of the elastic net competitor
-(E3). Finally, the bottom row shows the end result where selective reporting
-of simulation conditions and competitor methods (R2) is applied to give
-a more favorable impression of \ainet{}.
-We will now discuss these QRPs in more detail.
+We now show how application of QRPs changes the above pre-registered
+conclusions. Figure~\ref{fig:E1} illustrates different types of QRPs
+sequentially applied to simulation-based evaluation of \ainet{}. The top row
+depicts the pre-registered differences in Brier score (horizontal axis) between
+\ainet{} and competitor methods (vertical axis) for a representative subset of
+the simulation conditions. A negative difference indicates superior performance
+of \ainet{}. In the second row, the arrows depict the change in the
+pre-registered results after changing the data-generating process (E2). The
+third row shows the result after removal of the elastic net competitor (E3).
+Finally, the bottom row shows the end result where selective reporting of
+simulation conditions and competitor methods (R2) is applied to give a more
+favorable impression of \ainet{}. We will now discuss these QRPs in more detail.
 
 \paragraph{Altering the data-generating process (E2)}
-We could not detect a systematic performance benefit
-of \ainet{} over standard logistic regression, elastic net regression, or
-random forest for the scenarios specified in the protocol. For this reason,
-we tweaked the data-generating process by adding different sparsity conditions and a
-non-linear effect. We then found that
-\ainet{} outperforms logistic regression under the following conditions:
-Only few variables being associated with the
-outcome (sparsity), a non-linear effect and a low number of events per
-variable (EPV). Figure~\ref{fig:E1} (second row) shows the changes in Brier score
-difference between the pre-registered and the tweaked simulation. As can be seen, the
+We could not detect a systematic performance benefit of \ainet{} over standard
+logistic regression, elastic net regression, or random forest for the scenarios
+specified in the protocol. For this reason, we tweaked the data-generating
+process by adding different sparsity conditions and a non-linear effect. We then
+found that \ainet{} outperforms logistic regression under the following
+conditions: Only few variables being associated with the outcome (sparsity), a
+non-linear effect and a low number of events per variable (EPV).
+Figure~\ref{fig:E1} (second row) shows the changes in Brier score difference
+between the pre-registered and the tweaked simulation. As can be seen, the
 tweaked data-generating process leads to \ainet{} being superior to competitors
 in some conditions, and at least not inferior in others.
 
 \paragraph{Removing competitor methods (E3)}
-Despite the adapted data-generating process, we still observed only minor (if any)
-improvements of \ainet{} over the elastic net. In order to present \ainet{}
-in a better light we could omit the comparisons with the elastic net (E3),
-as shown in Figure~\ref{fig:E1} (third row). This could be justified, for example,
-by arguing that for neutral comparison it is sufficient to compare a less flexible
-method (logistic regression, which has no tuning parameters and captures linear
-effects), a more flexible method (random forest, which has tuning parameters and
-captures nonlinear relationships), and a comparably flexible method (adaptive
-elastic net, which has the same tuning parameters as AINET, but differs in the
-way the penalization weights are chosen).
+Despite the adapted data-generating process, we still observed only minor (if
+any) improvements of \ainet{} over the elastic net. In order to present \ainet{}
+in a better light we could omit the comparisons with the elastic net (E3), as
+shown in Figure~\ref{fig:E1} (third row). This could be justified, for example,
+by arguing that for neutral comparison it is sufficient to compare a less
+flexible method (logistic regression, which has no tuning parameters and
+captures linear effects), a more flexible method (random forest, which has
+tuning parameters and captures nonlinear relationships), and a comparably
+flexible method (adaptive elastic net, which has the same tuning parameters as
+AINET, but differs in the way the penalization weights are chosen).
 
 \paragraph{Selective reporting of simulation results (R2)}
-After the removal of the competitor elastic net, there are still
-some simulation conditions under which \ainet{} is not superior to
-the remaining competitors. To make \ainet{} appear more favorable, we
-thus report only simulation conditions with low EPV, as shown in
-Figure~\ref{fig:E1} (fourth row).
-This could be justified by the fact that journals require
-authors to be concise in their reporting.
-Otherwise, further conditions with low EPV values could be simulated to
-make the results seem more exhaustive.
-Focusing primarily on low EPV settings could be justified in
-hindsight by framing \ainet{} as a method designed for high-dimensional
-data (low sample size relative to the number of variables).
+After the removal of the competitor elastic net, there are still some simulation
+conditions under which \ainet{} is not superior to the remaining competitors. To
+make \ainet{} appear more favorable, we thus report only simulation conditions
+with low EPV, as shown in Figure~\ref{fig:E1} (fourth row). This could be
+justified by the fact that journals require authors to be concise in their
+reporting. Otherwise, further conditions with low EPV values could be simulated
+to make the results seem more exhaustive. Focusing primarily on low EPV settings
+could be justified in hindsight by framing \ainet{} as a method designed for
+high-dimensional data (low sample size relative to the number of variables).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Recommendations}
 \label{sec:recommendations}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The previous sections painted a rather negative picture of how
-undisclosed changes in simulation design, analysis and reporting
-may lead to overoptimistic conclusions. In the
-following, we summarize what we consider to be practical recommendations for
-improving the methodological quality of simulation studies; see
-Table~\ref{table:recommendations} for an overview. Our recommendations are
+The previous sections painted a rather negative picture of how undisclosed
+changes in simulation design, analysis and reporting may lead to overoptimistic
+conclusions. In the following, we summarize what we consider to be practical
+recommendations for improving the methodological quality of simulation studies;
+see Table~\ref{table:recommendations} for an overview. Our recommendations are
 grouped with regards to which stakeholder they concern.
 
 \begin{table}[!htb]
@@ -783,203 +759,193 @@ grouped with regards to which stakeholder they concern.
     and preventing QRPs.}
   \label{table:recommendations}
   \centering
-	\begin{tabular}{p{.95\textwidth}}
-		\toprule
+  \begin{tabular}{p{.95\textwidth}}
+    \toprule
     \textit{Researchers} \\
     \midrule
     \vspace{-1.5em}
     \begin{itemize}
-    \setlength\itemsep{0pt}
-    \setlength\itemindent{-12pt}
-        \item[--] Write (and possibly pre-register) simulation protocols
-    \item[--] Adopt good computational practices (code review, packaging, unit-tests)
-    \item[--] Share code and data (possibly in intermediate/summary form to enable
-    secondary analysis)
-    \item[--] Report the process of the simulation study fully and transparently
-    (for instance, time-stamped protocol amendments to disclose pilot studies
-    and \emph{post hoc} modifications)
-    \item[--] Perform simulation analysis in a blinded manner
-    \item[--] Collaborate with other research groups (possibly familiar with ``competing'' methods)
-    \item[--] Disclose multiplicity and uncertainty of results (for example, with sensitivity analyses)
-    \item[--] Teach simulation study methodology in statistics (post)graduate courses
+      \setlength\itemsep{0pt}
+      \setlength\itemindent{-12pt}
+      \item[--] Write (and possibly pre-register) simulation protocols
+      \item[--] Adopt good computational practices (code review, packaging, unit-tests)
+      \item[--] Share code and data (possibly in intermediate/summary form to enable
+      secondary analysis)
+      \item[--] Report the process of the simulation study fully and transparently
+      (for instance, time-stamped protocol amendments to disclose pilot studies
+      and \emph{post hoc} modifications)
+      \item[--] Perform simulation analysis in a blinded manner
+      \item[--] Collaborate with other research groups (possibly familiar with ``competing'' methods)
+      \item[--] Disclose multiplicity and uncertainty of results (for example, with sensitivity analyses)
+      \item[--] Teach simulation study methodology in statistics (post)graduate courses
     \end{itemize}
 
     \textit{Editors and reviewers} \\
     \midrule
     \vspace{-1.5em}
     \begin{itemize}
-    \setlength\itemsep{0pt}
-    \setlength\itemindent{-12pt}
-    \item[--] Encourage exploration of conditions where methods should
-    be inferior or break down
-    \item[--] Encourage (pre-registered) simulation protocols
-    \item[--] Provide enough space for description of simulation methodology
+      \setlength\itemsep{0pt}
+      \setlength\itemindent{-12pt}
+      \item[--] Encourage exploration of conditions where methods should
+      be inferior or break down
+      \item[--] Encourage (pre-registered) simulation protocols
+      \item[--] Provide enough space for description of simulation methodology
     \end{itemize}
 
     \textit{Journals and funding bodies} \\
     \midrule
     \vspace{-1.5em}
     \begin{itemize}
-    \setlength\itemsep{0pt}
-    \setlength\itemindent{-12pt}
-    \item[--] Provide incentives for rigorous simulation methodology (such as badges on papers)
-    \item[--] Require code and data
-    \item[--] Promote standardized reporting
-    \item[--] Adopt reproducibility checks
-    \item[--] Promote/fund research and software to improve simulation study methodology
-    \item[--] Shift focus away from outperforming state-of-the-art methods
+      \setlength\itemsep{0pt}
+      \setlength\itemindent{-12pt}
+      \item[--] Provide incentives for rigorous simulation methodology (such as badges on papers)
+      \item[--] Require code and data
+      \item[--] Promote standardized reporting
+      \item[--] Adopt reproducibility checks
+      \item[--] Promote/fund research and software to improve simulation study methodology
+      \item[--] Shift focus away from outperforming state-of-the-art methods
     \end{itemize}\\
-		\bottomrule
-	\end{tabular}
+    \bottomrule
+  \end{tabular}
 \end{table}
 
 \subsection{Recommendations for researchers}
-Adopting pre-registered simulation protocols is an important measure
-that researchers can take to prevent themselves from subconsciously engaging in QRPs.
-Pre-registration enables readers to distinguish between confirmatory
-and exploratory findings, and it lowers the risk of potentially flawed methods
-being promoted as an improvement over competitors. While pre-registered
-simulation protocols may at
-first seem disadvantageous due to the additional work and possibly lower chance of publication,
-they provide researchers with the means to differentiate their high-quality simulation
-studies from the numerous unregistered and possibly less trustworthy simulation studies
-in the literature.
+Adopting pre-registered simulation protocols is an important measure that
+researchers can take to prevent themselves from subconsciously engaging in QRPs.
+Pre-registration enables readers to distinguish between confirmatory and
+exploratory findings, and it lowers the risk of potentially flawed methods being
+promoted as an improvement over competitors. While pre-registered simulation
+protocols may at first seem disadvantageous due to the additional work and
+possibly lower chance of publication, they provide researchers with the means to
+differentiate their high-quality simulation studies from the numerous
+unregistered and possibly less trustworthy simulation studies in the literature.
 Platforms such as GitHub (\url{https://github.com/}), OSF
 (\url{https://osf.io/}), or Zenodo (\url{https://zenodo.org/}) can be used for
-archiving and time-stamping documents. Moreover, pre-registration
-can also save researchers from some work later on. For instance, large parts of the
-methodology description can usually be copied from the protocol to the final manuscript.
-% copy most parts of the simulation methodology description
-% from the protocol to the final manuscript.
+archiving and time-stamping documents. Moreover, pre-registration can also save
+researchers from some work later on. For instance, large parts of the
+methodology description can usually be copied from the protocol to the final
+manuscript.
+
 
 When pre-registering and conducting simulation studies, we recommend using a
-robust computational workflow. Such a workflow encompasses packaging the software,
-writing unit tests and reviewing code \citep[see][]{Schwab2021}.
-Other researchers and the authors themselves then benefit from improved computational
-reproducibility and less error-prone code.
-Of course, there are also certain practical limits to computational
-reproducibility. For instance, if a simulation study requires high performance
-computing and/or several weeks of running time, the authors should not expect
-reviewers and journals to replicate their simulation study from scratch. The authors
-should nevertheless provide the code to run the simulation and, if possible, they should also provide
-intermediate simulation results (for instance, fitted model objects) so that
-the simulation study can at least be partially reproduced. Similarly,
-authors can share the simulated data,
-either in raw and/or some summarized form (for example, sharing simulated data
-sets and parameter estimates of fitted models).
-This allows interested readers and reviewers to do additional analyses.
-Unlike experiments with human subjects, there are no privacy concerns for
-sharing simulation data. Furthermore, online tools, such as INTEREST
-\citep[INteractive Tool for Exploring REsults from Simulation
-sTudies,][]{Gasparini2021}, can be used for interactive exploration of the data
-set.
+robust computational workflow. Such a workflow encompasses packaging the
+software, writing unit tests and reviewing code \citep[see][]{Schwab2021}. Other
+researchers and the authors themselves then benefit from improved computational
+reproducibility and less error-prone code. Of course, there are also certain
+practical limits to computational reproducibility. For instance, if a simulation
+study requires high performance computing and/or several weeks of running time,
+the authors should not expect reviewers and journals to replicate their
+simulation study from scratch. The authors should nevertheless provide the code
+to run the simulation and, if possible, they should also provide intermediate
+simulation results (for instance, fitted model objects) so that the simulation
+study can at least be partially reproduced. Similarly, authors can share the
+simulated data, either in raw and/or some summarized form (for example, sharing
+simulated data sets and parameter estimates of fitted models). This allows
+interested readers and reviewers to do additional analyses. Unlike experiments
+with human subjects, there are no privacy concerns for sharing simulation data.
+Furthermore, online tools, such as INTEREST \citep[INteractive Tool for
+Exploring REsults from Simulation sTudies,][]{Gasparini2021}, can be used for
+interactive exploration of the data set.
 
 While planning a simulation study, it is impossible to think of all potential
 weaknesses or problems that may arise when conducting the planned simulations.
-In turn, researchers may be reluctant to tie their hands in a pre-registered protocol.
-However, a transparently conducted and reported preliminary simulation can obviate most
-of these problems. We recommend researchers to disclose preliminary results and any resulting
-changes to the protocol, for example, in a revised and time-stamped version of the protocol.
-This approach is similar to conducting a small pilot study, as is often done in non-simulation based
-research. Even if researchers realize that further changes are required after the main simulation
-study has begun, transparent reporting of when and why \emph{post hoc} modifications were made allows
-the reader to better assess the quality of evidence provided by the study.
-Researchers designing simulation studies may draw inspiration from clinical
-trials by tracking their protocol modifications and time-stamping versions of their
-protocol.
+In turn, researchers may be reluctant to tie their hands in a pre-registered
+protocol. However, a transparently conducted and reported preliminary simulation
+can obviate most of these problems. We recommend researchers to disclose
+preliminary results and any resulting changes to the protocol, for example, in a
+revised and time-stamped version of the protocol. This approach is similar to
+conducting a small pilot study, as is often done in non-simulation based
+research. Even if researchers realize that further changes are required after
+the main simulation study has begun, transparent reporting of when and why
+\emph{post hoc} modifications were made allows the reader to better assess the
+quality of evidence provided by the study. Researchers designing simulation
+studies may draw inspiration from clinical trials by tracking their protocol
+modifications and time-stamping versions of their protocol.
 
-A different approach for making \emph{post hoc} changes to the protocol is to use
-blinding in the analysis of the simulation results \citep{Dutilh2019}.
-Blinded analysis is a standard procedure in particle physics to prevent
-data analysts from biasing their result towards their own beliefs
-\citep{Klein2005}, and it lends
-legitimacy to \emph{post hoc} modifications of the simulation study.
-For instance, researchers might shuffle the method labels and only unblind themselves
-after the necessary analysis pipelines are set in place. An alternative blinding
-approach is to carry out data generation and
-analysis by different researchers.
-For instance, the study from \citet{Kreutz2020} involved two independent research groups,
-one who simulated and one who analyzed the data.
-A related way for improving simulation studies is to collaborate with other
-researchers, possibly ones familiar with ``competing'' methods. This helps to
-design simulation studies which are more objective and whose results are more
-useful for making a decision about which method to choose
-under which circumstances.
+A different approach for making \emph{post hoc} changes to the protocol is to
+use blinding in the analysis of the simulation results \citep{Dutilh2019}.
+Blinded analysis is a standard procedure in particle physics to prevent data
+analysts from biasing their result towards their own beliefs \citep{Klein2005},
+and it lends legitimacy to \emph{post hoc} modifications of the simulation
+study. For instance, researchers might shuffle the method labels and only
+unblind themselves after the necessary analysis pipelines are set in place. An
+alternative blinding approach is to carry out data generation and analysis by
+different researchers. For instance, the study from \citet{Kreutz2020} involved
+two independent research groups, one who simulated and one who analyzed the
+data. A related way for improving simulation studies is to collaborate with
+other researchers, possibly ones familiar with ``competing'' methods. This helps
+to design simulation studies which are more objective and whose results are more
+useful for making a decision about which method to choose under which
+circumstances.
 
-We also recommend researchers to disclose the multiplicity and
-uncertainty inherent to the design and analysis of their simulation studies
+We also recommend researchers to disclose the multiplicity and uncertainty
+inherent to the design and analysis of their simulation studies
 \citep{Hoffmann2021}. For instance, researchers can report sensitivity analyses
-that show how the study results change for different analysis decisions
-(for example, Table~4 in \citet{vanSmeden2016} shows how the evaluation
-metrics for different estimators change depending on how convergence
-of a method is defined). Methods from multivariate statistics can be used for
-visualizing the influence of different design choices, such as the multidimensional
-unfolding approach in \citet{Niessl2021}.
+that show how the study results change for different analysis decisions (for
+example, Table~4 in \citet{vanSmeden2016} shows how the evaluation metrics for
+different estimators change depending on how convergence of a method is
+defined). Methods from multivariate statistics can be used for visualizing the
+influence of different design choices, such as the multidimensional unfolding
+approach in \citet{Niessl2021}.
 
-One reason for the low standards of simulation studies in the
-statistics literature may be that rigorous simulation
-methodology is usually not taught in graduate or postgraduate
-courses (with a few exceptions, such as the course
-``Using simulation studies to evaluate statistical methods''
-from the MRC Clinical Trials Unit).
-To improve training of current and future generations of statisticians, researchers who are
-involved in teaching should therefore also include simulation
-study methodology in their curricula.
-The standards of simulation studies in many statistics
-related fields (for instance, machine learning, psychometrics, econometrics,
-or ecology) are arguably
-not much different. One possible avenue for future research is
-thus to also
-promote education and adaptation of simulation study methodology
-for the special needs in these fields.
+One reason for the low standards of simulation studies in the statistics
+literature may be that rigorous simulation methodology is usually not taught in
+graduate or postgraduate courses (with a few exceptions, such as the course
+``Using simulation studies to evaluate statistical methods'' from the MRC
+Clinical Trials Unit). To improve training of current and future generations of
+statisticians, researchers who are involved in teaching should therefore also
+include simulation study methodology in their curricula. The standards of
+simulation studies in many statistics related fields (for instance, machine
+learning, psychometrics, econometrics, or ecology) are arguably not much
+different. One possible avenue for future research is thus to also promote
+education and adaptation of simulation study methodology for the special needs
+in these fields.
 
 \subsection{Recommendations for editors and reviewers}
 Peer review is an important tool for identifying QRPs in research results
-submitted to methodological journals.
-For instance, reviewers may demand researchers to include competitor
-methods which are not part of their comparison yet (or which might have been
-excluded from the comparison). However, reviewers can only identify a subset
-of all QRPs since some types are impossible to spot if no pre-registered
-simulation protocol is in place (for example, a reviewer cannot know whether
-the evaluation criterion was switched). Even QRPs which can be detected by peer
-review may be difficult to spot in practice.
-It is thus important that reviewers and editors promote that authors make
-simulation protocols and computer code available alongside the manuscript.
-Moreover, by providing enough space and encouraging authors to provide detailed
-descriptions of their simulation studies, replicability of the simulation
-studies can be improved. Finally, reviewers should not be satisfied with
-manuscripts showing that a method is uniformly superior; they should
-also encourage authors to explore conditions in which their method is
-expected to be inferior to other methods or to break down entirely.
+submitted to methodological journals. For instance, reviewers may demand
+researchers to include competitor methods which are not part of their comparison
+yet (or which might have been excluded from the comparison). However, reviewers
+can only identify a subset of all QRPs since some types are impossible to spot
+if no pre-registered simulation protocol is in place (for example, a reviewer
+cannot know whether the evaluation criterion was switched). Even QRPs which can
+be detected by peer review may be difficult to spot in practice. It is thus
+important that reviewers and editors promote that authors make simulation
+protocols and computer code available alongside the manuscript. Moreover, by
+providing enough space and encouraging authors to provide detailed descriptions
+of their simulation studies, replicability of the simulation studies can be
+improved. Finally, reviewers should not be satisfied with manuscripts showing
+that a method is uniformly superior; they should also encourage authors to
+explore conditions in which their method is expected to be inferior to other
+methods or to break down entirely.
 
 \subsection{Recommendations for journals and funding bodies}
 Journals and funding bodies can improve on the status quo by either actively
 requiring or passively incentivizing more rigorous and neutral simulation study
 methodology. Actively, journals can make (pre-registered) simulation protocols
 mandatory for all articles featuring a simulation study. A more passive and less
-extreme measure would be to indicate with a badge whether an article contains
-a pre-registered simulation study, or to introduce article types dedicated to
+extreme measure would be to indicate with a badge whether an article contains a
+pre-registered simulation study, or to introduce article types dedicated to
 neutral comparison studies. Such an approach rewards researchers who take the
 extra effort. Similar initiatives have led to a large increase in the adoption
-of pre-registered study protocols in the field of psychology \citep{Kidwell2016}.
-Another measure could be to require standardized reporting
-of simulation studies, for example, the ``ADEMP'' reporting structure proposed by
-\citet{Morris2019}. Journals may also employ reproducibility checks to ensure
+of pre-registered study protocols in the field of psychology
+\citep{Kidwell2016}. Another measure could be to require standardized reporting
+of simulation studies, for example, the ``ADEMP'' reporting structure proposed
+by \citet{Morris2019}. Journals may also employ reproducibility checks to ensure
 computational reproducibility of the published simulation studies. This is
 already done, for example, by the Journal of Open Source Software or the Journal
-of Statistical Software. Moreover, journals and funding bodies can promote or fund
-research and software to improve simulation study methodology. For instance, a
-journal might have special calls for papers on simulation methodology. Similarly,
-a funding body could have special grants dedicated to software development
-that facilitates sound design, execution and reporting of simulation studies
-\citep[as][]{White2010, Gasparini2018, Chalmers2020}.
-Finally, journals and funding bodies often exert a strong incentive on researchers
-to publish novel and superior methods. This may lead to articles with
-non-systematic simulation studies that mainly highlight settings beneficial
-to the proposed methods. We believe that the above recommendations
-can shift the incentive structure towards more transparent and neutral
-simulation studies, and away from the ``one method fits all data sets''
-philosophy \citep{Strobl2022}.
+of Statistical Software. Moreover, journals and funding bodies can promote or
+fund research and software to improve simulation study methodology. For
+instance, a journal might have special calls for papers on simulation
+methodology. Similarly, a funding body could have special grants dedicated to
+software development that facilitates sound design, execution and reporting of
+simulation studies \citep[as][]{White2010, Gasparini2018, Chalmers2020}.
+Finally, journals and funding bodies often exert a strong incentive on
+researchers to publish novel and superior methods. This may lead to articles
+with non-systematic simulation studies that mainly highlight settings beneficial
+to the proposed methods. We believe that the above recommendations can shift the
+incentive structure towards more transparent and neutral simulation studies, and
+away from the ``one method fits all data sets'' philosophy \citep{Strobl2022}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions} \label{sec:discussion}
@@ -988,91 +954,88 @@ philosophy \citep{Strobl2022}.
 Simulation studies should be viewed and treated analogously to (empirical)
 experiments from other fields of science. Transparent reporting of methodology
 and results is essential to contextualize the outcome of such a study. As in
-other empirical sciences, QRPs in simulation studies can obfuscate the usefulness
-of a novel method and lead to misleading and non-replicable results.
+other empirical sciences, QRPs in simulation studies can obfuscate the
+usefulness of a novel method and lead to misleading and non-replicable results.
 
-By deliberately using several QRPs we were able to present a method with no expected
-benefits and little theoretical justification -- invented solely for this article -- as an
-improvement over theoretically and empirically well-established competitors.
-While such intentional engagement in these practices is far from the norm,
-unintentional QRPs may have the same detrimental effect.
-We hope that our illustration will increase awareness about the fragility of
-findings from simulation studies and the need for higher standards.
+By deliberately using several QRPs we were able to present a method with no
+expected benefits and little theoretical justification -- invented solely for
+this article -- as an improvement over theoretically and empirically
+well-established competitors. While such intentional engagement in these
+practices is far from the norm, unintentional QRPs may have the same detrimental
+effect. We hope that our illustration will increase awareness about the
+fragility of findings from simulation studies and the need for higher standards.
 
 While this article focuses on comparative simulation studies, many of the issues
 and recommendations also apply to neutral comparison studies with real data sets
 as discussed in \citet{Niessl2021}. Some of the noted problems even exist in
-theoretical research; due to the incentive to publish positive results, researchers
-often selectively study optimality conditions of methods rather than conditions
-under which they fail.
+theoretical research; due to the incentive to publish positive results,
+researchers often selectively study optimality conditions of methods rather than
+conditions under which they fail.
 
-Again, it is imperative to note that researchers rarely engage in QRPs with malicious
-intent but because humans tend to interpret ambiguous information self-servingly, and
-because they are good at finding reasonable justifications that match their expectations
-and desires \citep{Simmons2011}. As in other domains of science, it is easier to publish
-positive results in methodological research, that is, novel and superior methods
-\citep{Boulesteix2015}. Thus, methodological researchers will typically desire to show
-the superiority of a method rather than to neutrally disclose its strengths and
-weaknesses.
+Again, it is imperative to note that researchers rarely engage in QRPs with
+malicious intent but because humans tend to interpret ambiguous information
+self-servingly, and because they are good at finding reasonable justifications
+that match their expectations and desires \citep{Simmons2011}. As in other
+domains of science, it is easier to publish positive results in methodological
+research, that is, novel and superior methods \citep{Boulesteix2015}. Thus,
+methodological researchers will typically desire to show the superiority of a
+method rather than to neutrally disclose its strengths and weaknesses.
 
-We provide several recommendations involving various stakeholders in the research
-community which we believe may help incentivize researchers to perform well-designed
-simulation studies.
-Most importantly, we think that reviewers, journals and funders should raise
-the standards for simulation studies by promoting pre-registered simulation protocols
-and rewarding researchers who invest the extra effort. Although there is evidence for
-the effectiveness of protocols in preventing QRPs in other fields, it is unclear
-whether this effect translates to simulation studies. Indeed, there are many reasons
-to believe that simulation studies will not benefit in a similar way as studies with
-human or animal subjects, due to the nature of simulations studies. For instance,
-requiring pre-registered protocols cannot prevent researchers engaging in QRPs until
-they find their desired results and only then writing and registering a protocol.
-In addition, there is currently no tradition of pre-registration in simulation studies,
-no best-practices guidance and no dedicated platform to publish protocols. For example,
-\citet{Kipruto2022} published the pre-registration of their simulation protocol as a
-journal article, whereas the pre-registration of the protocol from our study was uploaded
-to GitHub. Both protocols use the ADEMP reporting structure from \citet{Morris2019}, yet
-the field could benefit from reporting guidelines
-developed by a consortium of simulation experts
-similar to the guidelines for health research promoted by the
-EQUATOR Network \citep{Altman2008}. Similarly, the field could benefit from a centralized
-pre-registration platform tailored to simulation studies (similar to
-\url{https://clinicaltrials.gov} for clinical trials).
-Regardless of the (unknown) effectiveness of pre-registered simulation protocols,
-we personally think that they are an important step toward improving simulation studies
-since they promote a minimum degree of transparency and credibility. For this reason, we think
-that they are especially important for ``late-stage'' methodological studies
-\citep{Heinze2022} where the objective is to neutrally compare different methods and
-generate robust evidence.
+We provide several recommendations involving various stakeholders in the
+research community which we believe may help incentivize researchers to perform
+well-designed simulation studies. Most importantly, we think that reviewers,
+journals and funders should raise the standards for simulation studies by
+promoting pre-registered simulation protocols and rewarding researchers who
+invest the extra effort. Although there is evidence for the effectiveness of
+protocols in preventing QRPs in other fields, it is unclear whether this effect
+translates to simulation studies. Indeed, there are many reasons to believe that
+simulation studies will not benefit in a similar way as studies with human or
+animal subjects, due to the nature of simulations studies. For instance,
+requiring pre-registered protocols cannot prevent researchers engaging in QRPs
+until they find their desired results and only then writing and registering a
+protocol. In addition, there is currently no tradition of pre-registration in
+simulation studies, no best-practices guidance and no dedicated platform to
+publish protocols. For example, \citet{Kipruto2022} published the
+pre-registration of their simulation protocol as a journal article, whereas the
+pre-registration of the protocol from our study was uploaded to GitHub. Both
+protocols use the ADEMP reporting structure from \citet{Morris2019}, yet the
+field could benefit from reporting guidelines developed by a consortium of
+simulation experts similar to the guidelines for health research promoted by the
+EQUATOR Network \citep{Altman2008}. Similarly, the field could benefit from a
+centralized pre-registration platform tailored to simulation studies (similar to
+\url{https://clinicaltrials.gov} for clinical trials). Regardless of the
+(unknown) effectiveness of pre-registered simulation protocols, we personally
+think that they are an important step toward improving simulation studies since
+they promote a minimum degree of transparency and credibility. For this reason,
+we think that they are especially important for ``late-stage'' methodological
+studies \citep{Heinze2022} where the objective is to neutrally compare different
+methods and generate robust evidence.
 
 \section*{Software and data}
 The simulation study was conducted in the \textsf{R} language for statistical
-computing \citep{pkg:base} using the version 4.1.1. The method
-\ainet{} is implemented in the \pkg{ainet} package and available on GitHub
-(\url{https://github.com/LucasKook/ainet}). We provide scripts for
-reproducing the different simulation studies on the GitHub repository
-(\url{https://github.com/SamCH93/SimPaper}).
-Due to the computational overhead, we also provide the resulting data
-so that the analyses can be conducted without rerunning the simulations.
-We used \pkg{pROC} version 1.18.0 to compute the AUC \citep{pkg:proc}.
-Random forests were fitted using \pkg{ranger} version 0.13.1 \citep{ranger2017}.
-For penalized likelihood methods, we used \pkg{glmnet} version 4.1.2
-\citep{Friedman2010,Simon2011}.
-The \pkg{SimDesign} package version 2.7.1 was used to set up simulation scenarios
+computing \citep{pkg:base} using the version 4.1.1. The method \ainet{} is
+implemented in the \pkg{ainet} package and available on GitHub
+(\url{https://github.com/LucasKook/ainet}). We provide scripts for reproducing
+the different simulation studies in the electronic appendix. Due to the
+computational overhead, we also provide the resulting data so that the analyses
+can be conducted without rerunning the simulations. The data can be downloaded
+from Zenodo (\url{https://doi.org/10.5281/zenodo.6364574}). We used \pkg{pROC}
+version 1.18.0 to compute the AUC \citep{pkg:proc}. Random forests were fitted
+using \pkg{ranger} version 0.13.1 \citep{ranger2017}. For penalized likelihood
+methods, we used \pkg{glmnet} version 4.1.2 \citep{Friedman2010,Simon2011}. The
+\pkg{SimDesign} package version 2.7.1 was used to set up simulation scenarios
 \citep{Chalmers2020}.
 
 \section*{Acknowledgements}
-We thank Eva Furrer, Malgorzata Roos and Torsten Hothorn for
-helpful discussion and comments on the simulation protocol and drafts of the
-manuscript.
-We also thank the anonymous referees and the associate editor for constructive
-and valuable comments that improved the manuscript substantially.
-Our acknowledgement of these individuals does not imply their endorsement of this article.
-The authors declare that they do not have any conflicts of interest.
-SP acknowledges financial support from the Swiss National Science Foundation
-(Project~\#189295). The funder had no role in study design, data collection,
-data analysis, data interpretation, decision to publish, or preparation of
-the manuscript.
+We thank Eva Furrer, Malgorzata Roos and Torsten Hothorn for helpful discussion
+and comments on the simulation protocol and drafts of the manuscript. We also
+thank the anonymous referees and the associate editor for constructive and
+valuable comments that improved the manuscript substantially. Our acknowledgment
+of these individuals does not imply their endorsement of this article. The
+authors declare that they do not have any conflicts of interest. SP acknowledges
+financial support from the Swiss National Science Foundation (Project~\#189295).
+The funder had no role in study design, data collection, data analysis, data
+interpretation, decision to publish, or preparation of the manuscript.
 
 % Appendix
 % ======================================================================
@@ -1082,14 +1045,10 @@ the manuscript.
 \label{appendix:protocol}
 
 Below, we include an excerpt of the final version of the protocol for the
-simulation-based evaluation of \ainet{}. All time-stamped versions
-of the protocol are available at \url{https://doi.org/10.5281/zenodo.6364574}.
+simulation-based evaluation of \ainet{}. All time-stamped versions of the
+protocol are available at \url{https://doi.org/10.5281/zenodo.6364574}.
 
 \input{simulation-protocol.tex}
-
-% \section{Pre-registered results}
-% \label{appendix:pre-registered-results}
-% \input{per-protocol-results.tex}
 
 \end{appendices}
 

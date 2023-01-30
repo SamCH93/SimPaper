@@ -1,50 +1,3 @@
-% \subsection{Disclaimer}
-% \label{sec:disclaimer}
-% With this simulation study we will illustrate how easy it is to show
-% statistical superiority of any method, if one has enough flexibility in
-% changing the simulation conditions and evaluations. We propose a mock-method,
-% termed \ainet{}, which seems reasonable at first glance and whose evaluation could actually be
-% published in a statistics journal. However, as we will explain in Section~\ref{sec:methods},
-% for theoretical reasons the method should actually not be
-% superior compared to methods of equal complexity. Throughout this protocol
-% we will make a serious attempt at evaluating \ainet{} using state-of-the-art
-% simulation study methodology. After the planned simulations
-% have been conducted, we will start to apply questionable research practices
-% in order to illustrate how easy it is to find simulation conditions and evaluation
-% metrics which can make a flawed method look superior.
-
-% \subsection{Introduction}
-% \label{sec:introduction}
-% The purpose of this protocol is to describe our \emph{a priori} plans for a
-% comprehensive simulation study to evaluate the statistical properties of the
-% mock-method called adaptive importance elastic net (\ainet) method which is
-% described in more detail in Section~\ref{sec:methods}. We will follow the ADEMP
-% approach (aims, data-generating process, estimands, methods, performance
-% measures) in \citet{Morris2019}. We will plan the simulation study as
-% thoroughly as possible. However, in practice there may be difficulties
-% and unexpected discoveries which may warrant modifications.
-% We will clearly label these as exploratory findings in the analysis.
-
-% \subsection{Timeline}
-% \label{sec:timeline}
-% Upon writing of this document only some preliminary evaluations have been made:
-% After the authors came up with the method on Wednesday 28 July 2021, the method
-% was implemented in \textsf{R} and evaluated on the iris data set and a few 
-% simulated data sets.
-% These analyses showed that for particular choices of hyperparameters, the
-% method could sometimes lead to improved predictive performance compared to
-% standard and L1-penalized logistic regression. However, in many cases
-% performance was actually equal or worse.
-
-% We then started to write the simulation protocol. All versions of the protocol are
-% available on the GitHub repository (\url{https://github.com/SamCH93/SimPaper}),
-% the final version will be time\-stamped and tagged. As discussed in
-% Section~\ref{sec:performance}, some preliminary simulation runs will be conducted
-% to estimate the number of simulations needed to ensure a sufficiently small Monte
-% Carlo error. The test run will also be used to assess whether there are severe
-% convergence problems and if so, the simulation parameters may be modified 
-% (Section~\ref{sec:exceptions}). This milestone will also be time\-stamped.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Aims} \label{sec:aims}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -127,18 +80,6 @@ time the number of predictors is rarely larger than $p \geq 100$
 considering complex data, such as images, omics, or text data which are not the
 focus here. The values $\EPV \in \{20, 10, 1, 0.5\}$ are chosen to cover scenarios
 with small to large number of covariates \citep[\cf][]{vanSmeden2018}.
-
-% \subsection*{Sparsity in $\shiftparm$}
-% We consider sparse and dense simulation settings for $\shiftparm$. We choose
-% sparsity of $\shiftparm$ based on the consistency requirement for the LASSO
-% \citep[Ch. 2.4.2]{buhlmann2011statistics}, \ie
-% $$q = \begin{cases}
-  % \floor{\sqrt{n/\log p}} & p > 1 \\
-  % 0 & p \leq 1,
-% \end{cases}$$
-% so $q$ will depend on the sample size
-% $n$ and the number of covariates $p$ ( determined via the EPV).
-% In the simulations where $\shiftparm$ is dense, we set $q = p$.
 
 \subsection*{Collinearity in $\rX$}
 We distinguish between no, low, medium and high collinearity. The diagonal
@@ -323,13 +264,6 @@ The distribution of all estimands from Section~\ref{sec:estimands} will be
 assessed visually with box- and violin-plots that are stratified by method and
 simulation conditions. We will also compute mean, median, standard deviation,
 interquartile range, and 95\% confidence intervals
-% \begin{itemize}
-  % \item Mean
-  % \item Median
-  % \item Standard deviations
-  % \item Interquartile range
-  % \item 95\% confidence intervals
-% \end{itemize}
 for each of the estimands. Moreover, instead of ``eye-balling'' differences in predictive
 performance across methods and conditions, we will formally assess them by regressing
 the estimands on the method and simulation conditions \citep[\cf][]{Skrondal2000}.
@@ -398,134 +332,3 @@ in the simulation study. We will handle them as follows:
 
 \end{itemize}
 
-
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%y%%%%%%
-% \subsection{Software} \label{sec:software}
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% The simulation study is conducted in the \textsf{R} language for statistical
-% computing \citep{pkg:base} using the version
-% % R.version$version.string
-% 4.1.1.
-% \ainet{} is implemented in the \pkg{ainet} package and available on GitHub 
-% (\url{https://github.com/SamCH93/SimPaper}).
-% We use \pkg{pROC} version 1.18.0 to compute the AUC \citep{pkg:proc}.
-% Random forests are fitted using \pkg{ranger} version 0.13.1 \citep{ranger2017}.
-% For penalized likelihood methods, we use \pkg{glmnet} version 4.1.2
-% \citep{Friedman2010,Simon2011}.
-% The \pkg{SimDesign} package version 2.7.1 is used to set up simulation scenarios
-% \citep{Chalmers2020}.
-
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \subsection{Preliminary simulations}
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% In the following we report the results of the preliminary simulation study which
-% was used to plan the size of the full simulation. We report convergence issues,
-% errors, warnings, and any amendments that were made to the protocol.
-
-% \subsubsection{Results}
-
-% Figure~\ref{fig:tiebrier2} displays the results for the difference in Brier scores
-% between \ainet{} and all other methods. Confidence intervals are adjusted within
-% a simulation condition, because each simulation run is independent. The adjustment
-% is based on the single-step method using the \pkg{multcomp} package \citep{pkg:multcomp}.
-% We show only the results for the primary estimand.
-
-% % ------------------------------------------------------------------------------
-% \begin{landscape}
-% \begin{figure}[!ht]
-% \center
-% \includegraphics[width=0.9\linewidth]{figures-appendix/figures-protocol/tie-fighter_brier.pdf}
-% \caption{Tie-fighter plot for the difference in Brier score between any method
-%   on the $y$-axis and \ainet{}. Empty facets correspond to simulation conditions
-%   for which $p < 1$ or $p > 100$. Confidence intervals are colored according to
-%   significance at the 5\% level, indicating a better (negative difference), neutral
-%   (including zero), or worse (positive difference) performance of \ainet{}.} \label{fig:tiebrier2}
-% \end{figure}
-% \end{landscape}
-% % ------------------------------------------------------------------------------
-
-% \subsubsection{Convergence issues}
-
-% Figure~\ref{fig:failures} reports the proportion of simulations with convergence 
-% issues. As outlined in Section~\ref{sec:exceptions},
-% scenarios in which the proportion of simulations with convergence issues exceeds 
-% $> 10\%$ warrant a closer look.
-
-% Most convergence issues seem to arise for low sample size ($n = 100$) and low
-% prevalence ($\prev < 0.05$). This leads to a low number of cases and therefore
-% problems with the methods that use cross-validation. We decided to still run
-% this simulation condition and just exclude the non-converged observations and
-% in the end report the proportion of simulations that fail.
-
-% % ------------------------------------------------------------------------------
-% \begin{landscape}
-% \begin{figure}[!ht]
-% \center
-% \includegraphics[width=0.9\linewidth]{figures-appendix/figures-protocol/failed.pdf}
-% \caption{Simulations with convergence issues.} \label{fig:failures}
-% \end{figure}
-% \end{landscape}
-% % ------------------------------------------------------------------------------
-
-% \subsubsection{Errors}
-
-% Errors which terminated the whole simulation run only occurred in case no events
-% were present in the training data (see Figure~\ref{fig:errors}), which happened
-% only for low sample size ($n = 100$) and low prevalence ($\prev < 0.05$).
-% In practice no model could be fitted for such a scenario, which is why they are
-% dropped entirely from the analysis.
-
-% % ------------------------------------------------------------------------------
-% \begin{figure}[!ht]
-% \center
-% \includegraphics[width=0.7\textwidth]{figures-appendix/figures-protocol/errors.pdf}
-% \caption{Simulation runs which were terminated due to an error.} \label{fig:errors}
-% \end{figure}
-% % ------------------------------------------------------------------------------
-
-% \subsubsection{Warnings}
-
-% Several different warnings were observed in the preliminary simulations, namely
-% (i) a too low number of events, (ii) over-confident zero/one predictions of the
-% random forest, (iii) \code{cv.glmnet()} convergence issues for a particular $\lambda$,
-% and (iv) an empty model being returned (\ie no non-zero coefficients).
-% Figure~\ref{fig:warnings} summarizes the occurrence of each warning over all
-% scenarios.
-
-% % ------------------------------------------------------------------------------
-% \begin{landscape}
-% \begin{figure}[!ht]
-% \center
-% \includegraphics[width=0.9\linewidth]{figures-appendix/figures-protocol/warnings.pdf}
-% \caption{Warning messages across all simulation runs, conditions, and methods.} \label{fig:warnings}
-% \end{figure}
-% \end{landscape}
-% % ------------------------------------------------------------------------------
-
-% \subsubsection{Deviations}
-
-% % ------------------------------------------------------------------------------
-% \begin{table}[!ht]
-% \center
-% \caption{Changes compared to the previous version of the protocol.} \label{tab:deviations}
-% \begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
-%   \toprule
-%   \textbf{Deviation} & \textbf{Justification} \\
-%   \midrule
-%   Remove high-dimensional conditions
-%                      & We decided to remove all conditions involving
-%                       $p > 100$ because such a high number of predictor rarely occurs in the context of clinical prediction models.
-%                       Also, the computation time for these conditions was much larger than for the others. \\
-%   Remove univariable conditions
-%                      & Previously, simulation conditions with EPV's leading to $p < 2$ were
-%                       set to $p = 2$. We decided to remove these conditions because they
-%                       add not much information and also because visualization of the
-%                       results in terms of EPV becomes much easier. \\
-%   Design not fully factorial
-%                      & Due to the removal of the mentioned conditions, the design is no longer fully factorial. \\
-%   \bottomrule
-% \end{tabular}
-% \end{table}
-% % ------------------------------------------------------------------------------

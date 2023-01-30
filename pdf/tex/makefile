@@ -25,11 +25,11 @@ clean:
 		$(FILE).out $(FILE).brf *.log \
 		$(FILE)changes.aux  $(FILE)changes.blg  $(FILE)changes.bbl \
 		$(FILE)changes.out $(FILE)changes.brf $(FILE)changes.tex \
-		$(FILE)sup.aux  $(FILE)sup.blg  $(FILE)sup.bbl \
-		$(FILE)sup.out $(FILE)sup.brf
+		$(FILE)Sup.aux  $(FILE)Sup.blg  $(FILE)Sup.bbl \
+		$(FILE)Sup.out $(FILE)Sup.brf
 
 supplement:
-	pdflatex $(FILE)sup
-	-bibtex $(FILE)sup
-	pdflatex $(FILE)sup
-	pdflatex $(FILE)sup
+	pdflatex $(FILE)Sup
+	-bibtex $(FILE)Sup
+	pdflatex $(FILE)Sup
+	pdflatex $(FILE)Sup
