@@ -5,6 +5,8 @@ SETTING = "figure"
 
 figure2:
 	$(SR) figure2.R $(SETTING)
+## convert to png
+## pdftoppm -r 600 figure2.pdf figure2 -png
 
 figureSup:
 	$(SR) figureSup.R $(SETTING)

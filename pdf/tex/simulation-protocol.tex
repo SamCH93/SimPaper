@@ -138,18 +138,15 @@ independently generated test data.
   sharpness. The log-score is a strictly proper scoring rule, however, it is more
   sensitive to extreme predicted probabilities compared to the Brier score \citep{Gneiting2007}.
   
-  \item \textbf{AUC.} The AUC is given by
-  $$\text{AUC} = \max\{\text{PI}, 1 - \text{PI}\}$$
-  with $$\text{PI} =  
-  \widehat\Prob(Y_i \geq Y_j \given \rx_i, \rx_j), \; i,j = 1, \dots, n_{\text{test}},$$
-  where $Y_i$ and $Y_j$ denote case and non-case, respectively. The AUC is related
-  to the area under the receiver-operating-characteristic (ROC) curve \citep{steyerberg2019clinical}.
-  It will be used as a measure of discrimination and values closer to one
-  indicate better discriminative ability. Discrimination describes the ability
-  of a prediction model to discriminate between cases and non-cases.
-  Other discrimination measures, such as accuracy, sensitivity, specificity, etc.,
-  are not considered because we want to evaluate predictive performance
-  in terms of probabilistic predictions instead of point predictions/classification.
+  \item \textbf{AUC.} The AUC is the area under the
+        receiver-operating-characteristic (ROC) curve
+        \citep{steyerberg2019clinical}. It will be used as a measure of
+        discrimination and values closer to one indicate better discriminative
+        ability. Discrimination describes the ability of a prediction model to
+        discriminate between cases and non-cases. Other discrimination measures,
+        such as accuracy, sensitivity, specificity, etc., are not considered
+        because we want to evaluate predictive performance in terms of
+        probabilistic predictions instead of point predictions/classification.
 
   \item \textbf{Calibration slope $\hat b$.}  
   The calibration slope $\hat b$ is obtained by regressing
