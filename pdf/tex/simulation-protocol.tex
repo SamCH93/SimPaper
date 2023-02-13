@@ -27,10 +27,10 @@ from the literature, namely
 \end{itemize}
 These cover a wide range of established methods with varying flexibility and
 serve as a reasonable benchmark for \ainet. There are many more extensions of
-the adaptive elastic net in the literature \citep[see \eg{} the review by][]{Vidaurre2013}.
-However, most of these extensions focus on variable selection and
-estimation instead of prediction, which is why we restrict our focus only on the
-four methods above.
+the adaptive elastic net in the literature \citep[see \eg{} the review
+by][]{Vidaurre2013}. However, most of these extensions focus on variable
+selection and estimation instead of prediction, which is why we restrict our
+focus only on the four methods above.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Data-generating process} \label{sec:dgp}
@@ -48,38 +48,39 @@ with $\expit(z) = (1 + \exp(-z))^{-1}$ and the covariate vectors are generated b
 \begin{align*}
   \rX &\sim \ND_p\left(0, \Sigma\right)
 \end{align*}
-with covariance matrix $\Sigma$ that may vary across simulation conditions (see below).
-The baseline prevalence is $\prev = \expit(\beta_0)$. The coefficient vector
-$\shiftparm$ is generated from
+with covariance matrix $\Sigma$ that may vary across simulation conditions (see
+below). The baseline prevalence is $\prev = \expit(\beta_0)$. The coefficient
+vector $\shiftparm$ is generated from
 \begin{align*}
   \shiftparm \sim \ND_p(0, \Id)
 \end{align*}
-once per simulation. Finally, the simulation parameters are varied
-fully factorially (except for the removal of some unreasonable conditions) as described below, leading to a total of 128
-scenarios, see below.
+once per simulation. Finally, the simulation parameters are varied fully
+factorially (except for the removal of some unreasonable conditions) as
+described below, leading to a total of 128 scenarios.
 
 \subsection*{Sample size}
 The sample size used in the development of predictions models varies widely
-\citep{Damen2016}. We will use $n \in \{100, 500, 1000, 5000\}$, which span typical values
-occurring in practice. Note that previous simulation studies usually chose sample
-size based on the implied number of events together with the number of covariates
-in the model for easier interpretation \citep{vanSmeden2018, Riley2018}. We will use this approach in
-reverse to determine the dimensionality of the parameters below.
+\citep{Damen2016}. We will use $n \in \{100, 500, 1000, 5000\}$, which span
+typical values occurring in practice. Note that previous simulation studies
+usually chose sample size based on the implied number of events together with
+the number of covariates in the model for easier interpretation
+\citep{vanSmeden2018, Riley2018}. We will use this approach in reverse to
+determine the dimensionality of the parameters below.
 
 \subsection*{Dimensionality}
-Previous simulation studies showed that events per variable ($\EPV$) rather than the absolute sample
-size $n$ and dimensionality $p$ influences the predictive performance of a
-method. We will therefore define the dimensionality $p$ via EPV
-by $$p = \frac{n \cdot \prev}{\EPV}$$ and $2 \leq p \leq 100.$ If the
-above formula gives non-integer values, the next larger integer will be used for
-$p$. When the formula gives values above 100 or below 2, this simulation
-condition will be removed from the design. This is done because prediction
-models are in practice only multivariable models ($p \geq 2$), but at the same
-time the number of predictors is rarely larger than $p \geq 100$
+Previous simulation studies showed that events per variable ($\EPV$) rather than
+the absolute sample size $n$ and dimensionality $p$ influences the predictive
+performance of a method. We will therefore define the dimensionality $p$ via EPV
+by $$p = \frac{n \cdot \prev}{\EPV}$$ and $2 \leq p \leq 100.$ If the above
+formula gives non-integer values, the next larger integer will be used for $p$.
+When the formula gives values above 100 or below 2, this simulation condition
+will be removed from the design. This is done because prediction models are in
+practice only multivariable models ($p \geq 2$), but at the same time the number
+of predictors is rarely larger than $p \geq 100$
 \citep{Kreuzberger2020,Seker2020, Wynants2020}. The exception are studies
 considering complex data, such as images, omics, or text data which are not the
-focus here. The values $\EPV \in \{20, 10, 1, 0.5\}$ are chosen to cover scenarios
-with small to large number of covariates \citep[\cf][]{vanSmeden2018}.
+focus here. The values $\EPV \in \{20, 10, 1, 0.5\}$ are chosen to cover
+scenarios with small to large number of covariates \citep[see][]{vanSmeden2018}.
 
 \subsection*{Collinearity in $\rX$}
 We distinguish between no, low, medium and high collinearity. The diagonal
@@ -93,50 +94,54 @@ considered, reflecting a reasonable range of prevalences for rare to
 common diseases/adverse events.
 
 \subsection*{Test data}
-In order to test the out-of-sample predictive performance, we generate a test data set of
-$n_{\text{test}} = 10000$ data points in each simulation $b$.
+In order to test the out-of-sample predictive performance, we generate a test
+data set of $n_{\text{test}} = 10000$ data points in each simulation $b$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Estimands} \label{sec:estimands}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-We will estimate different quantities to evaluate overall predictive performance,
-calibration, and discrimination, respectively. All methods will be evaluated on
-independently generated test data.
+We will estimate different quantities to evaluate overall predictive
+performance, calibration, and discrimination, respectively. All methods will be
+evaluated on independently generated test data.
 
 \subsubsection{Primary estimand}
 
 \begin{itemize}
   \item \textbf{Brier score.} We compute the Brier score as
   $$\BS = n_{\text{test}}^{-1} \sum_{i=1}^{n_{\text{test}}} (y_{i} - \hat{y}_{i})^2,$$
-  where $\hat{y} = \widehat\Prob(Y = 1 \given \rx)$.
-  Lower values indicate better predictive performance in terms of calibration and
-  sharpness. A prediction is well-calibrated if the observed proportion
-  of events is close to the predicted probabilities. Sharpness refers to how
-  concentrated a predictive distribution is (\eg{} how wide/narrow a prediction interval is),
-  and the predictive goal is to maximize sharpness subject to calibration
-  \citep{Gneiting2008}.
-  The Brier score is a proper scoring rule, meaning that it is minimized if a
-  predicted distribution is equal to the data-generating distribution
-  \citep{Gneiting2007}. Proper scoring rules thus encourage honest
-  predictions. The Brier score is therefore a principled choice for our primary estimand.
+        where $\hat{y} = \widehat\Prob(Y = 1 \given \rx)$. Lower values indicate
+        better predictive performance in terms of calibration and sharpness. A
+        prediction is well-calibrated if the observed proportion of events is
+        close to the predicted probabilities. Sharpness refers to how
+        concentrated a predictive distribution is (\eg{} how wide/narrow a
+        prediction interval is), and the predictive goal is to maximize
+        sharpness subject to calibration \citep{Gneiting2008}. The Brier score
+        is a proper scoring rule, meaning that it is minimized if a predicted
+        distribution is equal to the data-generating distribution
+        \citep{Gneiting2007}. Proper scoring rules thus encourage honest
+        predictions. The Brier score is therefore a principled choice for our
+        primary estimand.
 \end{itemize}
 
 \subsubsection{Secondary estimands}
 \begin{itemize}
-  \item \textbf{Scaled Brier score.} The scaled Brier score (also known as Brier skill score) is computed as
+  \item \textbf{Scaled Brier score.} The scaled Brier score (also known as Brier
+        skill score) is computed as
   $$\BS^{*} = 1 - \BS/\BS_{0}$$
-  with $\BS_{0} = \bar{y}(1 - \bar{y})$ and $\bar{y}$ the observed prevalence in
-  the data set. The scaled Brier score takes into account that the
-  prevalence varies across simulation conditions. Hence, the scaled Brier score
-  can be compared between conditions \citep{Schmid2005, steyerberg2019clinical}.
+        with $\BS_{0} = \bar{y}(1 - \bar{y})$ and $\bar{y}$ the observed
+        prevalence in the data set. The scaled Brier score takes into account
+        that the prevalence varies across simulation conditions. Hence, the
+        scaled Brier score can be compared between conditions \citep{Schmid2005,
+        steyerberg2019clinical}.
 
   \item \textbf{Log-score.} We compute the log-score on independently generated test data,
   $$\LS = - n_{\text{test}}^{-1} \sum_{i=1}^{n_{\text{test}}} \left\{ y_{i} \log(\hat{y}_{i})
-  + (1 - y_{i}) \log (1 - \hat{y}_{i})\right\},$$
-  will be used as a secondary measure of overall predictive performance. Lower
-  values indicate better predictive performance in terms of calibration and
-  sharpness. The log-score is a strictly proper scoring rule, however, it is more
-  sensitive to extreme predicted probabilities compared to the Brier score \citep{Gneiting2007}.
+        + (1 - y_{i}) \log (1 - \hat{y}_{i})\right\},$$ will be used as a
+        secondary measure of overall predictive performance. Lower values
+        indicate better predictive performance in terms of calibration and
+        sharpness. The log-score is a strictly proper scoring rule, however, it
+        is more sensitive to extreme predicted probabilities compared to the
+        Brier score \citep{Gneiting2007}.
   
   \item \textbf{AUC.} The AUC is the area under the
         receiver-operating-characteristic (ROC) curve
@@ -148,26 +153,27 @@ independently generated test data.
         because we want to evaluate predictive performance in terms of
         probabilistic predictions instead of point predictions/classification.
 
-  \item \textbf{Calibration slope $\hat b$.}  
-  The calibration slope $\hat b$ is obtained by regressing
-  the test data outcomes $y_{\text{test}}$ on the models' predicted logits $\logit({\hat{y}})$,
-  \ie
+  \item \textbf{Calibration slope $\hat b$.} The calibration slope $\hat b$ is
+        obtained by regressing the test data outcomes $y_{\text{test}}$ on the
+        models' predicted logits $\logit({\hat{y}})$, \ie
   $$\logit\Ex[Y \given \hat\ry] = a + b\logit(\hat\ry).$$
-  This measure will be used to assess calibration and deviations of $\hat b$ from
-  one indicate miscalibration \citep{steyerberg2019clinical}.
+        This measure will be used to assess calibration and deviations of
+        $\hat b$ from one indicate miscalibration
+        \citep{steyerberg2019clinical}.
 
-  \item \textbf{Calibration in the large $\hat a$.} We inspect calibration in the
-  large $\hat a$ on independently generated test data, from the model
+  \item \textbf{Calibration in the large $\hat a$.} We inspect calibration in
+        the large $\hat a$ on independently generated test data, from the model
   $$\logit\Ex[Y \given \hat\ry] = a + \logit(\hat{y}).$$
-  This measure will also be used to assess calibration and deviations of $\hat a$ from
-  zero indicate miscalibration \citep{steyerberg2019clinical}.
+        This measure will also be used to assess calibration and deviations of
+        $\hat a$ from zero indicate miscalibration
+        \citep{steyerberg2019clinical}.
 \end{itemize}
 
 To facilitate comparison between simulation conditions, all estimands will also
-be corrected by the oracle version of the estimand, \eg{} the Brier score will be
-computed from the ground truth parameters and the simulated data $\rx$,
-subsequently the oracle Brier score will be subtracted from the estimated
-Brier score.
+be corrected by the oracle version of the estimand, \eg{} the Brier score will
+be computed from the ground truth parameters and the simulated data $\rx$,
+subsequently the oracle Brier score will be subtracted from the estimated Brier
+score.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Methods} \label{sec:methods}
@@ -175,15 +181,15 @@ Brier score.
 
 \subsubsection{\ainet}
 We now present the mock-method and give a superficial motivation why it could
-lead to improved predictive performance:
-Choosing the vector of penalization weights in the adaptive LASSO becomes difficult
-in high-dimensional settings. For instance, using absolute LASSO estimates as penalization
-weights omits the importance of several predictors by not selecting them, 
-especially in the case of highly correlated predictors \citep{Algamal2015}.
-The adaptive importance elastic net (\ainet{}) circumvents this problem by
-employing a random forest to estimate the
-penalization weights via an \emph{a priori} chosen variable importance measure.
-In this way, the importance of all variables enter the penalization weights simultaneously.
+lead to improved predictive performance: Choosing the vector of penalization
+weights in the adaptive LASSO becomes difficult in high-dimensional settings.
+For instance, using absolute LASSO estimates as penalization weights omits the
+importance of several predictors by not selecting them, especially in the case
+of highly correlated predictors \citep{Algamal2015}. The adaptive importance
+elastic net (\ainet{}) circumvents this problem by employing a random forest to
+estimate the penalization weights via an \emph{a priori} chosen variable
+importance measure. In this way, the importance of all variables enter the
+penalization weights simultaneously.
 
 The penalized log-likelihood for \ainet{} for a single observation $(\ry, \rx)$
 is defined as
@@ -191,63 +197,63 @@ $$\ell_{\text{AINET}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda, \wvec) =
   \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen$$
 where
 $$\ell(\beta_0, \shiftparm; \ry, \rx) = 
-  \ry \log\left(\expit\left\{\beta_0 + \linpred\right\}\right)
-  + (1 - \ry) \log\left(1 - \expit\left\{\beta_0 + \linpred\right\}\right)$$
-denotes the log-likelihood of a binomial GLM and
-$\wvec$ is derived from a random forest variable importance measure $\IMP$ as
+\ry \log\left(\expit\left\{\beta_0 + \linpred\right\}\right) + (1 - \ry) \log\left(1 - \expit\left\{\beta_0 + \linpred\right\}\right)$$
+denotes the log-likelihood of a binomial GLM and $\wvec$ is derived from a
+random forest variable importance measure $\widetilde\IMP$ as
 $$w_j = 1 - \left(\frac{\IMP_j}{\sum_{k=1}^p \IMP_k}\right)^\gamma,$$
 where we transform $\IMP$ to be non-negative via
 % $$\IMP = \widetilde\IMP - \min_j\{\widetilde{\IMP}_j\},$$
 % or
 $$\IMP_j = \max\{0, \widetilde\IMP_j\}$$
 and $\gamma$ is a hyperparameter for the influence of the weights similar to
-$\gamma$ hyperparameter of the adaptive elastic net.
-\ainet{} is fitted by maximizing its penalized log-likelihood assuming i.i.d.
-observations $\{(\ry_i, \rx_i)\}_{i=1}^n$, \ie
+$\gamma$ hyperparameter of the adaptive elastic net. \ainet{} is fitted by
+maximizing its penalized log-likelihood assuming i.i.d. observations
+$\{(\ry_i, \rx_i)\}_{i=1}^n$, \ie
 $$\arg\max_{\beta_0, \shiftparm} \sum_{i = 1}^n \ell_{\text{AINET}}(\beta_0,
 \shiftparm; \ry_i, \rx_i, \alpha, \lambda, \wvec).$$
 
-Per default, we choose mean decrease in the Gini coefficient for $\widetilde\IMP$.
-Hyperparameters of the random forest are not tuned, but kept at their default
-values (\eg{} \code{mtry}, \code{ntree}). The hyperparameter $\gamma = 1$ will stay
-constant for all simulations.
+Per default, we choose mean decrease in the Gini coefficient for
+$\widetilde\IMP$. Hyperparameters of the random forest are not tuned, but kept
+at their default values (\eg{} \code{mtry}, \code{ntree}). The hyperparameter
+$\gamma = 1$ will stay constant for all simulations.
 
-\ainet{} is supposed to seem like a reasonable method at first glance. However, 
-\ainet{} cannot be expected to share desirable theoretical properties with the 
-usual adaptive LASSO, such as oracle estimation \citep{Zou2006}. This is because 
-the penalization weights $\wvec$ do not meet the required consistency assumption. 
-Also in terms of prediction performance, \ainet{} is not expected to outperform 
-methods of comparable complexity.
+\ainet{} is supposed to seem like a reasonable method at first glance. However,
+\ainet{} cannot be expected to share desirable theoretical properties with the
+usual adaptive LASSO, such as oracle estimation \citep{Zou2006}. This is because
+the penalization weights $\wvec$ do not meet the required consistency
+assumption. Also in terms of prediction performance, \ainet{} is not expected to
+outperform methods of comparable complexity.
 
 \subsubsection{Benchmark methods}
 
 \begin{itemize}
-   \item \textbf{Binary logistic regression} \citep{mccullagh2019generalized} 
-   with and without ridge penalty for high- and
-   low-dimensional settings, respectively. In case a ridge penalty is needed,
-   it is tuned via 5-fold cross-validation by following the ``one standard
-   error'' rule as implemented in \pkg{glmnet} \citep{Friedman2010}. 
-   \item \textbf{Elastic net} \citep{Zou2005}, for which the penalized 
-   log-likelihood is given by
+  \item \textbf{Binary logistic regression} \citep{mccullagh2019generalized}
+        with and without ridge penalty for high- and low-dimensional settings,
+        respectively. In case a ridge penalty is needed, it is tuned via 5-fold
+        cross-validation by following the ``one standard error'' rule as
+        implemented in \pkg{glmnet} \citep{Friedman2010}.
+  \item \textbf{Elastic net} \citep{Zou2005}, for which the penalized
+        log-likelihood is given by
     $$\ell_{\text{EN}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda) = 
-      \ell(\beta_0, \shiftparm; \ry, \rx) + \llpen.$$
-    Here, $\alpha$ and $\lambda$ are tuned via 5-fold cross-validation by following 
-    the ``one standard error'' rule.
-   \item \textbf{Adaptive elastic net} \citep{Zou2006}, with penalized loss function
+        \ell(\beta_0, \shiftparm; \ry, \rx) + \llpen.$$ Here, $\alpha$ and
+        $\lambda$ are tuned via 5-fold cross-validation by following the ``one
+        standard error'' rule.
+  \item \textbf{Adaptive elastic net} \citep{Zou2006}, with penalized loss
+        function
     $$\ell_{\text{adaptive}}(\beta_0, \shiftparm; \ry, \rx, \alpha, \lambda, \wvec)
-    = \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen.$$
-    Here, the penalty weights $\wvec$ are inverse coefficient estimates from a
-    binary logistic regression
+        = \ell(\beta_0, \shiftparm; \ry, \rx) + \aipen.$$ Here, the penalty
+        weights $\wvec$ are inverse coefficient estimates from a binary logistic
+        regression
     $$\hat{w}_j = \lvert\hat\eparm_j\rvert^{-\gamma},$$
-    where $\lambda$ and $\alpha$ are tuned via 5-fold cross-validation by 
-    following the ``one standard error'' rule.
-    The hyperparameter $\gamma = 1$ will stay constant for all simulations.
-    In case $p > n$, we estimate the penalty weights using a ridge penalty, tuned
-    via an additional nested 5-fold cross-validation
-    by following the ``one standard error'' rule.
-    \item \textbf{Random forests} \citep{Breiman2001} for binary outcomes without 
-    hyperparameter tuning. The default parameters of \pkg{ranger} will be used 
-    \citep{ranger2017}. % , \ie
+        where $\lambda$ and $\alpha$ are tuned via 5-fold cross-validation by
+        following the ``one standard error'' rule. The hyperparameter
+        $\gamma = 1$ will stay constant for all simulations. In case $p > n$, we
+        estimate the penalty weights using a ridge penalty, tuned via an
+        additional nested 5-fold cross-validation by following the ``one
+        standard error'' rule.
+  \item \textbf{Random forests} \citep{Breiman2001} for binary outcomes without
+        hyperparameter tuning. The default parameters of \pkg{ranger} will be
+        used \citep{ranger2017}. % , \ie
     % \code{ntree = 500}, \code{mtry = floor(sqrt(p))}, \code{min.node.size = },
     % \code{max.depth = }, \code{sample.fraction = }
 \end{itemize}
@@ -260,28 +266,27 @@ methods of comparable complexity.
 The distribution of all estimands from Section~\ref{sec:estimands} will be
 assessed visually with box- and violin-plots that are stratified by method and
 simulation conditions. We will also compute mean, median, standard deviation,
-interquartile range, and 95\% confidence intervals
-for each of the estimands. Moreover, instead of ``eye-balling'' differences in predictive
-performance across methods and conditions, we will formally assess them by regressing
-the estimands on the method and simulation conditions \citep[\cf][]{Skrondal2000}.
-To do so, we will use
-a fully interacted model with the interaction between the methods and the
-128 simulations conditions, \ie in R notation:
-\texttt{estimand $\sim$ 0 + method:scenario}. %sample\_size:dimensionality:sparsity:colinearity:prevalence}
-We will rank pairwise comparison between two methods within a single condition
-by their $p$-values, to more easily identify conditions where methods
-show differences in predictive performance. The choice of a significance level
-at which a method is deemed superior will be determined based on preliminary
-simulations. We set this level to 5\%, where $p$-values will be adjusted using
-the single-step method \citep{pkg:multcomp} within a single simulation condition
-for comparisons between \ainet{} and any other method.
+interquartile range, and 95\% confidence intervals for each of the estimands.
+Moreover, instead of ``eye-balling'' differences in predictive performance
+across methods and conditions, we will formally assess them by regressing the
+estimands on the method and simulation conditions \citep[\cf][]{Skrondal2000}.
+To do so, we will use a fully interacted model with the interaction between the
+methods and the 128 simulations conditions, \ie in R notation: \texttt{estimand
+  $\sim$ 0 + method:scenario}. We will rank pairwise comparison between two
+methods within a single condition by their $p$-values, to more easily identify
+conditions where methods show differences in predictive performance. The choice
+of a significance level at which a method is deemed superior will be determined
+based on preliminary simulations. We set this level to 5\%, where $p$-values
+will be adjusted using the single-step method \citep{pkg:multcomp} within a
+single simulation condition for comparisons between \ainet{} and any other
+method.
 
 
 \subsection{Determining the number of simulations}
 
-We determine the number of simulation $B$ such that the Monte Carlo
-standard error of the primary estimand, the mean Brier score $\BS/B$,
-is sufficiently small. The variance of $\BS/B$ is given by
+We determine the number of simulation $B$ such that the Monte Carlo standard
+error of the primary estimand, the mean Brier score $\BS/B$, is sufficiently
+small. The variance of $\BS/B$ is given by
 \begin{align*}
   \Var\left(\BS/B\right)
   &= \frac{\Var\left\{(y -
@@ -295,8 +300,8 @@ for our data-generating process as it depends on several of the simulation
 parameters. We therefore follow a similar approach as in \citet{Morris2019} and
 estimate $\widehat{\Var}\left\{(y_{ib} - \hat{y}_{ib})^{2}\right\} < V$ from an
 initial small simulation run with 100 simulations per condtion to get an upper
-bound $V$ for worst-case variance across all simulation conditions.
-Therefore, the number of simulations is then given by
+bound $V$ for worst-case variance across all simulation conditions. Therefore,
+the number of simulations is then given by
 $$B = \frac{V}{n_{\text{test}} \Var\left(\BS\right)}.$$
 Since $\BS \in [0, 1]$ we decide that we require the Monte Carlo standard error
 of $\BS$ to be lower than four significant digits, $0.0001$.
@@ -310,22 +315,22 @@ desired precision.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Handling exceptions} \label{sec:exceptions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-It is inevitable that convergence issues and other problems will arise
-in the simulation study. We will handle them as follows:
+It is inevitable that convergence issues and other problems will arise in the
+simulation study. We will handle them as follows:
 \begin{itemize}
   \item If a method fails to converge, the simulation will be excluded from the
-  analysis. The failing simulations will not be replaced with new simulations that
-  successfully converge as convergence may be impossible for some scenarios.
-  \item We will report the proportion of simulations with convergence issues
-  for each method and discuss the potential reasons for their emergence.
-  \item In case of severe convergence issues or other problems (more than 10\% of the
-  simulations failing within a setting), we may adjust
-  the simulation parameters post hoc. This will be indicated in the discussion of
-  the results.
+        analysis. The failing simulations will not be replaced with new
+        simulations that successfully converge as convergence may be impossible
+        for some scenarios.
+  \item We will report the proportion of simulations with convergence issues for
+        each method and discuss the potential reasons for their emergence.
+  \item In case of severe convergence issues or other problems (more than 10\%
+        of the simulations failing within a setting), we may adjust the
+        simulation parameters post hoc. This will be indicated in the discussion
+        of the results.
   \item Convergence may be possible for certain tuning parameters of a method
-  (\eg{} cross-validation of LASSO may fail for some values $\lambda$ while it could
-  work for others). In this case we will choose a parameter value where the method
-  still converges, as one would usually do with a real data set.
-
+        (\eg{} cross-validation of LASSO may fail for some values $\lambda$
+        while it could work for others). In this case we will choose a parameter
+        value where the method still converges, as one would usually do with a
+        real data set.
 \end{itemize}
-
